@@ -15,6 +15,9 @@
     - [x] Testar localmente com dry-run para validar o array de comandos.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refatoração do Muxing' (Protocol in workflow.md)
 
-## Phase 3: Rollout e Teste de Performance
-- [ ] Task: Aplicar a correção do Mux e testar com um arquivo grande.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Rollout e Teste' (Protocol in workflow.md)
+## Phase 3: Rollout e Teste de Performance [checkpoint: f2ea51e]
+- [x] Task: Aplicar a correção do Mux e testar com um arquivo grande. [0a6dd44]
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Rollout e Teste' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [abd00fb]
