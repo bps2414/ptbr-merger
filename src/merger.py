@@ -2,6 +2,7 @@ import os
 import time
 import subprocess
 from pathlib import Path
+from typing import Optional, List
 
 from src.config import get_config
 from src.notifier import debug, info, warning, error
@@ -37,9 +38,10 @@ def extract_audio(file_1080p: Path, stream_idx: int, output_audio: Path) -> Path
 
 from src.analyzer import get_allowed_streams
 
-def mux_audio(file_4k: Path, audio_ptbr: Path, output_tmp: Path) -> Path:
+def mux_audio(file_4k: Path, audio_ptbr: Optional[Path], output_tmp: Path) -> Path:
     """
-    Injeta o áudio PT-BR como a primeira faixa no arquivo 4K, preservando o restante.
+    Injeta o áudio PT-BR como a primeira faixa no arquivo 4K, preservando o restante,
+    OU apenas otimiza o 4K se audio_ptbr for None.
     Retorna o path do arquivo de mux temporário gerado.
     """
     ffmpeg_path = config.ffmpeg.ffmpeg_path
@@ -50,10 +52,15 @@ def mux_audio(file_4k: Path, audio_ptbr: Path, output_tmp: Path) -> Path:
         str(ffmpeg_path),
         "-y",
         "-i", str(file_4k),
-        "-i", str(audio_ptbr),
-        "-map", "0:v",     # preserva o vídeo original
-        "-map", "1:a",     # nova faixa de áudio PT-BR injetada primariamente
     ]
+    
+    if audio_ptbr:
+        cmd.extend(["-i", str(audio_ptbr)])
+        
+    cmd.extend(["-map", "0:v"]) # preserva o vídeo original
+    
+    if audio_ptbr:
+        cmd.extend(["-map", "1:a"]) # nova faixa de áudio PT-BR injetada primariamente
     
     for idx in allowed_indices:
         cmd.extend(["-map", f"0:{idx}"])
@@ -62,10 +69,15 @@ def mux_audio(file_4k: Path, audio_ptbr: Path, output_tmp: Path) -> Path:
         "-map_chapters", "0", # Preservar chapter markers originais do 4k
         "-c", "copy",      # preserva qualidade com zero raw-reencoding
         "-max_interleave_delta", "0", # Otimização Crítica para Smart TVs (Intercalação perfeita)
-        "-metadata:s:a:0", "language=por",
-        "-metadata:s:a:0", "title=Português (Brasil)",
-        str(output_tmp)
     ])
+    
+    if audio_ptbr:
+        cmd.extend([
+            "-metadata:s:a:0", "language=por",
+            "-metadata:s:a:0", "title=Português (Brasil)",
+        ])
+        
+    cmd.append(str(output_tmp))
     
     try:
         debug(f"Processando FFmpeg Mux: {' '.join(cmd)}")
