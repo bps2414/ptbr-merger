@@ -29,6 +29,11 @@ def _probe_file(filepath: Path) -> dict:
         debug(f"Executando ffprobe em: {filepath.name}")
         # text=True envia string pra stdout invés de bytes (facilita o json.loads)
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        
+        if not result.stdout or result.stdout.strip() == "":
+            error(f"O ffprobe retornou um stdout vazio para {filepath.name}")
+            return {}
+            
         return json.loads(result.stdout)
     except subprocess.CalledProcessError as e:
         error(f"Erro executando ffprobe em {filepath.name}. STDERR: {e.stderr}")
@@ -95,7 +100,10 @@ def get_allowed_streams(filepath: Path) -> list[int]:
     
     allowed_indices = []
     
-    allowed_langs_exact = {"por", "pt", "pt-br", "ptbr", "portuguese", "português", "eng", "en", "english", "jpn", "ja", "japanese", "und"}
+    allowed_langs_exact = {
+        "por", "pt", "pt-br", "ptbr", "portuguese", "português",
+        "eng", "en", "english", "jpn", "ja", "japanese", "und"
+    }
     
     for stream in streams:
         ctype = stream.get("codec_type")

@@ -117,8 +117,7 @@ def run_merger(file_path: Path, ptbrmerger_movie_id: int, tmdb_id: str, context:
         ffmpeg_cmd_extr = f"{config.ffmpeg.ffmpeg_path} -y -i {file_1080p.name} -map 0:{stream_idx} -c:a copy {audio_ptbr.name}"
 
         # Build dynamic mux cmd for logging
-        from src.analyzer import get_allowed_streams
-        allowed_indices = get_allowed_streams(file_4k)
+        allowed_indices = analyzer.get_allowed_streams(file_4k)
         map_args = " ".join([f"-map 0:{idx}" for idx in allowed_indices])
         ffmpeg_cmd_mux = f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {audio_ptbr.name} -map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 ... {output_tmp.name}"
 
