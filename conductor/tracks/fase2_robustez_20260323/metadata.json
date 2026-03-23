@@ -1,0 +1,8 @@
+{
+  "track_id": "fase2_robustez_20260323",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-23T12:00:00Z",
+  "updated_at": "2026-03-23T12:00:00Z",
+  "description": "Fase 2 - Robustez e Integridade do PTBRMerger (Fila, Safety Net, Backoff, Rich Embeds)"
+}
