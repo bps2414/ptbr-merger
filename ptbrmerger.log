@@ -572,3 +572,796 @@
 2026-03-23 00:45:42 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
 2026-03-23 00:45:42 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
 2026-03-23 00:45:42 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-23 00:50:56 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 00:50:56 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:51:02 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:51:02 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:51:02 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:51:02 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:51:02 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:51:02 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:51:02 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:51:02 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 00:51:02 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 00:51:02 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 00:56:54 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 00:56:54 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:57:00 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:57:00 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:57:00 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:57:00 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:57:00 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:57:00 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:57:00 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:57:00 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 00:57:00 | WARNING  | Erro de Sincronia: Diferença de 16.038s excede o limite estipulado de 10s.
+2026-03-23 00:57:00 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (16.038000000000466s) detectada para BypassTMDB_1218925.
+2026-03-23 00:57:00 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #2: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 00:57:00 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 00:57:00 | INFO     | Torrent c6468948... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 01:01:35 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 01:01:35 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 01:01:41 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 01:01:41 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 01:01:41 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:01:41 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:01:41 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:01:41 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:01:41 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:01:41 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 01:01:41 | WARNING  | Erro de Sincronia: Diferença de 16.038s excede o limite estipulado de 10s.
+2026-03-23 01:01:41 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (16.038000000000466s) detectada para BypassTMDB_1218925.
+2026-03-23 01:01:42 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #3: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 01:01:42 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 01:01:42 | INFO     | Torrent dc61ee68... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 01:06:59 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 01:06:59 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 01:07:04 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 01:07:04 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 01:07:04 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:07:04 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:07:04 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:07:04 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:07:04 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:07:04 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 01:07:04 | WARNING  | Erro de Sincronia: Diferença de 16.038s excede o limite estipulado de 10s.
+2026-03-23 01:07:04 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (16.038000000000466s) detectada para BypassTMDB_1218925.
+2026-03-23 01:07:05 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #3: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 01:07:05 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 01:07:05 | INFO     | Torrent dc61ee68... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 01:12:03 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 01:12:03 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 01:12:09 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 01:12:09 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 01:12:09 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:12:09 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:12:09 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:12:09 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:12:09 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:12:09 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 01:12:09 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 01:12:09 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 01:16:46 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 01:16:46 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 01:16:51 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 01:16:51 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 01:16:51 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:16:51 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:16:51 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 01:16:51 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:16:51 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 01:16:51 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 01:17:03 | INFO     | Áudio PT-BR extraído com sucesso para: audio_ptbr.eac3
+2026-03-23 01:24:56 | INFO     | Mux concluído com sucesso: output_tmp.mkv
+2026-03-23 01:24:57 | INFO     | Arquivo 4K original (Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv) substituído com sucesso pela versão PTBR-Merger consolidada.
+2026-03-23 01:24:57 | INFO     | Rescan solicitado. Metadados serão atualizados em breve.
+2026-03-23 01:24:57 | INFO     | ✅ SUCCESS: Áudio PT-BR injetado com sucesso no filme BypassTMDB_1218925
+2026-03-23 01:25:01 | INFO     | Torrent c6468948... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 15:06:59 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 15:06:59 | INFO     | Buscando releases para o filme ID 42 no Radarr (pode demorar até 60s)...
+2026-03-23 15:07:05 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 28545, 27045, 26545, 25545]
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 15:07:05 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 15:07:05 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:07:05 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:07:05 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:07:05 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 15:07:05 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 15:07:05 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 15:07:05 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 15:07:05 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 15:13:25 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 15:13:26 | INFO     | Buscando releases para o filme ID 42 no Radarr (pode demorar até 60s)...
+2026-03-23 15:13:31 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 28545, 27045, 26545, 25545]
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 15:13:31 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 15:13:31 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:13:31 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:13:31 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 15:13:31 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 15:13:31 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 15:13:31 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 15:14:06 | INFO     | Áudio PT-BR extraído com sucesso para: audio_ptbr.eac3
+2026-03-23 15:14:16 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:05:14.98
+2026-03-23 15:14:27 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:14:37 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:14:47 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:14:57 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:15:08 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:15:18 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:15:28 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 15:15:39 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:15:49 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:01 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:11 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:22 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:32 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:42 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:16:53 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:03 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:13 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:23 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:34 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:44 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:17:54 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:05 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:15 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:25 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:36 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:46 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:18:56 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:07 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:17 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:27 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:38 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:48 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:19:58 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:20:09 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:20:19 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:20:29 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:20:39 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:20:50 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:00 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:10 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:21 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:31 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:41 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:21:54 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:05 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:17 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:27 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:37 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:47 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:22:58 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:23:08 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:23:18 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:23:29 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:23:39 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:23:49 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:00 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:10 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:20 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:31 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:41 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:24:51 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:25:01 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:25:12 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:25:22 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:25:32 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 15:25:43 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:30.62
+2026-03-23 15:25:53 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:06:16.38
+2026-03-23 15:26:03 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:38:23.73
+2026-03-23 15:26:14 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:38:23.73
+2026-03-23 15:26:24 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:38:31.32
+2026-03-23 15:26:25 | INFO     | Mux concluído com sucesso: output_tmp.mkv
+2026-03-23 15:26:25 | INFO     | Arquivo 4K original (Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv) substituído com sucesso pela versão PTBR-Merger consolidada.
+2026-03-23 15:26:25 | INFO     | Rescan solicitado. Metadados serão atualizados em breve.
+2026-03-23 15:26:25 | INFO     | ✅ SUCCESS: Áudio PT-BR injetado com sucesso no filme Chainsaw Man - The Movie: Reze Arc (2025)
+2026-03-23 15:26:26 | INFO     | Torrent c6468948... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 15:42:06 | INFO     | ⏭️ SKIPPED: O filme Zootopia 2 (2025) já possui faixa de áudio PT-BR.
+2026-03-23 16:12:46 | INFO     | ⏭️ SKIPPED: O filme Zootopia 2 (2025) já possui faixa de áudio PT-BR.
+2026-03-23 16:22:06 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 16:22:33 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 16:23:29 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 16:26:22 | INFO     | Mux concluído com sucesso: out.mkv
+2026-03-23 16:28:18 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 16:29:48 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 16:29:48 | INFO     | Buscando releases para o filme ID 44 no Radarr (pode demorar até 60s)...
+2026-03-23 16:29:55 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 28545, 27045, 26545, 25545]
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 16:29:55 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 16:29:55 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:29:55 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:29:55 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:29:55 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 16:29:55 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 16:29:55 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 16:29:55 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 16:29:55 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 16:35:30 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 16:35:31 | INFO     | Buscando releases para o filme ID 44 no Radarr (pode demorar até 60s)...
+2026-03-23 16:35:36 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 28545, 27045, 26545, 25545]
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 16:35:36 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 16:35:36 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:35:36 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:35:36 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 16:35:36 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 16:35:36 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 16:35:36 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 16:35:51 | INFO     | Áudio PT-BR extraído com sucesso para: audio_ptbr.eac3
+2026-03-23 16:36:01 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:05:14.98
+2026-03-23 16:36:11 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 16:36:21 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 16:36:32 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:09:15.26
+2026-03-23 16:36:42 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:12:02.84
+2026-03-23 16:36:52 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:17:12.83
+2026-03-23 16:37:03 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:17:39.61
+2026-03-23 16:37:13 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:18:27.93
+2026-03-23 16:37:23 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:22:14.46
+2026-03-23 16:37:34 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:22:17.31
+2026-03-23 16:37:47 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:22:17.31
+2026-03-23 16:37:58 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:24:35.77
+2026-03-23 16:38:08 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:28:25.95
+2026-03-23 16:38:18 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:28:41.95
+2026-03-23 16:38:28 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:28:59.96
+2026-03-23 16:38:39 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:31:52.12
+2026-03-23 16:38:49 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:32:07.48
+2026-03-23 16:38:59 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:35:17.12
+2026-03-23 16:39:10 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:36:05.47
+2026-03-23 16:39:23 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:36:05.47
+2026-03-23 16:39:33 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:39:15.93
+2026-03-23 16:39:44 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:39:17.92
+2026-03-23 16:39:54 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:43:20.70
+2026-03-23 16:40:04 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:43:20.70
+2026-03-23 16:40:15 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:43:20.70
+2026-03-23 16:40:26 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:45:58.33
+2026-03-23 16:40:36 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:45:58.33
+2026-03-23 16:40:46 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:51:08.28
+2026-03-23 16:41:15 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:51:11.29
+2026-03-23 16:41:25 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:51:28.73
+2026-03-23 16:41:35 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:41:46 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:41:56 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:42:06 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:42:17 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:42:27 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:22.47
+2026-03-23 16:42:37 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:52:42.30
+2026-03-23 16:42:48 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:53:17.02
+2026-03-23 16:42:58 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:54:09.66
+2026-03-23 16:43:08 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:56:14.14
+2026-03-23 16:43:19 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:56:58.27
+2026-03-23 16:43:29 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 00:59:57.85
+2026-03-23 16:43:39 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:00:32.76
+2026-03-23 16:43:49 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:01:07.87
+2026-03-23 16:44:00 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:05:02.24
+2026-03-23 16:44:10 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:05:08.12
+2026-03-23 16:44:20 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:05:14.59
+2026-03-23 16:44:31 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:08:33.12
+2026-03-23 16:44:41 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:09:24.44
+2026-03-23 16:44:51 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:10:45.66
+2026-03-23 16:45:02 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:10:51.87
+2026-03-23 16:45:12 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:11:28.70
+2026-03-23 16:45:22 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:14:18.68
+2026-03-23 16:45:33 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:16:32.00
+2026-03-23 16:45:43 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:16:39.68
+2026-03-23 16:45:53 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:19:29.72
+2026-03-23 16:46:04 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:23:08.99
+2026-03-23 16:46:18 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:23:08.99
+2026-03-23 16:46:28 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:24:50.84
+2026-03-23 16:46:38 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:25:09.72
+2026-03-23 16:46:49 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:27:12.86
+2026-03-23 16:46:59 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:28:16.76
+2026-03-23 16:47:09 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:29:04.60
+2026-03-23 16:47:19 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:36:03.45
+2026-03-23 16:47:30 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:36:46.01
+2026-03-23 16:47:52 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:36:46.01
+2026-03-23 16:48:02 | INFO     | Progresso de Fusão (Mux): Vídeo gerado até 01:38:23.65
+2026-03-23 16:48:11 | INFO     | Mux concluído com sucesso: output_tmp.mkv
+2026-03-23 16:48:15 | INFO     | Arquivo 4K original (Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv) substituído com sucesso pela versão PTBR-Merger consolidada.
+2026-03-23 16:48:34 | INFO     | Rescan solicitado. Metadados serão atualizados em breve.
+2026-03-23 16:48:34 | INFO     | ✅ SUCCESS: Áudio PT-BR injetado com sucesso no filme Chainsaw Man - The Movie: Reze Arc (2025)
+2026-03-23 16:48:37 | INFO     | Torrent c6468948... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 16:50:14 | ERROR    | Erro no FFmpeg durante processo de muxing. Código falha 4294967294
+2026-03-23 16:50:14 | ERROR    | Falha catastrófica no FFmpeg muxing logger: Command '['C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffmpeg.exe', '-y', '-i', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]\\Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv', '-i', 'dummy_audio.ac3', '-map', '0:v', '-map', '1:a', '-map', '0:1', '-map', '0:2', '-map', '0:3', '-map', '0:4', '-map', '0:5', '-map', '0:6', '-map', '0:7', '-map', '0:8', '-map', '0:9', '-map_chapters', '0', '-c', 'copy', '-max_interleave_delta', '0', '-metadata:s:a:0', 'language=por', '-metadata:s:a:0', 'title=Português (Brasil)', 'out.mkv']' returned non-zero exit status 4294967294.
+2026-03-23 17:00:33 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: the JSON object must be str, bytes or bytearray, not NoneType
+2026-03-23 17:00:33 | ERROR    | ❌ ERROR: Falha processando Zootopia 2 (2025) - the JSON object must be str, bytes or bytearray, not NoneType
+2026-03-23 17:02:56 | INFO     | Evento Dummy (Health Check) despachado pelo Radarr. Test OK.
+2026-03-23 17:13:02 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 17:32:30 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 17:32:30 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 17:34:05 | INFO     | O filme 4K Scream 7 não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 17:34:05 | INFO     | Buscando releases para o filme ID 29 no Radarr (pode demorar até 60s)...
+2026-03-23 17:34:09 | INFO     | Busca retornou 49 releases. Top 5 scores: [19525, 18500, 18500, 17500, 17500]
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 19525][WEBDL-1080p]: Scream.7.2026.1080p.WEB-DL.AAC.5.1.H264.Dual.YG⭐ | Tiebreaker: 5
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 17500][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv | Tiebreaker: 8
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 17500][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv | Tiebreaker: 12
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 16000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) | Tiebreaker: 0
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 16000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) | Tiebreaker: 0
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 15000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) + MVO (HDRezka Studio) + Original Eng + Sub Rus Eng | Tiebreaker: 0
+2026-03-23 17:34:09 | INFO     | Release detectada [Score 15000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 17:34:09 | INFO     | Candidato #1 [Tiebreaker 12][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv (Tiebreaker 12 (Keywords: [L4]dublado, [L3]indexer:Catálogo Betor))
+2026-03-23 17:34:09 | INFO     | Candidato #2 [Tiebreaker 8][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv (Tiebreaker 8 (Keywords: [L4]dublado))
+2026-03-23 17:34:09 | INFO     | Candidato #3 [Tiebreaker 5][WEBDL-1080p]: Scream.7.2026.1080p.WEB-DL.AAC.5.1.H264.Dual.YG⭐ (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:34:09 | INFO     | Candidato #4 [Tiebreaker 0][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) (Tiebreaker 0)
+2026-03-23 17:34:09 | INFO     | Candidato #5 [Tiebreaker 0][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) (Tiebreaker 0)
+2026-03-23 17:34:09 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 17:34:09 | INFO     | Torrent PT-BR (TMDB 1159559) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 17:34:09 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 17:35:35 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 17:35:50 | ERROR    | Erro executando ffprobe em A.Empregada.2025.1080p.WEB-DL.DUAL.5.1.mkv. STDERR: 
+2026-03-23 17:35:50 | INFO     | O filme 4K Desconhecido não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 17:35:50 | INFO     | Buscando releases para o filme ID 10 no Radarr (pode demorar até 60s)...
+2026-03-23 17:35:56 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 17:35:56 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 17:35:56 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:35:56 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:35:56 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:35:56 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:35:56 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:35:56 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb .
+2026-03-23 17:36:04 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 17:36:22 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 17:36:22 | ERROR    | Filme TMDB 10 não encontrado na base do Radarr.
+2026-03-23 17:36:22 | ERROR    | Erro transacional interno estourou no módulo Merger ao operar I/O: Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 10).
+2026-03-23 17:36:22 | ERROR    | ❌ ERROR: Falha processando TMDB_10 - Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 10).
+2026-03-23 17:36:23 | ERROR    | WARNING não fatal: Erro no unlink de raw files duranto finally pass: [WinError 5] Acesso negado: '.'
+2026-03-23 17:36:23 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=...
+2026-03-23 17:36:31 | ERROR    | Erro executando ffprobe em A.Empregada.2025.1080p.WEB-DL.DUAL.5.1.mkv. STDERR: 
+2026-03-23 17:36:47 | INFO     | [DRY RUN - OPTIMIZER] Otimização universal simulada:
+2026-03-23 17:36:47 | INFO     |    CMD -> C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe -y -i A.Empregada.2025.1080p.WEB-DL.DUAL.5.1.mkv -map 0:v  -map_chapters 0 -c copy -max_interleave_delta 0 output_opt_tmp.mkv
+2026-03-23 17:43:20 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 17:43:20 | INFO     | Buscando releases para o filme ID 29 no Radarr (pode demorar até 60s)...
+2026-03-23 17:43:23 | INFO     | Busca retornou 49 releases. Top 5 scores: [19525, 18500, 18500, 17500, 17500]
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 19525][WEBDL-1080p]: Scream.7.2026.1080p.WEB-DL.AAC.5.1.H264.Dual.YG⭐ | Tiebreaker: 5
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 17500][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv | Tiebreaker: 8
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 17500][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv | Tiebreaker: 12
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 16000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) | Tiebreaker: 0
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 16000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) | Tiebreaker: 0
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 15000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) + MVO (HDRezka Studio) + Original Eng + Sub Rus Eng | Tiebreaker: 0
+2026-03-23 17:43:23 | INFO     | Release detectada [Score 15000][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 17:43:23 | INFO     | Candidato #1 [Tiebreaker 12][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv (Tiebreaker 12 (Keywords: [L4]dublado, [L3]indexer:Catálogo Betor))
+2026-03-23 17:43:23 | INFO     | Candidato #2 [Tiebreaker 8][WEBRip-1080p]: Scream.7.2026.1080p.WEBRip.Dublado.mkv (Tiebreaker 8 (Keywords: [L4]dublado))
+2026-03-23 17:43:23 | INFO     | Candidato #3 [Tiebreaker 5][WEBDL-1080p]: Scream.7.2026.1080p.WEB-DL.AAC.5.1.H264.Dual.YG⭐ (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 17:43:23 | INFO     | Candidato #4 [Tiebreaker 0][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip-AVC] Dub (Продубляж) (Tiebreaker 0)
+2026-03-23 17:43:23 | INFO     | Candidato #5 [Tiebreaker 0][Unknown]: Крик 7 / Scream 7 [2026 WEB-DLRip] Dub (Продубляж) (Tiebreaker 0)
+2026-03-23 17:43:25 | INFO     | [Sincronia] 4K: 6448.480s | 1080p: 6665.984s | Diferença exata: 217.504s
+2026-03-23 17:43:25 | WARNING  | Erro de Sincronia: Diferença de 217.504s excede o limite estipulado de 30s.
+2026-03-23 17:43:26 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (217.50400000000081s) detectada para Scream 7 (2026).
+2026-03-23 17:43:26 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #2: Scream.7.2026.1080p.WEBRip.Dublado.mkv
+2026-03-23 17:43:26 | INFO     | Torrent PT-BR (TMDB 1159559) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 17:43:26 | INFO     | Torrent 0394025d... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 18:35:47 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 18:35:47 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 18:35:52 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 18:35:52 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 18:35:52 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 18:35:52 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 18:35:52 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 18:35:52 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 18:35:52 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 18:35:52 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 18:35:52 | INFO     | Torrent PT-BR (TMDB 1368166) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 18:35:52 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 19:02:52 | WARNING  | qBittorrent retornou sucesso HTTP, mas body inesperado: Fails.
+2026-03-23 19:02:53 | INFO     | Torrent PT-BR (TMDB 1368166) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 19:04:33 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:04:33 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=0.0%
+2026-03-23 19:05:18 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:05:18 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:05:18 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:05:18 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=0.0%
+2026-03-23 19:07:19 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 19:07:19 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:07:22 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:07:22 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:07:22 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:07:22 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:07:22 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:07:22 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:07:22 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:07:22 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 19:07:26 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:07:26 | ERROR    | ❌ ERROR: Falha processando The Housemaid (2025) - Falha de injeção direta no P2P.
+2026-03-23 19:07:27 | ERROR    | Falha ao enviar webhook do Discord: HTTPSConnectionPool(host='discord.com', port=443): Max retries exceeded with url: /api/webhooks/1485425045563244555/8O47PkX03IcGvBxEeF7FZMLluwl6RQ5wslpTAmIx6Jq2lrzV0VaAyjgePxDRKX-CH_XZ (Caused by NewConnectionError("HTTPSConnection(host='discord.com', port=443): Failed to establish a new connection: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions"))
+2026-03-23 19:08:23 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:08:27 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:27 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:27 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:27 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:27 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:27 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:27 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:48 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:08:52 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:52 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:08:52 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:52 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:52 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:52 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:08:52 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:15 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 19:10:15 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 19:10:15 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:10:19 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:10:19 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:10:19 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:19 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:19 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:19 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:19 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:10:19 | INFO     | [Sincronia] 4K: 7576.224s | 1080p: 7882.015s | Diferença exata: 305.791s
+2026-03-23 19:10:19 | WARNING  | Erro de Sincronia: Diferença de 305.791s excede o limite estipulado de 30s.
+2026-03-23 19:10:19 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (305.79100000000017s) detectada para The Housemaid (2025).
+2026-03-23 19:10:19 | ERROR    | Falha ao enviar webhook do Discord: HTTPSConnectionPool(host='discord.com', port=443): Max retries exceeded with url: /api/webhooks/1485425045563244555/8O47PkX03IcGvBxEeF7FZMLluwl6RQ5wslpTAmIx6Jq2lrzV0VaAyjgePxDRKX-CH_XZ (Caused by NewConnectionError("HTTPSConnection(host='discord.com', port=443): Failed to establish a new connection: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions"))
+2026-03-23 19:10:19 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #4: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF
+2026-03-23 19:10:19 | INFO     | [DRY RUN - MERGER] Injetaria o fallback no qBittorrent: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF
+2026-03-23 19:10:19 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=ff9b9024...
+2026-03-23 19:10:58 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:10:58 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:11:05 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:05 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:05 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:05 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:05 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:05 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:05 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:07 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:07 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:11:07 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:07 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:07 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:07 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:11:07 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:34 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:13:34 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=15.0%
+2026-03-23 19:13:34 | WARNING  | O torrent PT-BR (TMDB 1368166) já existia no qBittorrent. Reaproveitando item duplicado: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=uploading | progress=100.0%
+2026-03-23 19:13:34 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 19:13:34 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 19:13:34 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 19:13:34 | INFO     | O torrent PT-BR já existia concluído no qBittorrent. Acionando o processamento retroativo imediatamente.
+2026-03-23 19:13:43 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:13:43 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:13:43 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:13:43 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=15.0%
+2026-03-23 19:13:43 | WARNING  | O torrent PT-BR (TMDB 1368166) já existia no qBittorrent. Reaproveitando item duplicado: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=uploading | progress=100.0%
+2026-03-23 19:13:43 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 19:13:43 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 19:13:43 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 19:13:43 | INFO     | O torrent PT-BR já existia concluído no qBittorrent. Acionando o processamento retroativo imediatamente.
+2026-03-23 19:13:54 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 19:13:54 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:13:58 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:13:58 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:13:58 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:58 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:58 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:58 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:58 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:13:58 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 19:13:58 | WARNING  | O torrent PT-BR (TMDB 1368166) já existia no qBittorrent. Reaproveitando item duplicado: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=stalledUP | progress=100.0%
+2026-03-23 19:13:58 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 19:13:58 | INFO     | O torrent PT-BR já existia concluído no qBittorrent. Acionando o processamento retroativo imediatamente.
+2026-03-23 19:13:58 | INFO     | [Sincronia] 4K: 7576.224s | 1080p: 7882.015s | Diferença exata: 305.791s
+2026-03-23 19:13:58 | WARNING  | Erro de Sincronia: Diferença de 305.791s excede o limite estipulado de 30s.
+2026-03-23 19:13:58 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (305.79100000000017s) detectada para The Housemaid (2025).
+2026-03-23 19:13:58 | ERROR    | Falha ao enviar webhook do Discord: HTTPSConnectionPool(host='discord.com', port=443): Max retries exceeded with url: /api/webhooks/1485425045563244555/8O47PkX03IcGvBxEeF7FZMLluwl6RQ5wslpTAmIx6Jq2lrzV0VaAyjgePxDRKX-CH_XZ (Caused by NewConnectionError("HTTPSConnection(host='discord.com', port=443): Failed to establish a new connection: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions"))
+2026-03-23 19:13:58 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #2: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF
+2026-03-23 19:13:58 | WARNING  | Nenhum novo torrent foi criado para TMDB 1368166; reutilizando item já existente no qBittorrent: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=stalledUP | progress=100.0%
+2026-03-23 19:13:58 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=stalledUP | progress=100.0%
+2026-03-23 19:13:58 | INFO     | Torrent ff9b9024... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 19:15:07 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:15:07 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=15.0%
+2026-03-23 19:15:07 | WARNING  | O torrent PT-BR (TMDB 1368166) já existia no qBittorrent. Reaproveitando item duplicado: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=uploading | progress=100.0%
+2026-03-23 19:15:07 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | state=downloading | progress=2.0%
+2026-03-23 19:15:07 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:15:07 | INFO     | Mux concluído com sucesso: output.mkv
+2026-03-23 19:15:07 | ERROR    | qBittorrent respondeu HTTP 200, mas nenhum torrent com a tag ptbrmerger-tmdbid-1368166 foi localizado após a injeção. O download provavelmente não entrou na fila.
+2026-03-23 19:15:07 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=downloading | progress=15.0%
+2026-03-23 19:15:07 | WARNING  | O torrent PT-BR (TMDB 1368166) já existia no qBittorrent. Reaproveitando item duplicado: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=uploading | progress=100.0%
+2026-03-23 19:15:07 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | state=downloading | progress=2.0%
+2026-03-23 19:15:07 | INFO     | O filme 4K The Housemaid não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 19:15:07 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 19:15:07 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 19:15:07 | INFO     | O torrent PT-BR já existia concluído no qBittorrent. Acionando o processamento retroativo imediatamente.
+2026-03-23 19:24:07 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 19:24:07 | INFO     | Buscando releases para o filme ID 46 no Radarr (pode demorar até 60s)...
+2026-03-23 19:24:11 | INFO     | Busca retornou 105 releases. Top 5 scores: [47025, 21750, 18525, 18525, 18525]
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 21750][Remux-1080p]: Горничная / The Housemaid [2025 BDRemux 1080p] Dub (Мосфильм-Мастер) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 11785][Remux-1080p]: The Housemaid (2025) [MULTi] [1080p] [BluRay] [REMUX] [AVC] [TrueHD.Atmos.7.1-R22] [Lektor PL i napisy PL] | Tiebreaker: 4
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 18500][Bluray-1080p]: Горничная / The Housemaid [2025 BDRip 1080p] Dub (Мосфильм-Мастер) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 47025][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] | Tiebreaker: 25
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 9
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 5
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF | Tiebreaker: 9
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 17500][WEBDL-1080p]: Горничная / The Housemaid [2025 WEB-DL 1080p] [Локализованный видеоряд] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 11525][WEBDL-1080p]: The.Housemaid.2025.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 1
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 10775][WEBDL-720p]: The Housemaid 2025 720p AMZN WEB-DL DDP5 1 Atmos H 264-BYNDR | Tiebreaker: 1
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 16500][Bluray-480p]: Горничная / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (Уникальная версия)] Dub (Мосфильм) + Original Eng | Tiebreaker: 0
+2026-03-23 19:24:11 | INFO     | Release detectada [Score 15000][Bluray-480p]: Горничная / The Housemaid [2025 BDRip-AVC] Dub (Мосфильм-Мастер) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0
+2026-03-23 19:24:11 | INFO     | Candidato #1 [Tiebreaker 25][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 [portuguese,english] (Tiebreaker 25 (Keywords: [L4]portugues, [L4]portuguese, [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:24:11 | INFO     | Candidato #2 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:24:11 | INFO     | Candidato #3 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:24:11 | INFO     | Candidato #4 [Tiebreaker 9][WEBDL-1080p]: A.Empregada.2025.WEB-DL.1080p.FULLHD.x264.DUAL.5.1-SF (Tiebreaker 9 (Keywords: [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:24:11 | INFO     | Candidato #5 [Tiebreaker 5][WEBDL-1080p]: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 5 (Keywords: [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 19:24:11 | INFO     | [Sincronia] 4K: 7576.224s | 1080p: 7881.984s | Diferença exata: 305.760s
+2026-03-23 19:24:11 | WARNING  | Erro de Sincronia: Diferença de 305.760s excede o limite estipulado de 30s.
+2026-03-23 19:24:11 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (305.7600000000002s) detectada para The Housemaid (2025).
+2026-03-23 19:24:12 | INFO     | Fallback acionado por SYNC_MISMATCH. Tentando candidato #3: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 19:24:13 | INFO     | Torrent PT-BR (TMDB 1368166) confirmado no qBittorrent na categoria ptbrmerger: A.Empregada.2025.1080p.WEB-DL.DUAL.5.1 | state=metaDL | progress=0.0%
+2026-03-23 19:24:13 | INFO     | Torrent af4673c6... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.

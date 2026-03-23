@@ -1,0 +1,25 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\unpackerr-Service]
+"Type"=dword:00000010
+"Start"=dword:00000002
+"ErrorControl"=dword:00000001
+"ImagePath"=hex(2):43,00,3a,00,5c,00,50,00,72,00,6f,00,67,00,72,00,61,00,6d,00,\
+  20,00,46,00,69,00,6c,00,65,00,73,00,20,00,28,00,78,00,38,00,36,00,29,00,5c,\
+  00,6e,00,73,00,73,00,6d,00,5c,00,6e,00,73,00,73,00,6d,00,2d,00,32,00,2e,00,\
+  32,00,34,00,5c,00,77,00,69,00,6e,00,36,00,34,00,5c,00,6e,00,73,00,73,00,6d,\
+  00,2e,00,65,00,78,00,65,00,00,00
+"ObjectName"="Administrator"
+"DelayedAutostart"=dword:00000001
+"FailureActions"=hex:00,00,00,00,00,00,00,00,00,00,00,00,03,00,00,00,14,00,00,\
+  00,01,00,00,00,20,bf,02,00,01,00,00,00,20,bf,02,00,00,00,00,00,00,00,00,00
+"DisplayName"="unpackerr-Service"
+"FailureActionsOnNonCrashFailures"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\unpackerr-Service\Parameters]
+"AppDirectory"="C:\\Program Files\\unpackerr"
+"Application"="C:\\Program Files\\unpackerr\\unpackerr.amd64.exe"
+"AppParameters"=""
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\unpackerr-Service\Parameters\AppExit]
+@="Restart"

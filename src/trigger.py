@@ -73,8 +73,21 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
         return
 
     info("Injetando torrent capturado diretamente no client P2P...")
-    if qbit_client.add_torrent(release_url, tmdb_id):
+    add_result = qbit_client.add_torrent(release_url, tmdb_id)
+    if add_result.success:
         info("Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.")
+        if add_result.existing and add_result.completed:
+            info("O torrent PT-BR já existia concluído no qBittorrent. Acionando o processamento retroativo imediatamente.")
+            qbit_location = add_result.content_path or add_result.save_path
+            if qbit_location:
+                qbit_root = Path(qbit_location)
+                path_obj = qbit_root if qbit_root.is_file() else _get_largest_mkv(qbit_root)
+                if path_obj:
+                    run_merger(path_obj, 0, tmdb_id, context, is_dry_run, add_result.torrent_hash or "", candidates, 0)
+                else:
+                    warning("O torrent duplicado já concluído foi localizado, mas nenhum arquivo .mkv pôde ser resolvido para o Modo 2.")
+            else:
+                warning("O torrent duplicado já concluído foi localizado, mas o qBittorrent não informou o path do conteúdo.")
     else:
         notify_status("ERROR", {**context, "error": "Falha de injeção direta no P2P."})
 

@@ -1,5 +1,5 @@
 --- Logging error in Loguru Handler #1 ---
-Record was: {'elapsed': datetime.timedelta(seconds=6, microseconds=176767), 'exception': None, 'extra': {}, 'file': (name='notifier.py', path='D:\\ptbr-merger\\src\\notifier.py'), 'function': 'notify_status', 'level': (name='ERROR', no=40, icon='\u274c'), 'line': 60, 'message': '\u274c ERROR: Falha processando Chainsaw Man - The Movie: Reze Arc (2025) - Falha de injeção direta no P2P.', 'module': 'notifier', 'name': 'src.notifier', 'process': (id=15768, name='MainProcess'), 'thread': (id=18176, name='MainThread'), 'time': datetime(2026, 3, 22, 23, 15, 47, 603397, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Record was: {'elapsed': datetime.timedelta(seconds=4, microseconds=565038), 'exception': None, 'extra': {}, 'file': (name='radarr_client.py', path='D:\\ptbr-merger\\src\\radarr_client.py'), 'function': 'find_best_ptbr_release', 'level': (name='INFO', no=20, icon='\u2139\ufe0f'), 'line': 260, 'message': 'Release detectada [Score 21750][Remux-1080p]: \u0413\u043e\u0440\u043d\u0438\u0447\u043d\u0430\u044f / The Housemaid [2025 BDRemux 1080p] Dub (\u041c\u043e\u0441\u0444\u0438\u043b\u044c\u043c-\u041c\u0430\u0441\u0442\u0435\u0440) + MVO (HDRezka Studio) + Dub Ukr + Sub (Rus Ukr Eng Fra Spa) + Original Eng | Tiebreaker: 0', 'module': 'radarr_client', 'name': 'src.radarr_client', 'process': (id=9260, name='MainProcess'), 'thread': (id=1416, name='MainThread'), 'time': datetime(2026, 3, 23, 18, 35, 52, 96457, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
 Traceback (most recent call last):
   File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
     self._sink.write(str_record)
@@ -8,5 +8,53 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
     return codecs.charmap_encode(input,self.errors,encoding_table)[0]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 33: character maps to <undefined>
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 79-87: character maps to <undefined>
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(seconds=4, microseconds=568038), 'exception': None, 'extra': {}, 'file': (name='radarr_client.py', path='D:\\ptbr-merger\\src\\radarr_client.py'), 'function': 'find_best_ptbr_release', 'level': (name='INFO', no=20, icon='\u2139\ufe0f'), 'line': 260, 'message': 'Release detectada [Score 18500][Bluray-1080p]: \u0413\u043e\u0440\u043d\u0438\u0447\u043d\u0430\u044f / The Housemaid [2025 BDRip 1080p] Dub (\u041c\u043e\u0441\u0444\u0438\u043b\u044c\u043c-\u041c\u0430\u0441\u0442\u0435\u0440) + MVO (HDrezka) + Original (Eng) + Sub (Rus Eng Fra Por Spa) | Tiebreaker: 0', 'module': 'radarr_client', 'name': 'src.radarr_client', 'process': (id=9260, name='MainProcess'), 'thread': (id=1416, name='MainThread'), 'time': datetime(2026, 3, 23, 18, 35, 52, 99457, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
+    self._sink.write(str_record)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_simple_sinks.py", line 16, in write
+    self._stream.write(message)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 80-88: character maps to <undefined>
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(seconds=4, microseconds=569038), 'exception': None, 'extra': {}, 'file': (name='radarr_client.py', path='D:\\ptbr-merger\\src\\radarr_client.py'), 'function': 'find_best_ptbr_release', 'level': (name='INFO', no=20, icon='\u2139\ufe0f'), 'line': 260, 'message': 'Release detectada [Score 17500][WEBDL-1080p]: \u0413\u043e\u0440\u043d\u0438\u0447\u043d\u0430\u044f / The Housemaid [2025 WEB-DL 1080p] [\u041b\u043e\u043a\u0430\u043b\u0438\u0437\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u0432\u0438\u0434\u0435\u043e\u0440\u044f\u0434] Dub + Original (Eng) + Sub (Rus) | Tiebreaker: 1', 'module': 'radarr_client', 'name': 'src.radarr_client', 'process': (id=9260, name='MainProcess'), 'thread': (id=1416, name='MainThread'), 'time': datetime(2026, 3, 23, 18, 35, 52, 100457, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
+    self._sink.write(str_record)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_simple_sinks.py", line 16, in write
+    self._stream.write(message)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 79-87: character maps to <undefined>
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(seconds=4, microseconds=569038), 'exception': None, 'extra': {}, 'file': (name='radarr_client.py', path='D:\\ptbr-merger\\src\\radarr_client.py'), 'function': 'find_best_ptbr_release', 'level': (name='INFO', no=20, icon='\u2139\ufe0f'), 'line': 260, 'message': 'Release detectada [Score 16500][Bluray-480p]: \u0413\u043e\u0440\u043d\u0438\u0447\u043d\u0430\u044f / The Housemaid [2025 BDRip] [4K HDR 120fps HEVC (\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0438\u044f)] Dub (\u041c\u043e\u0441\u0444\u0438\u043b\u044c\u043c) + Original Eng | Tiebreaker: 0', 'module': 'radarr_client', 'name': 'src.radarr_client', 'process': (id=9260, name='MainProcess'), 'thread': (id=1416, name='MainThread'), 'time': datetime(2026, 3, 23, 18, 35, 52, 100457, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
+    self._sink.write(str_record)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_simple_sinks.py", line 16, in write
+    self._stream.write(message)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 79-87: character maps to <undefined>
+--- End of logging error ---
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(seconds=4, microseconds=570055), 'exception': None, 'extra': {}, 'file': (name='radarr_client.py', path='D:\\ptbr-merger\\src\\radarr_client.py'), 'function': 'find_best_ptbr_release', 'level': (name='INFO', no=20, icon='\u2139\ufe0f'), 'line': 260, 'message': 'Release detectada [Score 15000][Bluray-480p]: \u0413\u043e\u0440\u043d\u0438\u0447\u043d\u0430\u044f / The Housemaid [2025 BDRip-AVC] Dub (\u041c\u043e\u0441\u0444\u0438\u043b\u044c\u043c-\u041c\u0430\u0441\u0442\u0435\u0440) + Sub (Rus Eng) + Original Eng | Tiebreaker: 0', 'module': 'radarr_client', 'name': 'src.radarr_client', 'process': (id=9260, name='MainProcess'), 'thread': (id=1416, name='MainThread'), 'time': datetime(2026, 3, 23, 18, 35, 52, 101474, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
+    self._sink.write(str_record)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_simple_sinks.py", line 16, in write
+    self._stream.write(message)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 79-87: character maps to <undefined>
 --- End of logging error ---

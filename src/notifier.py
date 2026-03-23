@@ -9,6 +9,13 @@ config = get_config()
 # Remove handlers padrões do loguru
 logger.remove()
 
+for stream in (sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
 # Adiciona handler para Stdout com base no nível configurado
 logger.add(
     sys.stdout,
