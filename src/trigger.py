@@ -115,8 +115,13 @@ def run_merger(file_path: Path, ptbrmerger_movie_id: int, tmdb_id: str, context:
             return
 
         ffmpeg_cmd_extr = f"{config.ffmpeg.ffmpeg_path} -y -i {file_1080p.name} -map 0:{stream_idx} -c:a copy {audio_ptbr.name}"
-        ffmpeg_cmd_mux = f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {audio_ptbr.name} -map 0:v -map 1:a -map 0:a -map 0:s? -c copy {output_tmp.name}"
-        
+
+        # Build dynamic mux cmd for logging
+        from src.analyzer import get_allowed_streams
+        allowed_indices = get_allowed_streams(file_4k)
+        map_args = " ".join([f"-map 0:{idx}" for idx in allowed_indices])
+        ffmpeg_cmd_mux = f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {audio_ptbr.name} -map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 ... {output_tmp.name}"
+
         # 4. Mix Operation (Dry-Run Guarded)
         if is_dry_run:
             info(f"[DRY RUN - MERGER] Supressão I/O ativada. Comandos simulados de console:")
@@ -195,7 +200,10 @@ def main() -> None:
                 sys.exit(0)
                 
             # Repassa a instrução de mesclagem para o fluxo mestre resgatando o 4K da API original do Radarr
-            context = {"title": f"BypassTMDB_{tmdb_id}", "year": ""}
+            original_movie = radarr_client.get_movie_by_tmdbid(tmdb_id)
+            real_title = original_movie.get("title", f"TMDB_{tmdb_id}") if original_movie else f"TMDB_{tmdb_id}"
+            real_year = original_movie.get("year", "") if original_movie else ""
+            context = {"title": real_title, "year": str(real_year)}
             radarr_download_id = args.qbit_hash or ""
             candidates = radarr_client.find_best_ptbr_release(tmdb_id)
             

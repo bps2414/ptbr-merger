@@ -35,12 +35,16 @@ def extract_audio(file_1080p: Path, stream_idx: int, output_audio: Path) -> Path
         error(f"Erro ao extrair áudio com ffmpeg. Código: {e.returncode} | Output: \n{e.stderr}")
         raise
 
+from src.analyzer import get_allowed_streams
+
 def mux_audio(file_4k: Path, audio_ptbr: Path, output_tmp: Path) -> Path:
     """
     Injeta o áudio PT-BR como a primeira faixa no arquivo 4K, preservando o restante.
     Retorna o path do arquivo de mux temporário gerado.
     """
     ffmpeg_path = config.ffmpeg.ffmpeg_path
+    
+    allowed_indices = get_allowed_streams(file_4k)
     
     cmd = [
         str(ffmpeg_path),
@@ -49,21 +53,47 @@ def mux_audio(file_4k: Path, audio_ptbr: Path, output_tmp: Path) -> Path:
         "-i", str(audio_ptbr),
         "-map", "0:v",     # preserva o vídeo original
         "-map", "1:a",     # nova faixa de áudio PT-BR injetada primariamente
-        "-map", "0:a",     # empurra as demais faixas do 4K original de volta pra stack
-        "-map", "0:s?",    # '?' torna mapeamento de legendas opcional (evita crash se o 4K não possuir streams leg nativos)
+    ]
+    
+    for idx in allowed_indices:
+        cmd.extend(["-map", f"0:{idx}"])
+        
+    cmd.extend([
+        "-map_chapters", "0", # Preservar chapter markers originais do 4k
         "-c", "copy",      # preserva qualidade com zero raw-reencoding
+        "-max_interleave_delta", "0", # Otimização Crítica para Smart TVs (Intercalação perfeita)
         "-metadata:s:a:0", "language=por",
         "-metadata:s:a:0", "title=Português (Brasil)",
         str(output_tmp)
-    ]
+    ])
     
     try:
         debug(f"Processando FFmpeg Mux: {' '.join(cmd)}")
-        subprocess.run(cmd, capture_output=True, text=True, check=True)
+        # Executa em Popen para capturar o stream stderr do ffmpeg ao vivo
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, universal_newlines=True)
+        
+        last_log_time = time.time()
+        for line in process.stdout:
+            # O codec do FFmpeg intercala as linhas de status como 'frame= 400 ... time=00:01:23.45 bitrate=...'
+            if "time=" in line and "bitrate=" in line:
+                current_time = time.time()
+                # Atualizando o log a cada 10 segundos apenas, para evitar 1 milhão de linhas no terminal e no arquivo texto
+                if current_time - last_log_time >= 10.0:
+                    partes = line.strip().split("time=")
+                    if len(partes) > 1:
+                        progresso = partes[1].split(" ")[0]
+                        info(f"Progresso de Fusão (Mux): Vídeo gerado até {progresso}")
+                    last_log_time = current_time
+
+        process.wait()
+        if process.returncode != 0:
+            error(f"Erro no FFmpeg durante processo de muxing. Código falha {process.returncode}")
+            raise subprocess.CalledProcessError(process.returncode, cmd)
+            
         info(f"Mux concluído com sucesso: {output_tmp.name}")
         return output_tmp
-    except subprocess.CalledProcessError as e:
-        error(f"Erro no FFmpeg durante processo de muxing. Código {e.returncode} | Output: \n{e.stderr}")
+    except Exception as e:
+        error(f"Falha catastrófica no FFmpeg muxing logger: {e}")
         raise
 
 def replace_original(output_tmp: Path, file_4k: Path) -> None:
