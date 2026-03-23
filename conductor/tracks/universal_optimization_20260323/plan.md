@@ -14,6 +14,6 @@
     - [x] Se o filme não tem PT-BR e não há candidatos, chama a otimização.
     - [x] Garantir que o `run_merger` (Bypass Mode) continue funcionando normalmente. [27de202]
 
-## Phase 3: Validação e Teste de Performance Universal
-- [ ] Task: Testar com Dry-Run para verificar se o comando FFmpeg gerado está correto para ambos os casos.
-- [ ] Task: Verificar se o arquivo 4K original é preservado corretamente (Zero Encode).
+## Phase 3: Validação e Teste de Performance Universal [checkpoint: af62f28]
+- [x] Task: Testar com Dry-Run para verificar se o comando FFmpeg gerado está correto para ambos os casos. [af62f28]
+- [x] Task: Verificar se o arquivo 4K original é preservado corretamente (Zero Encode). [af62f28]
