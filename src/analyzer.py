@@ -85,6 +85,53 @@ def get_ptbr_stream_index(filepath: Path) -> Optional[int]:
     debug(f"Nenhuma faixa PT-BR encontrada em {filepath.name}")
     return None
 
+def get_allowed_streams(filepath: Path) -> list[int]:
+    """
+    Lista os índices de streams (áudio/legenda) cujos idiomas sejam permitidos:
+    'por', 'eng', 'jpn', 'und' ou não definidos (ausência de tags).
+    """
+    probe = _probe_file(filepath)
+    streams = probe.get("streams", [])
+    
+    allowed_indices = []
+    
+    allowed_langs_exact = {"por", "pt", "pt-br", "ptbr", "portuguese", "português", "eng", "en", "english", "jpn", "ja", "japanese", "und"}
+    
+    for stream in streams:
+        ctype = stream.get("codec_type")
+        if ctype not in ("audio", "subtitle"):
+            continue
+            
+        tags = stream.get("tags", {})
+        if not tags:
+            allowed_indices.append(stream.get("index"))
+            continue
+            
+        language = tags.get("language", "").lower()
+        title = tags.get("title", "").lower()
+        
+        is_allowed = False
+        
+        if language == "" or language in allowed_langs_exact or title in allowed_langs_exact:
+            is_allowed = True
+            
+        if not is_allowed:
+            # Substrings seguras
+            for tag in ["pt-br", "ptbr", "portuguese", "português", "english", "japanese"]:
+                if tag in title:
+                    is_allowed = True
+                    break
+        
+        if not is_allowed:
+            # Regex boundaries for short tags
+            if re.search(r'\b(pt|por|en|eng|ja|jpn|und)\b', title):
+                is_allowed = True
+
+        if is_allowed:
+            allowed_indices.append(stream.get("index"))
+            
+    return allowed_indices
+
 def has_ptbr_audio(filepath: Path) -> bool:
     """Retorna flag simples sobre presença da faixa pt-br no arquivo."""
     return get_ptbr_stream_index(filepath) is not None
