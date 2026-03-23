@@ -9,10 +9,10 @@
 - [x] Task: Escrever testes unitários para o `mux_audio` em modo "Optimize Only". [a20b511]
 
 ## Phase 2: Refatoração do Fluxo de Trigger
-- [ ] Task: Alterar `src/trigger.py` para sempre chamar a otimização no `run_analyzer`.
-    - [ ] Se o filme já tem PT-BR, chama a otimização e notifica sucesso (ou nova tag "OPTIMIZED").
-    - [ ] Se o filme não tem PT-BR e não há candidatos, chama a otimização.
-    - [ ] Garantir que o `run_merger` (Bypass Mode) continue funcionando normalmente.
+- [x] Task: Alterar `src/trigger.py` para sempre chamar a otimização no `run_analyzer`. [27de202]
+    - [x] Se o filme já tem PT-BR, chama a otimização e notifica sucesso (ou nova tag "OPTIMIZED").
+    - [x] Se o filme não tem PT-BR e não há candidatos, chama a otimização.
+    - [x] Garantir que o `run_merger` (Bypass Mode) continue funcionando normalmente. [27de202]
 
 ## Phase 3: Validação e Teste de Performance Universal
 - [ ] Task: Testar com Dry-Run para verificar se o comando FFmpeg gerado está correto para ambos os casos.
