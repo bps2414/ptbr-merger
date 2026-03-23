@@ -3,9 +3,9 @@
 **Objetivo:** Refatorar o processo de muxing para remover dezenas de faixas inúteis do arquivo final, aliviando o leitor de MKV das Smart TVs e celulares, eliminando o lag extremo de navegação.
 
 ## Phase 1: Mapeamento Seletivo de Faixas (Analyzer)
-- [ ] Task: Alterar `src/analyzer.py` para listar os índices das faixas (audio/subtitle) permitidas (`por`, `eng`, `jpn`, `und` - caso não haja tag).
-    - [ ] Escrever/Atualizar testes para verificar o extrator de faixas baseadas em idioma.
-    - [ ] Criar função auxiliar `get_allowed_streams(filepath) -> list[int]`.
+- [x] Task: Alterar `src/analyzer.py` para listar os índices das faixas (audio/subtitle) permitidas (`por`, `eng`, `jpn`, `und` - caso não haja tag). [40ce247]
+    - [x] Escrever/Atualizar testes para verificar o extrator de faixas baseadas em idioma.
+    - [x] Criar função auxiliar `get_allowed_streams(filepath) -> list[int]`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Mapeamento Seletivo' (Protocol in workflow.md)
 
 ## Phase 2: Refatoração do Muxing (Merger)
