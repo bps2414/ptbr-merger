@@ -11,6 +11,8 @@ class RadarrConfig:
     ptbrmerger_root_folder: str
     ptbrmerger_tag_name: str
     ptbrmerger_min_score: int = 10000
+    timeout: int = 10
+    success_tag_label: str = "ptbr-merged"
 
 @dataclass
 class QBittorrentConfig:
@@ -30,11 +32,26 @@ class SyncConfig:
 @dataclass
 class NotificationsConfig:
     discord_webhook_url: str
+    username: str = "PTBRMerger Bot"
 
 @dataclass
 class LoggingConfig:
     level: str
     file: str
+    history_file: str = "history.json"
+    history_max_entries: int = 500
+
+@dataclass
+class ProcessingConfig:
+    queue_file: str = "queue.json"
+    max_attempts: int = 3
+    preserve_failed_artifacts: bool = True
+
+@dataclass
+class DiagnosticsConfig:
+    enable_runtime_heuristics: bool = True
+    enable_offset_diagnostics: bool = True
+    offset_suspected_threshold_seconds: int = 180
 
 @dataclass
 class PtbrKeywordsConfig:
@@ -52,6 +69,8 @@ class AppConfig:
     notifications: NotificationsConfig
     logging: LoggingConfig
     ptbr_keywords: PtbrKeywordsConfig
+    processing: ProcessingConfig
+    diagnostics: DiagnosticsConfig
 
 _config_instance: Optional[AppConfig] = None
 
@@ -73,7 +92,9 @@ def load_config(config_path: Path) -> AppConfig:
         sync=SyncConfig(**data.get("sync", {})),
         notifications=NotificationsConfig(**data.get("notifications", {})),
         logging=LoggingConfig(**data.get("logging", {})),
-        ptbr_keywords=PtbrKeywordsConfig(**data.get("ptbr_keywords", {}))
+        ptbr_keywords=PtbrKeywordsConfig(**data.get("ptbr_keywords", {})),
+        processing=ProcessingConfig(**data.get("processing", {})),
+        diagnostics=DiagnosticsConfig(**data.get("diagnostics", {})),
     )
 
 def get_config() -> AppConfig:

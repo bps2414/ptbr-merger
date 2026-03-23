@@ -6,7 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.merger import mux_audio
+from src.merger import mux_audio, validate_and_replace
 
 @patch('src.merger.subprocess.Popen')
 @patch('src.merger.get_allowed_streams')
@@ -87,4 +87,26 @@ def test_mux_audio_optimize_only(mock_get_allowed, mock_popen):
     
     # Verify no metadata for injected audio
     assert "language=por" not in cmd
+
+
+@patch("src.merger.replace_original")
+@patch("src.merger.validate_final_file")
+def test_validate_and_replace_blocks_invalid_output(mock_validate_final_file, mock_replace_original):
+    mock_validate_final_file.return_value = {"valid": False, "reason": "MISSING_PTBR"}
+
+    with pytest.raises(ValueError):
+        validate_and_replace(Path("output.mkv"), Path("movie_4k.mkv"))
+
+    mock_replace_original.assert_not_called()
+
+
+@patch("src.merger.replace_original")
+@patch("src.merger.validate_final_file")
+def test_validate_and_replace_replaces_original_when_validation_passes(mock_validate_final_file, mock_replace_original):
+    mock_validate_final_file.return_value = {"valid": True, "reason": "OK"}
+
+    result = validate_and_replace(Path("output.mkv"), Path("movie_4k.mkv"))
+
+    assert result["valid"] is True
+    mock_replace_original.assert_called_once_with(Path("output.mkv"), Path("movie_4k.mkv"))
 

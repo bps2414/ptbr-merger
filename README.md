@@ -1,39 +1,141 @@
 # PTBRMerger
 
-O PTBRMerger é um middleware auxiliar nativo projetado para interceptar imports 4K diretos no **Radarr**, buscar automaticamente fontes 1080p DUAL ÁUDIO, extrair o canal português localmente com `FFmpeg` e mixar as trilhas num aquivo limpo livre de quebras para seu Mediacenter.
+PTBRMerger is a Python pipeline that sits between Radarr, qBittorrent and FFmpeg to solve a very specific problem:
 
-## Requisitos
-- **Python 3.11+**
-- **FFmpeg & FFprobe** nativos presentes nas varíaveis de ambiente (`PATH`) do Server/Host
-- **Radarr (V3/V4)**
-- **qBittorrent (API v2)**
+- detect a newly imported 4K movie in Radarr
+- check whether the 4K file already has native PT-BR audio
+- if not, search Radarr releases for a compatible 1080p PT-BR / dual-audio source
+- inject that source directly into qBittorrent
+- wait for qBittorrent to finish
+- extract the PT-BR track and mux it into the original 4K file
+- validate the final MKV before replacing the original
 
----
+Phase 2 hardening is already implemented in this repository. The current pipeline includes:
 
-## 1. Instalação
+- direct qBittorrent bypass mode with duplicate detection by infohash
+- runtime/sync diagnostics with structured classification
+- operational ledger in `queue.json`
+- structured execution history in `history.json`
+- final-file validation before destructive replacement
+- Radarr success feedback via `ptbr-merged`
+- Discord webhook progress updates with editable embeds
 
-Abra o diretório onde você clonou o script e instale os requerimentos globais obrigatórios minimalistas em seu ambiente virtual:
+## Stack
+
+- Python 3.11+
+- FFmpeg / FFprobe
+- Radarr v3/v4
+- qBittorrent API v2
+- `requests`, `PyYAML`, `loguru`
+
+## Repository Layout
+
+```text
+src/
+  analyzer.py         ffprobe analysis, language detection, sync diagnostics
+  config.py           typed config loader
+  history_manager.py  append-only history persistence
+  merger.py           extract, mux and safe replace
+  notifier.py         logs + Discord embeds
+  qbit_client.py      qBittorrent API integration
+  queue_manager.py    lightweight processing ledger
+  radarr_client.py    Radarr API + retry/backoff + success tag
+  trigger.py          orchestration entrypoint for Radarr/qBittorrent events
+
+tests/
+  unit and integration-style coverage for analyzer, notifier, trigger, queue, history, qbit and Radarr client
+```
+
+## Current Flow
+
+### Flow A: 4K already has PT-BR audio
+
+1. Radarr triggers `src/trigger.py` on import or upgrade.
+2. `src/analyzer.py` inspects the 4K file with `ffprobe`.
+3. If PT-BR audio already exists, the project runs in-place optimization only.
+4. The final MKV keeps the useful streams and avoids unnecessary leftovers.
+
+### Flow B: 4K has no PT-BR audio
+
+1. Radarr triggers `src/trigger.py`.
+2. `src/analyzer.py` confirms the 4K file does not contain PT-BR audio.
+3. `src/radarr_client.py` searches releases and ranks eligible PT-BR candidates.
+4. `src/qbit_client.py` injects the chosen torrent into qBittorrent with:
+   - category: `ptbrmerger`
+   - tag: `ptbrmerger-tmdbid-<tmdbId>`
+5. qBittorrent calls the same trigger again on torrent completion.
+6. `src/trigger.py` resolves the finished 1080p source, loads the original 4K and runs:
+   - sync diagnosis
+   - stream detection
+   - PT-BR extraction
+   - mux
+   - final validation
+7. Only after validation succeeds, the original 4K file is replaced.
+8. Radarr is rescanned and tagged with `ptbr-merged`.
+9. The qBittorrent torrent is removed only after real success.
+
+## Phase 2 Safety Guarantees
+
+The current codebase is no longer a simple “extract and replace” script. It has operational safeguards:
+
+- `queue.json`
+  Prevents duplicate processing and tracks `PENDING`, `PROCESSING`, `FAILED`, `ABANDONED`, `SUCCESS`.
+
+- `history.json`
+  Stores structured events such as candidate selection, fallback, failure cause, runtimes and success.
+
+- Sync diagnosis
+  The pipeline classifies candidates as:
+  - `SYNC_OK`
+  - `CUT_MISMATCH`
+  - `OFFSET_SUSPECTED`
+  - `RUNTIME_INCOMPATIBLE`
+  - `UNKNOWN_SYNC_FAILURE`
+
+- Final-file validation
+  The final MKV is checked for:
+  - presence of PT-BR audio
+  - duration compatibility with the original 4K
+  - coherent output before replacement
+
+- Retry/backoff
+  Radarr API calls retry only on transient failures like timeout, connection issues, `429` and `5xx`.
+
+- Discord status editing
+  The webhook creates one message and updates it as the process advances.
+
+## Installation
+
+Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-*(O PTBRMerger não depende de `ffmpeg-python`, utilizando wrappers diretos no `subprocess` para eficiência nativa).*
+Project dependencies:
 
----
+```text
+requests>=2.31.0
+PyYAML>=6.0
+loguru>=0.7.0
+```
 
-## 2. Configurando as Variáveis (`config.yml`)
+## Configuration
 
-Na raiz do projeto (onde está o README), crie um arquivo chamado `config.yml`. Use o template abaixo preenchendo as informações sobre onde seus arrs estão hospedados:
+Create `config.yml` at the repository root.
+
+Example:
 
 ```yaml
 radarr:
   url: http://localhost:7878
-  api_key: SUA_API_KEY_GERADA_NO_RADARR
+  api_key: YOUR_RADARR_API_KEY
   ptbrmerger_profile_name: PTBRMerger
   ptbrmerger_root_folder: D:\data\temp\ptbrmerger
   ptbrmerger_tag_name: ptbrmerger
+  ptbrmerger_min_score: 10000
   timeout: 10
+  success_tag_label: ptbr-merged
 
 qbittorrent:
   url: http://localhost:8080
@@ -45,49 +147,119 @@ ffmpeg:
   ffprobe_path: ffprobe
 
 sync:
-  max_duration_diff_seconds: 5
+  max_duration_diff_seconds: 30
 
 notifications:
-  discord_webhook_url: ""  # Deixe vazio para não acionar notificações no Discord
+  discord_webhook_url: ""
+  username: PTBRMerger Bot
 
 logging:
   level: INFO
   file: ptbrmerger.log
+  history_file: history.json
+  history_max_entries: 500
+
+processing:
+  queue_file: queue.json
+  max_attempts: 3
+  preserve_failed_artifacts: true
+
+diagnostics:
+  enable_runtime_heuristics: true
+  enable_offset_diagnostics: true
+  offset_suspected_threshold_seconds: 180
+
+ptbr_keywords:
+  high_priority:
+    - "pt-br"
+    - "ptbr"
+    - "portuguese"
+  medium_priority:
+    - "dual"
+    - "multi"
+  indexer_names_br:
+    - "Catálogo Betor"
+  blacklist:
+    - "CAM"
+    - "TELECINE"
 ```
 
----
+## Radarr Setup
 
-## 3. Registrar o Script Custom no Radarr
+Register a Custom Script in Radarr:
 
-O PTBRMerger atua como um injetor no evento final de Download. Para escutá-lo:
+1. Go to `Settings -> Connect -> + -> Custom Script`
+2. Configure:
+   - `Name`: `PTBRMerger`
+   - `On Import`: enabled
+   - `On Upgrade`: enabled
+   - `Path`: full Python executable path or `python`
+   - `Arguments`: absolute path to `src/trigger.py`
+3. Use the `Test` button to confirm Radarr can run the trigger.
 
-1. No Radarr, clique em **Settings > Connect > + > Custom Script**.
-2. Configure **exatamente** da seguinte maneira:
-   - **Name:** `PTBRMerger`
-   - **On Import:** ✅ 
-   - **On Upgrade:** ✅ 
-   - *(Deixe as demais opções de evento desativadas)*
-   - **Tags:** *(Vazio, pois ele rodará validando todos os filmes por padrão)*
-   - **Path:** `python` *(Ou insira o caminho completo ex: `C:\Python311\python.exe`)*
-   - **Arguments:** `D:\Caminho\Absoluto\Para\O\Projeto\ptbr-merger\src\trigger.py`
+Example:
 
-Clique em **Test** para rodar um health check nulo. Se retornar sucesso (checkmark verde), salve as configurações.
-
----
-
-## 4. Testando a Pipeling com Modos de Segurança (Dry-Run)
-
-Deseja atestar se o script encontra tracks e se as APIs estão lendo corretamente sem aplicar modificações invasivas de Mixagem ou Deledar mídias originais?
-O script possui um switch de `--dry-run` nativo para simulação!
-
-Trigerre diretamente via CMD:
 ```bash
-python src/trigger.py --file-path "D:\Downloads\O-Filme-Teste-4k.mkv" --dry-run
+python D:\ptbr-merger\src\trigger.py
 ```
 
-Ou ligue o Dry-Run globalmente injetando Variáveis no Launcher do Radarr Server:
+## qBittorrent Setup
+
+The bypass flow depends on qBittorrent finishing the PT-BR candidate and notifying the trigger.
+
+You should configure qBittorrent to run an external program on torrent completion, pointing to the same trigger and passing the qBittorrent placeholders used by the project.
+
+The important expectations are:
+
+- torrents injected by PTBRMerger must use category `ptbrmerger`
+- the torrent must keep the tag `ptbrmerger-tmdbid-<tmdbId>`
+- qBittorrent must call `src/trigger.py` when the download completes
+
+## Manual Run / Dry Run
+
+You can simulate the Radarr entrypoint manually:
+
+```bash
+python src/trigger.py --file-path "D:\Movies\Movie4K.mkv" --dry-run
+```
+
+Or set:
+
 ```powershell
-set PTBRMERGER_DRY_RUN=true
+$env:PTBRMERGER_DRY_RUN="true"
 ```
 
-Em DRY-RUN, a interface emitirá todo o plano de MUX de Tracks em seu `ptbrmerger.log` mas vai intencionalmente pular a gravação em disco ou remoção no qBittorrent, sendo à prova de desastres de avaliação de infraestrutura em fases prematuras.
+In dry-run mode the project logs the intended FFmpeg and API actions without mutating files or deleting torrents.
+
+## Runtime Files
+
+The project creates lightweight operational files in the repository root by default:
+
+- `queue.json`
+- `history.json`
+
+These are gitignored in this repository because they are runtime state, not source code.
+
+## Testing
+
+Run the current automated suite:
+
+```bash
+pytest -q
+```
+
+The repository currently includes coverage for:
+
+- stream detection and sync diagnosis
+- qBittorrent injection and duplicate handling
+- Radarr retry/tag behavior
+- Discord embed generation and editable progress messages
+- queue/history persistence
+- trigger orchestration and final validation paths
+
+## Notes
+
+- The pipeline validates the final MKV before replacing the original file.
+- qBittorrent cleanup happens only after a successful merge path.
+- The final filename may remain cosmetically unchanged even when internal streams are updated correctly.
+- `ptbr-merged` is the success feedback tag currently written back to Radarr.
