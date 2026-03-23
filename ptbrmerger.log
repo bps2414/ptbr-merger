@@ -1,0 +1,574 @@
+2026-03-22 20:39:07 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:39:51 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:40:48 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:40:49 | ERROR    | Erro executando ffprobe em Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]. STDERR: 
+2026-03-22 20:40:49 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]']' returned non-zero exit status 1.
+2026-03-22 20:40:49 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]']' returned non-zero exit status 1.
+2026-03-22 20:42:36 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:42:37 | ERROR    | Erro executando ffprobe em movie.mkv. STDERR: 
+2026-03-22 20:42:37 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\does_not_exist\\movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:42:37 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\does_not_exist\\movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:48:06 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:48:06 | ERROR    | Erro executando ffprobe em Chainsaw Man The Movie.mkv. STDERR: 
+2026-03-22 20:48:06 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw Man The Movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:48:06 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw Man The Movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:48:18 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:48:19 | ERROR    | Erro executando ffprobe em Chainsaw Man The Movie.mkv. STDERR: 
+2026-03-22 20:48:19 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw Man The Movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:48:19 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw Man The Movie.mkv']' returned non-zero exit status 1.
+2026-03-22 20:52:45 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:52:45 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 20:59:16 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 20:59:16 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 21:01:06 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 21:12:22 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 21:12:31 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 21:14:16 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:14:17 | ERROR    | Erro executando ffprobe em Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv. STDERR: 
+2026-03-22 21:14:17 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:14:17 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:16:45 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:16:45 | ERROR    | Erro executando ffprobe em Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv. STDERR: 
+2026-03-22 21:16:45 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffprobe.exe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:16:45 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffprobe.exe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:18:01 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:18:01 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Inserindo no perfil de busca 'PTBRMerger'.
+2026-03-22 21:18:01 | INFO     | [DRY RUN - RADARR] Adicionaria restritamente o filme TMDb ID 12345 ao QualityProfile ptbrmerger.
+2026-03-22 21:24:09 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Inserindo no perfil de busca 'PTBRMerger'.
+2026-03-22 21:24:09 | ERROR    | Erro de comunicação API Radarr (POST /api/v3/movie): 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie
+2026-03-22 21:24:09 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie
+2026-03-22 21:24:09 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man - The Movie: Reze Arc (2025) - 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie
+2026-03-22 21:25:15 | ERROR    | Erro de comunicação API Radarr (POST /api/v3/movie): 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie - Body: [
+  {
+    "propertyName": "TmdbId",
+    "errorMessage": "A movie with this ID was not found. Path: ",
+    "attemptedValue": 12345,
+    "severity": "error"
+  }
+]
+2026-03-22 21:28:14 | INFO     | Evento Dummy (Health Check) despachado pela interface de Settings API do Radarr. Test OK, finalizando gracefully.
+2026-03-22 21:29:55 | INFO     | O filme 4K Oppenheimer não possui áudio nativo PT-BR. Inserindo no perfil de busca 'PTBRMerger'.
+2026-03-22 21:29:55 | ERROR    | Erro de comunicação API Radarr (POST /api/v3/movie): 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie - Body: [
+  {
+    "propertyName": "TmdbId",
+    "errorMessage": "This movie has already been added",
+    "attemptedValue": 872585,
+    "severity": "error",
+    "errorCode": "MovieExistsValidator",
+    "formattedMessageArguments": [],
+    "formattedMessagePlaceholderValues": {
+      "propertyName": "Tmdb Id",
+      "propertyValue": 872585
+    }
+  }
+]
+2026-03-22 21:29:55 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie
+2026-03-22 21:29:55 | ERROR    | ❌ ERROR: Falha processando Oppenheimer (2023) - 400 Client Error: Bad Request for url: http://localhost:7878/api/v3/movie
+2026-03-22 21:32:47 | ERROR    | Erro de comunicação API Radarr (GET /api/v3/release?movieId=1726): 500 Server Error: Internal Server Error for url: http://localhost:7878/api/v3/release?movieId=1726 - Body: {
+  "message": "Movie with ID 1726 does not exist",
+  "description": "NzbDrone.Core.Exceptions.NzbDroneClientException: Movie with ID 1726 does not exist\r\n   at Radarr.Api.V3.Indexers.ReleaseController.GetMovieReleases(Int32 movieId) in ./Radarr.Api.V3/Indexers/ReleaseController.cs:line 155\r\n   at Radarr.Api.V3.Indexers.ReleaseController.GetReleases(Nullable\u00601 movieId) in ./Radarr.Api.V3/Indexers/ReleaseController.cs:line 133\r\n   at lambda_method531(Closure, Object)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeActionMethodAsync\u003Eg__Awaited|12_0(ControllerActionInvoker invoker, ValueTask\u00601 actionResultValueTask)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeNextActionFilterAsync\u003Eg__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()\r\n--- End of stack trace from previous location ---\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeFilterPipelineAsync\u003Eg__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)\r\n   at Radarr.Http.Middleware.BufferingMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/BufferingMiddleware.cs:line 27\r\n   at Radarr.Http.Middleware.IfModifiedMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/IfModifiedMiddleware.cs:line 40\r\n   at Radarr.Http.Middleware.CacheHeaderMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/CacheHeaderMiddleware.cs:line 32\r\n   at Radarr.Http.Middleware.StartingUpMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/StartingUpMiddleware.cs:line 37\r\n   at Radarr.Http.Middleware.UrlBaseMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/UrlBaseMiddleware.cs:line 28\r\n   at Radarr.Http.Middleware.VersionMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/VersionMiddleware.cs:line 28\r\n   at Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)\r\n   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)\r\n   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)\r\n   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.\u003CInvoke\u003Eg__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)"
+}
+2026-03-22 21:35:15 | ERROR    | Erro de comunicação API Radarr (GET /api/v3/release?movieId=1): 500 Server Error: Internal Server Error for url: http://localhost:7878/api/v3/release?movieId=1 - Body: {
+  "message": "Movie with ID 1 does not exist",
+  "description": "NzbDrone.Core.Exceptions.NzbDroneClientException: Movie with ID 1 does not exist\r\n   at Radarr.Api.V3.Indexers.ReleaseController.GetMovieReleases(Int32 movieId) in ./Radarr.Api.V3/Indexers/ReleaseController.cs:line 155\r\n   at Radarr.Api.V3.Indexers.ReleaseController.GetReleases(Nullable\u00601 movieId) in ./Radarr.Api.V3/Indexers/ReleaseController.cs:line 133\r\n   at lambda_method531(Closure, Object)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeActionMethodAsync\u003Eg__Awaited|12_0(ControllerActionInvoker invoker, ValueTask\u00601 actionResultValueTask)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeNextActionFilterAsync\u003Eg__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()\r\n--- End of stack trace from previous location ---\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeFilterPipelineAsync\u003Eg__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)\r\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)\r\n   at Radarr.Http.Middleware.BufferingMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/BufferingMiddleware.cs:line 27\r\n   at Radarr.Http.Middleware.IfModifiedMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/IfModifiedMiddleware.cs:line 40\r\n   at Radarr.Http.Middleware.CacheHeaderMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/CacheHeaderMiddleware.cs:line 32\r\n   at Radarr.Http.Middleware.StartingUpMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/StartingUpMiddleware.cs:line 37\r\n   at Radarr.Http.Middleware.UrlBaseMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/UrlBaseMiddleware.cs:line 28\r\n   at Radarr.Http.Middleware.VersionMiddleware.InvokeAsync(HttpContext context) in ./Radarr.Http/Middleware/VersionMiddleware.cs:line 28\r\n   at Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)\r\n   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)\r\n   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)\r\n   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.\u003CInvoke\u003Eg__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)"
+}
+2026-03-22 21:39:59 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:39:59 | ERROR    | Erro executando ffprobe em Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv. STDERR: 
+2026-03-22 21:39:59 | ERROR    | [FATAL] Traceback estourou para o wrapper raiz da Orquestração do Trigger. Falha não recuperável: Command '['C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffprobe.exe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:39:59 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man The Movie Reze Arc (2025) - Command '['C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffprobe.exe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', 'D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc (2025) [imdbid-tt30472557]\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv']' returned non-zero exit status 1.
+2026-03-22 21:41:52 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:41:52 | ERROR    | Erro executando ffprobe em Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv. STDERR: 
+2026-03-22 21:41:52 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:41:52 | INFO     | [DRY RUN - BYPASS] Procuraria release 1080p e injetaria no qBittorrent para o filme TMDb 12345.
+2026-03-22 21:42:04 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:42:04 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-22 21:42:04 | ERROR    | Arquivo .mkv ausente no diretório retornado pelo qBittorrent (%D): D:\ptbr-merger\tests\test_data\movie_folder
+2026-03-22 21:42:19 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:42:19 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-22 21:42:19 | ERROR    | Arquivo .mkv ausente no diretório retornado pelo qBittorrent (%D): D:\ptbr-merger\tests\test_data\movie_folder
+2026-03-22 21:42:31 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:42:31 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-22 21:42:31 | ERROR    | Erro transacional interno estourou no módulo Merger ao operar I/O: Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 1218925).
+2026-03-22 21:42:31 | ERROR    | ❌ ERROR: Falha processando BypassTMDB_1218925 - Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 1218925).
+2026-03-22 21:42:32 | ERROR    | WARNING não fatal: Erro no unlink de raw files duranto finally pass: [WinError 5] Acesso negado: '.'
+2026-03-22 21:42:32 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=HASH123...
+2026-03-22 21:45:00 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:45:00 | INFO     | O filme 4K Oppenheimer não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:45:00 | INFO     | [DRY RUN - BYPASS] Procuraria release 1080p e injetaria no qBittorrent para o filme TMDb 872585.
+2026-03-22 21:45:47 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:45:47 | INFO     | ⏭️ SKIPPED: O filme Sonic 3 (2024) já possui faixa de áudio PT-BR.
+2026-03-22 21:47:37 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:47:37 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-22 21:47:37 | ERROR    | Erro transacional interno estourou no módulo Merger ao operar I/O: Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 1022789).
+2026-03-22 21:47:37 | ERROR    | ❌ ERROR: Falha processando BypassTMDB_1022789 - Não foi possível localizar dinamicamente o path do arquivo 4K original na API (TMDB 1022789).
+2026-03-22 21:47:38 | ERROR    | WARNING não fatal: Erro no unlink de raw files duranto finally pass: [WinError 5] Acesso negado: '.'
+2026-03-22 21:47:38 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=dummyhas...
+2026-03-22 21:48:43 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:48:43 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-22 21:48:43 | INFO     | [Sincronia] 4K: 6746.528s | 1080p: 6746.528s | Diferença exata: 0.000s
+2026-03-22 21:48:43 | INFO     | [DRY RUN - MERGER] Supressão I/O ativada. Comandos simulados de console:
+2026-03-22 21:48:43 | INFO     |    E -> C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe -y -i Sonic.3.O.Filme.2024.1080p.WEB-DL.DUAL.5.1.mkv -map 0:1 -c:a copy audio_ptbr.eac3
+2026-03-22 21:48:43 | INFO     |    M -> C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe -y -i Sonic the Hedgehog 3 (2024) [imdbid-tt18259086] - [WEBDL-1080p][EAC3 5.1][x264].mkv -i audio_ptbr.eac3 -map 0:v -map 1:a -map 0:a -map 0:s? -c copy output_tmp.mkv
+2026-03-22 21:48:43 | INFO     | [DRY RUN - MERGER] Substituição original prevenida. Substituiria Sonic the Hedgehog 3 (2024) [imdbid-tt18259086] - [WEBDL-1080p][EAC3 5.1][x264].mkv por output_tmp.mkv.
+2026-03-22 21:48:43 | INFO     | [DRY RUN - RADARR] RescanMovie payload retido em proxy. Original_id afetado seria 5
+2026-03-22 21:48:43 | INFO     | [DRY RUN - WEBHOOK] Processo finalizado simulando sucesso de mix. Disparo retido ao host de log/webhook.
+2026-03-22 21:48:43 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=dummyhas...
+2026-03-22 21:49:12 | INFO     | O filme 4K Oppenheimer não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:49:12 | INFO     | Buscando releases para o filme ID 36 no Radarr (pode demorar até 60s)...
+2026-03-22 21:49:12 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Oppenheimer (2023).
+2026-03-22 21:53:51 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:53:51 | ERROR    | Erro executando ffprobe em dummy_sem_ptbr.mkv. STDERR: 
+2026-03-22 21:53:51 | INFO     | O filme 4K Divertida Mente 2 não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:53:51 | INFO     | [DRY RUN - BYPASS] Procuraria release 1080p e injetaria no qBittorrent para o filme TMDb 1022789.
+2026-03-22 21:54:16 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:54:16 | ERROR    | Erro executando ffprobe em dummy_sem_ptbr.mkv. STDERR: 
+2026-03-22 21:54:16 | INFO     | O filme 4K Divertida Mente 2 não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:54:16 | ERROR    | Filme TMDB 1022789 não encontrado na base original do Radarr.
+2026-03-22 21:54:16 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Divertida Mente 2 (2024).
+2026-03-22 21:56:10 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:56:10 | ERROR    | Erro executando ffprobe em dummy_sem_ptbr.mkv. STDERR: 
+2026-03-22 21:56:10 | INFO     | O filme 4K Divertida Mente 2 não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:56:10 | INFO     | Buscando releases para o filme ID 37 no Radarr (pode demorar até 60s)...
+2026-03-22 21:56:10 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Divertida Mente 2 (2024).
+2026-03-22 21:56:44 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:56:44 | ERROR    | Erro executando ffprobe em dummy_sem_ptbr.mkv. STDERR: 
+2026-03-22 21:56:44 | INFO     | O filme 4K Divertida Mente 2 não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:56:44 | INFO     | Buscando releases para o filme ID 37 no Radarr (pode demorar até 60s)...
+2026-03-22 21:56:50 | INFO     | Busca interativa retornou zero (0) releases no Radarr.
+2026-03-22 21:56:50 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Divertida Mente 2 (2024).
+2026-03-22 21:57:04 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 21:57:04 | ERROR    | Erro executando ffprobe em dummy_sem_ptbr.mkv. STDERR: 
+2026-03-22 21:57:04 | INFO     | O filme 4K Oppenheimer não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 21:57:04 | INFO     | Buscando releases para o filme ID 36 no Radarr (pode demorar até 60s)...
+2026-03-22 21:57:04 | INFO     | Busca interativa retornou zero (0) releases no Radarr.
+2026-03-22 21:57:04 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Oppenheimer (2023).
+2026-03-22 22:31:55 | INFO     | O filme 4K Oppenheimer não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:31:55 | INFO     | Buscando releases para o filme ID 41 no Radarr (pode demorar até 60s)...
+2026-03-22 22:31:59 | INFO     | Busca retornou 59 releases. Top 5 scores: [19625, 17025, 15275, 15275, 13600]
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 19625]: Oppenheimer.2023.UHD.BluRay.2160p.DTS-HD.MA.5.1.DV.HEVC.HYBRID.REMUX-FraMeSToR
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 17025]: Oppenheimer.2023.UHD.BluRay.2160p.DTS-HD.MA.5.1.HEVC.REMUX-FraMeSToR
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 13600]: Oppenheimer.2023.Eng.Fre.Ger.Ita.Spa.Cze.Pol.2160p.BluRay.Hybrid.Remux.DV.HDR.HEVC.DTS-HD.MA-SGF.mkv
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 12025]: Oppenheimer.2023.2160p.UHD.Bluray.REMUX.HDR10.HEVC.DTS-HD.MA.5.1
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 11000]: Oppenheimer.2023.Eng.Fre.Ger.Ita.Spa.Cze.Pol.2160p.BluRay.Remux.HDR.HEVC.DTS-HD.MA-SGF
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 10000]: Oppenheimer.2023.2160p.REMUX.IMAX.Dolby.Vision.And.HDR10.PLUS.ENG.ITA.LATINO
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 10000]: Oppenheimer.2023.2160p.REMUX.IMAX.Dolby.Vision.And.HDR10.PLUS.ENG.ITA.LATINO.MP4
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 8025]: Oppenheimer 2023 4K UHD IMAX BluRay 2160p HDR DTS-HD MA 5.1 H.265-MgB
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 8025]: Oppenheimer (2023) IMAX (2160p x265 10bit HDR UHD BD DTS-HD MA 5.1) [Prof]
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 7525]: Oppenheimer (2023) (2160p BluRay x265 HEVC 10bit HDR AAC 5.1 Tigole) [QxR]
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 7000]: Oppenheimer.2023.IMAX.4K.HDR.DV.2160p.BDRip Ita Eng x265-NAHOM
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 5500]: Oppenheimer.2023.iTA-ENG.Bluray.2160p.HDR.x265-CYBER.mkv
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 5000]: Oppenheimer 2023 2160p BluRay
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4500]: Oppenheimer.(2023).[IMAX].UHD.BluRay.HDR.2160p.ITA.DTS.ITA.AAC.ENG.DTS-HD.MA.ENG.AC3.Subs.x265.[TbZ].mkv
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 9775]: Oppenheimer (2023) 2160p H265 10 bit DV HDR10+ ita eng AC3 5.1 sub ita eng Licdom.mkv
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 8045]: Oppenheimer.2023.2160p.MA.WEB-DL.DUAL.DTS.HD.MA.5.1 DD 5.1.DV-HDR.H.265-TheBiscuitMan
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 7000]: Оппенгеймер / Oppenheimer (2023) Hybrid 2160p | 4K | HDR | Dolby Vision Profile 8 | D | IMAX
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4275]: Oppenheimer (2023) AC3 5.1 ITA.ENG 2160p H265 HDR10 IMAX sub ita.eng Sp33dy94 MIRCrew
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 10275]: Oppenheimer 2023 V3 BluRay Remux AVC 1080p DTS-HDMA5.1-DreamHD
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 15275]: Oppenheimer.2023.BluRay.1080p.DTS-HD.MA.5.1.AVC.REMUX-FraMeSToR
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 15275]: Oppenheimer 2023 BluRay 1080p DTS-HD MA 5 1 AVC REMUX-FraMeSToR
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 9250]: Oppenheimer.2023.Eng.Fre.Ger.Ita.Spa.Cze.Pol.1080p.BluRay.Remux.AVC.DTS-HD.MA-SGF
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 7035]: Oppenheimer 2023 1080p DS4K BluRay x265 10 bit HDR AAC 7 1 W
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 7000]: Oppenheimer (2023) 1080p BluRay x264 DTS-HD MA A4
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 6775]: Oppenheimer.2023.1080p.DS4K.HDR.BluRay.x265.10Bit.HEVC.English.640Kbps.DDP.5.1.Hindi.640Kbps.DDP.5.1-GOPIHD
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 6275]: Oppenheimer.2023.1080p.BluRay.DDP5.1.x265.10bit-GalaxyRG265
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 6275]: Oppenheimer.2023.BluRay.1080p.x265.10bit.DDP5.1-SSDSSE
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 6025]: Oppenheimer 2023 IMAX BluRay 1080p DTS-HD MA 5.1 x264-MgB
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 5525]: Oppenheimer.2023.1080p.BluRay.HEVC.x265.AAC.5.1-Gypsy
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 5525]: Oppenheimer (2023) (1080p BluRay x265 HEVC 10bit AAC 5.1 Vyndros)
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4525]: Oppenheimer.2023.1080p.BluRay.EAC3.AAC.DUAL.5.1
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4525]: Oppenheimer.2023.1080p.BluRay.FULL.HD.DUAL.5.1
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4500]: Oppenheimer 2023 1080p BluRay
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4500]: Oppenheimer 2023 1080p BluRay
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4275]: Oppenheimer (2023) BluRay 1080p.H264 Ita Eng AC3 5.1 Sub Ita Eng - realDMDJ DDL_Ita
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Oppenheimer.2023.MULTi.VFQ.1080p.BluRay..x264-Slay3R
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Оппенгеймер / Oppenheimer (2023) BDRip 1080p от селезень | D A L | IMAX
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Оппенгеймер / Oppenheimer (2023) BDRip 1080p | D L | TS | IMAX
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Oppenheimer.2023.MULTi.FRENCH.1080p.Bluray.X265-NBDY.mkv
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 5275]: Oppenheimer 2023 1080p AMZN WEB-DL DDP5 1 H 264-GPRS
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 4295]: Oppenheimer.2023.1080p.MA.WEB-DL.DUAL.DD 5.1.H.265-TheBiscuitMan
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Oppenheimer (2023) NEW ENG 1080p.MP4.InfosPack022
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 1500]: Oppenheimer (2023 ITA/ENG) [1080p x265] [IMAX] [Paso77]
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3000]: Oppenheimer 2023 720p BluRay
+2026-03-22 22:31:59 | INFO     | Release detectada [Score 3500]: Oppenheimer.2023.1080p.HD-TS-C1NEM4
+2026-03-22 22:31:59 | INFO     | Nenhum lançamento PT-BR com o score mínimo exigido (24000) foi encontrado.
+2026-03-22 22:31:59 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Oppenheimer (2023).
+2026-03-22 22:43:36 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:43:36 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:43:36 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:43:36 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:43:41 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 45000]: [chasa] Chainsaw Man - The Movie Reze Arc (2025) (WEB-DL 2160p HEVC EAC3 5.1 Atmos) [Dual Audio]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 DV HDR H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs)
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HDR10+ HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p SDR HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs)
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 2160p (1604p) 4K][AV1 OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.HDR.H.265-BYNDR
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.265-BYNDR
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs)
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs)
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 1080p (800p) DS4K][AV1 EAC3+OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [minisam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p AV1 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H 
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese]
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw.Man.la.pelicula.Arco.de.Reze.2025.720p-Dual-Lat
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man - The Movie Reze Arc (2025) 1080p TC [Dublado PT-BR] FARMSKINS
+2026-03-22 22:43:41 | INFO     | Release detectada [Score 15000]: Chainsaw Man - The Movie Reze Arc (2025) TC [Dublado PT-BR] FARMSKINS
+2026-03-22 22:43:41 | INFO     | Encontrou release compatível (score: 45000): [chasa] Chainsaw Man - The Movie Reze Arc (2025) (WEB-DL 2160p HEVC EAC3 5.1 Atmos) [Dual Audio]
+2026-03-22 22:43:41 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 22:44:26 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:44:26 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:44:26 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:44:26 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:44:31 | INFO     | Busca interativa retornou zero (0) releases no Radarr.
+2026-03-22 22:44:31 | ERROR    | 🔍 NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme Chainsaw Man The Movie Reze Arc (2024).
+2026-03-22 22:49:30 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:49:30 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:49:30 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:49:30 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:49:35 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 45000][WEBDL-2160p]: [chasa] Chainsaw Man - The Movie Reze Arc (2025) (WEB-DL 2160p HEVC EAC3 5.1 Atmos) [Dual Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 DV HDR H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HDR10+ HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p SDR HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBRip-2160p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 2160p (1604p) 4K][AV1 OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.HDR.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 1080p (800p) DS4K][AV1 EAC3+OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [minisam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p AV1 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][HDTV-720p]: Chainsaw.Man.la.pelicula.Arco.de.Reze.2025.720p-Dual-Lat | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) 1080p TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:35 | INFO     | Encontrou release compatível (score: 15000): Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H
+2026-03-22 22:49:35 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 22:49:47 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:49:47 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:49:47 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:49:47 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:49:52 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 45000][WEBDL-2160p]: [chasa] Chainsaw Man - The Movie Reze Arc (2025) (WEB-DL 2160p HEVC EAC3 5.1 Atmos) [Dual Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 DV HDR H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HDR10+ HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p SDR HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBRip-2160p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 2160p (1604p) 4K][AV1 OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.HDR.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 1080p (800p) DS4K][AV1 EAC3+OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [minisam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p AV1 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][HDTV-720p]: Chainsaw.Man.la.pelicula.Arco.de.Reze.2025.720p-Dual-Lat | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) 1080p TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:49:52 | INFO     | Encontrou release compatível (score: 15000): Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H
+2026-03-22 22:49:52 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 22:52:02 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:52:02 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:52:02 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:52:02 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:52:07 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 45000][WEBDL-2160p]: [chasa] Chainsaw Man - The Movie Reze Arc (2025) (WEB-DL 2160p HEVC EAC3 5.1 Atmos) [Dual Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 DV HDR H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HDR10+ HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p SDR HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw Man The Movie Reze Arc 2025 2160p iT WEB-DL DUAL DDP5.1 H 265-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBRip-2160p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 2160p (1604p) 4K][AV1 OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.HDR.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.265-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-2160p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (iT WEB-DL 2160p DV HEVC 10-bit EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: [ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 1080p (800p) DS4K][AV1 EAC3+OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [minisam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p AV1 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | URL: http://localhost:9696/5/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][HDTV-720p]: Chainsaw.Man.la.pelicula.Arco.de.Reze.2025.720p-Dual-Lat | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) 1080p TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Release detectada [Score 15000][TELECINE]: Chainsaw Man - The Movie Reze Arc (2025) TC [Dublado PT-BR] FARMSKINS | URL: http://localhost:9696/6/download?apikey=d33f194ab5...
+2026-03-22 22:52:07 | INFO     | Encontrou release compatível (score: 15000): Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Justificativa: Tie-breaker Score 7)
+2026-03-22 22:52:07 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 22:54:08 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:54:08 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:54:08 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:54:08 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:54:13 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:54:13 | INFO     | Encontrou release compatível (score: 15000): Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Justificativa: Tie-breaker 9 (Keywords: ja,portuguese, portuguese, dual, DUAL))
+2026-03-22 22:54:13 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 22:57:29 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-22 22:57:30 | ERROR    | Erro executando ffprobe em Oppenheimer-(2023)[imdbid-tt15398776][Bluray-2160p][HDR10][DTS-HD-MA5.1].mkv. STDERR: 
+2026-03-22 22:57:30 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:57:30 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:57:34 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:57:34 | INFO     | Encontrou release compatível (score: 15000): Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Justificativa: Tie-breaker 18 (Keywords: ja,portuguese, portugues, portuguese, O.Filme, O.Filme., dual, DUAL))
+2026-03-22 22:57:34 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 23:15:42 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 23:15:42 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 23:15:47 | INFO     | Busca retornou 68 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-22 23:15:47 | INFO     | Encontrou release compatível (score: 26545): Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR (Justificativa: Tie-breaker 3 (Keywords: dual, DUAL))
+2026-03-22 23:15:47 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-22 23:15:47 | ERROR    | QBittorrent rejeitou Auth: credenciais inválidas ou configuração errada. HTTP Res: Fails.
+2026-03-22 23:15:47 | ERROR    | Sessão HTTP inacessível para qBittorrent. Não foi possível adicionar o torrent 1080p.
+2026-03-22 23:15:47 | ERROR    | ❌ ERROR: Falha processando Chainsaw Man - The Movie: Reze Arc (2025) - Falha de injeção direta no P2P.
+2026-03-23 00:25:51 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 00:25:51 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 00:25:51 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:25:57 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:25:57 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:25:57 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:25:57 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:25:57 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:25:57 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:25:57 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:25:57 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-23 00:26:15 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 00:26:15 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 00:26:15 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:26:21 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:26:21 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:26:21 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:26:21 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:26:21 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:26:21 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:26:21 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:26:21 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-23 00:31:31 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 00:31:31 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:31:36 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:31:36 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:31:36 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:31:36 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:31:36 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:31:36 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:31:36 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:31:36 | INFO     | Injetando torrent capturado diretamente no client P2P...
+2026-03-23 00:31:36 | INFO     | Torrent PT-BR (TMDB 1218925) adicionado ao qBittorrent com sucesso na categoria ptbrmerger.
+2026-03-23 00:31:36 | INFO     | Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.
+2026-03-23 00:37:43 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 00:37:43 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:37:48 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:37:48 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:37:48 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:37:48 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:37:48 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:37:48 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:37:48 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:37:48 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 6015.532s | Diferença exata: 16.038s
+2026-03-23 00:37:48 | WARNING  | Erro de Sincronia: Diferença de 16.038s excede o limite estipulado de 5s.
+2026-03-23 00:37:48 | ERROR    | ⏱️ SYNC_MISMATCH: Diferença de duração muito grande (16.038000000000466s) detectada para BypassTMDB_1218925.
+2026-03-23 00:37:49 | INFO     | Torrent c6468948... e arquivos da mídia subjacente foram ordenados a exclusão no client local com sucesso.
+2026-03-23 00:43:00 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 00:43:00 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 00:43:00 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:43:05 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:43:05 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:43:05 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:05 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:05 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:05 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:43:05 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:43:05 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 5999.494s | Diferença exata: 0.000s
+2026-03-23 00:43:05 | ERROR    | ⚠️ NOT_FOUND_STREAM: Versão baixada, mas stream de idioma 'por' ausente em BypassTMDB_1218925.
+2026-03-23 00:43:06 | INFO     | Fallback acionado por NOT_FOUND_STREAM. Tentando candidato #2: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 00:43:06 | INFO     | [DRY RUN - MERGER] Injetaria o fallback no qBittorrent: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 00:43:06 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=...
+2026-03-23 00:43:23 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 00:43:23 | INFO     | Recebeu evento OnDownloadComplete diretamente do qBittorrent (Modo 2).
+2026-03-23 00:43:23 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:43:28 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:43:28 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:43:28 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:28 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:28 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:43:28 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:43:28 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:43:28 | INFO     | [Sincronia] 4K: 5999.494s | 1080p: 5999.494s | Diferença exata: 0.000s
+2026-03-23 00:43:28 | ERROR    | ⚠️ NOT_FOUND_STREAM: Versão baixada, mas stream de idioma 'por' ausente em BypassTMDB_1218925.
+2026-03-23 00:43:29 | INFO     | Fallback acionado por NOT_FOUND_STREAM. Tentando candidato #2: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 00:43:29 | INFO     | [DRY RUN - MERGER] Injetaria o fallback no qBittorrent: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1
+2026-03-23 00:43:29 | INFO     | [DRY RUN - CLEANUP QBIT] Deleção host HTTP do torrent retida simulando hash=...
+2026-03-23 00:45:37 | INFO     | ========== EXECUTANDO MODULO MASTER EM [DRY-RUN] (APENAS LEITURA) ==========
+2026-03-23 00:45:37 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-23 00:45:37 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-23 00:45:42 | INFO     | Busca retornou 71 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H | Tiebreaker: -5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 26545][WEBDL-1080p]: Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 21545][WEBDL-1080p]: Chainsaw Man - The Movie Reze Arc 2025 1080p MA WEB-DL DUAL DDP5 1 Atmos H  | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 21500][WEBDL-1080p]: [sam] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC x265 4:4:4 10-bit EAC-3 Atmos) [Dual-Audio] | Tiebreaker: 7
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20400][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] | Tiebreaker: 11
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5.1 H 264-VARYG (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) | Tiebreaker: 11
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEB-DL DUAL DDP5 1 H 264-Ki | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20275][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (AMZN WEB-DL 1080p H.264 DDP5.1) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [FLE] Chainsaw Man - The Movie Reze Arc (2025) (WEB 1080p HEVC E-AC-3) [Dual Audio] | Chainsaw Man Movie: Reze-hen | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.264 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 20250][WEBDL-1080p]: [WADU] Chainsaw Man – The Movie: Reze Arc (2025) (GPLAY WEB-DL 1080p H.265 EAC-3) [Dual Audio] | Chainsaw Man: Reze-hen | チェンソーマン レゼ篇 | Tiebreaker: 5
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw Man The Movie Reze Arc 2025 1080p AMZN WEBRip DUAL AAC5.1 x265-Jadoo | Tiebreaker: 4
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 19525][WEBRip-1080p]: Chainsaw.Man.The.Movie.Reze.Arc.2025.1080p.AMZN.WEBRip.Dual.Audio.AAC5.1.10bits.x265-Rapta | Tiebreaker: 6
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 21
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 18525][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 | Tiebreaker: 25
+2026-03-23 00:45:42 | INFO     | Release detectada [Score 17525][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] | Tiebreaker: 49
+2026-03-23 00:45:42 | INFO     | Candidato #1 [Tiebreaker 49][WEBDL-1080p]: Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Tiebreaker 49 (Keywords: [L4]ja,portuguese, [L4]portugues, [L4]portuguese, [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:45:42 | INFO     | Candidato #2 [Tiebreaker 25][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 25 (Keywords: [L4]O.Filme, [L4]O.Filme., [L3]indexer:Catálogo Betor, [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:45:42 | INFO     | Candidato #3 [Tiebreaker 21][WEBDL-1080p]: Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1 (Tiebreaker 21 (Keywords: [L4]O.Filme, [L4]O.Filme., [L2]dual, [L2]DUAL, [L1]WEBDL))
+2026-03-23 00:45:42 | INFO     | Candidato #4 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.265 (Chainsaw Man: Reze-hen Dual-Audio Multi-Subs) [Lighter Version] (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:45:42 | INFO     | Candidato #5 [Tiebreaker 11][WEBDL-1080p]: [ToonsHub] Chainsaw Man The Movie Reze Arc (2025) 1080p AMZN WEB-DL DDP5.1 H.264 (Dual-Audio Multi-Subs) (Tiebreaker 11 (Keywords: [L2]dual, [L2]DUAL, [L2]Dual-Audio, [L2]multi, [L2]MULTI, [L1]WEBDL))
+2026-03-23 00:45:42 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.

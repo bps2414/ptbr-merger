@@ -1,0 +1,12 @@
+--- Logging error in Loguru Handler #1 ---
+Record was: {'elapsed': datetime.timedelta(seconds=6, microseconds=176767), 'exception': None, 'extra': {}, 'file': (name='notifier.py', path='D:\\ptbr-merger\\src\\notifier.py'), 'function': 'notify_status', 'level': (name='ERROR', no=40, icon='\u274c'), 'line': 60, 'message': '\u274c ERROR: Falha processando Chainsaw Man - The Movie: Reze Arc (2025) - Falha de injeção direta no P2P.', 'module': 'notifier', 'name': 'src.notifier', 'process': (id=15768, name='MainProcess'), 'thread': (id=18176, name='MainThread'), 'time': datetime(2026, 3, 22, 23, 15, 47, 603397, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600), 'E. South America Standard Time'))}
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_handler.py", line 206, in emit
+    self._sink.write(str_record)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\site-packages\loguru\_simple_sinks.py", line 16, in write
+    self._stream.write(message)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 33: character maps to <undefined>
+--- End of logging error ---

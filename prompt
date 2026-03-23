@@ -1,0 +1,16 @@
+
+implementation_plan.md
+ Siga o plano ou sugira melhorias com brainstorm, olhando log, de quando testei com env e dry run, ele achou o release compativel e correto, porem baixando o arquivo verdadeiro, o score foi diferente e ele achou outro release compativel, porem esse outro release NAO e ptbr, entao planejei esse 
+
+implementation_plan.md
+ para tentar resolver, verifique se e a melhor forma
+
+ 2026-03-22 22:57:30 | INFO     | O filme 4K Chainsaw Man The Movie Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 22:57:30 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 22:57:34 | INFO     | Busca retornou 68 releases. Top 5 scores: [45000, 15000, 15000, 15000, 15000]
+2026-03-22 22:57:34 | INFO     | Encontrou release compatível (score: 15000): Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese] (Justificativa: Tie-breaker 18 (Keywords: ja,portuguese, portugues, portuguese, O.Filme, O.Filme., dual, DUAL))
+2026-03-22 22:57:34 | INFO     | [DRY RUN - BYPASS] Sucesso na busca. Injetaria release no qBittorrent para o filme TMDb 1218925.
+2026-03-22 23:15:42 | INFO     | O filme 4K Chainsaw Man - The Movie: Reze Arc não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.
+2026-03-22 23:15:42 | INFO     | Buscando releases para o filme ID 35 no Radarr (pode demorar até 60s)...
+2026-03-22 23:15:47 | INFO     | Busca retornou 68 releases. Top 5 scores: [52025, 33045, 28545, 27045, 26750]
+2026-03-22 23:15:47 | INFO     | Encontrou release compatível (score: 26545): Chainsaw.Man.-.The.Movie.Reze.Arc.2025.1080p.MA.WEB-DL.DUAL.DDP5.1.Atmos.H.264-BYNDR (Justificativa: Tie-breaker 3 (Keywords: dual, DUAL))
