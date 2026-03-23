@@ -52,13 +52,16 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
     context = {"title": title, "year": year}
     
     if analyzer.has_ptbr_audio(file_path):
-        notify_status("SKIPPED_HAS_PTBR", context)
+        info(f"O filme 4K {title} já possui áudio nativo PT-BR. Iniciando otimização universal...")
+        _optimize_in_place(file_path, context, is_dry_run)
         return
         
     info(f"O filme 4K {title} não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.")
     
     candidates = radarr_client.find_best_ptbr_release(tmdb_id)
     if not candidates:
+        warning(f"Nenhum candidato Dual Áudio encontrado para {title}. Iniciando otimização universal do arquivo original...")
+        _optimize_in_place(file_path, context, is_dry_run)
         notify_status("NOT_FOUND", context)
         return
         
@@ -74,6 +77,29 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
         info("Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente via Bypass Mode.")
     else:
         notify_status("ERROR", {**context, "error": "Falha de injeção direta no P2P."})
+
+def _optimize_in_place(file_path: Path, context: dict, is_dry_run: bool) -> None:
+    """Realiza a otimização de streams (Stream Diet) no próprio arquivo 4K original."""
+    output_tmp = file_path.parent / "output_opt_tmp.mkv"
+    
+    try:
+        if is_dry_run:
+            from src.analyzer import get_allowed_streams
+            allowed_indices = get_allowed_streams(file_path)
+            map_args = " ".join([f"-map 0:{idx}" for idx in allowed_indices])
+            ffmpeg_cmd = f"{config.ffmpeg.ffmpeg_path} -y -i {file_path.name} -map 0:v {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 {output_tmp.name}"
+            info(f"[DRY RUN - OPTIMIZER] Otimização universal simulada:")
+            info(f"   CMD -> {ffmpeg_cmd}")
+        else:
+            merger.mux_audio(file_path, None, output_tmp)
+            merger.replace_original(output_tmp, file_path)
+            info(f"Otimização universal concluída com sucesso para: {file_path.name}")
+            
+    except Exception as e:
+        error(f"Erro durante a otimização universal de {file_path.name}: {e}")
+    finally:
+        if output_tmp.exists():
+            output_tmp.unlink(missing_ok=True)
 
 def run_merger(file_path: Path, ptbrmerger_movie_id: int, tmdb_id: str, context: dict, is_dry_run: bool, radarr_download_id: str, candidates: list = None, current_index: int = 0) -> None:
     """Entry path secundário disparado restritamente por Mídia do folder/profile ptbrmerger."""
