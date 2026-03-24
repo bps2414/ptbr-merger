@@ -20,8 +20,14 @@ def _response(text: str, status_code: int = 200, json_data=None) -> MagicMock:
 
 @patch("src.qbit_client._extract_infohash_from_url", return_value=None)
 @patch("src.qbit_client.time.sleep", return_value=None)
+@patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)
 @patch("src.qbit_client.login")
-def test_add_torrent_returns_failure_when_qbit_accepts_request_but_torrent_never_appears(mock_login, _mock_sleep, _mock_infohash):
+def test_add_torrent_returns_failure_when_qbit_accepts_request_but_torrent_never_appears(
+    mock_login,
+    _mock_prioritize,
+    _mock_sleep,
+    _mock_infohash,
+):
     session = MagicMock()
     session.post.return_value = _response("Fails.")
     session.get.return_value = _response("[]", json_data=[])
@@ -34,8 +40,14 @@ def test_add_torrent_returns_failure_when_qbit_accepts_request_but_torrent_never
 
 @patch("src.qbit_client._extract_infohash_from_url", return_value=None)
 @patch("src.qbit_client.time.sleep", return_value=None)
+@patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)
 @patch("src.qbit_client.login")
-def test_add_torrent_returns_success_when_qbit_lists_torrent_after_add(mock_login, _mock_sleep, _mock_infohash):
+def test_add_torrent_returns_success_when_qbit_lists_torrent_after_add(
+    mock_login,
+    _mock_prioritize,
+    _mock_sleep,
+    _mock_infohash,
+):
     session = MagicMock()
     session.post.return_value = _response("Ok.")
     before_response = _response("[]", json_data=[])
@@ -62,8 +74,9 @@ def test_add_torrent_returns_success_when_qbit_lists_torrent_after_add(mock_logi
 
 
 @patch("src.qbit_client._extract_infohash_from_url", return_value="ff9b9024d88c50f30b03f76e16172a180a450daa")
+@patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)
 @patch("src.qbit_client.login")
-def test_add_torrent_reuses_existing_duplicate_and_applies_metadata(mock_login, _mock_infohash):
+def test_add_torrent_reuses_existing_duplicate_and_applies_metadata(mock_login, _mock_prioritize, _mock_infohash):
     session = MagicMock()
     duplicate_payload = [
         {
@@ -93,8 +106,14 @@ def test_add_torrent_reuses_existing_duplicate_and_applies_metadata(mock_login, 
 
 @patch("src.qbit_client._extract_infohash_from_url", return_value="af4673c60613cb4e7b2e71319e883af04b990c26")
 @patch("src.qbit_client.time.sleep", return_value=None)
+@patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)
 @patch("src.qbit_client.login")
-def test_add_torrent_prefers_new_hash_when_old_tagged_torrent_already_exists(mock_login, _mock_sleep, _mock_infohash):
+def test_add_torrent_prefers_new_hash_when_old_tagged_torrent_already_exists(
+    mock_login,
+    _mock_prioritize,
+    _mock_sleep,
+    _mock_infohash,
+):
     session = MagicMock()
     session.post.return_value = _response("Ok.")
 
@@ -132,3 +151,35 @@ def test_add_torrent_prefers_new_hash_when_old_tagged_torrent_already_exists(moc
     assert result.success is True
     assert result.existing is False
     assert result.torrent_hash == "af4673c60613cb4e7b2e71319e883af04b990c26"
+
+
+@patch("src.qbit_client.login")
+def test_prioritize_ptbrmerger_downloads_moves_ptbr_to_top_and_radarr_to_bottom(mock_login):
+    session = MagicMock()
+    session.get.return_value = _response(
+        "payload",
+        json_data=[
+            {
+                "hash": "pt1",
+                "category": "ptbrmerger",
+                "tags": "ptbrmerger-tmdbid-945961",
+                "state": "downloading",
+                "progress": 0.5,
+            },
+            {
+                "hash": "rd1",
+                "category": "radarr",
+                "tags": "",
+                "state": "downloading",
+                "progress": 0.8,
+            },
+        ],
+    )
+    session.post.return_value = _response("")
+    mock_login.return_value = session
+
+    qbit_client.prioritize_ptbrmerger_downloads()
+
+    post_urls = [call.args[0] for call in session.post.call_args_list]
+    assert any(url.endswith("/api/v2/torrents/topPrio") for url in post_urls)
+    assert any(url.endswith("/api/v2/torrents/bottomPrio") for url in post_urls)

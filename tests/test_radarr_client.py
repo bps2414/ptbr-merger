@@ -68,3 +68,145 @@ def test_apply_success_tag_uses_movie_editor_add_mode(mock_request):
         "tags": [5],
         "applyTags": "add",
     }
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_skips_candidates_with_zero_seeders(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.Dublado.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/zero",
+            "indexer": "Catálogo Betor",
+            "seeders": 0,
+            "peers": 9,
+            "protocol": "torrent",
+            "size": 1,
+        },
+        {
+            "title": "Movie.2026.1080p.WEBRip.DUAL.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/good",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert [candidate["title"] for candidate in candidates] == ["Movie.2026.1080p.WEBRip.DUAL.mkv"]
+    assert candidates[0]["seeders"] == 5
+    assert candidates[0]["peers"] == 10
+    assert candidates[0]["protocol"] == "torrent"
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_returns_empty_when_all_candidates_have_zero_seeders(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.Dublado.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/zero",
+            "indexer": "Catálogo Betor",
+            "seeders": 0,
+            "peers": 9,
+            "protocol": "torrent",
+            "size": 1,
+        }
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert candidates == []
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_prefers_dual_ptbr_over_plain_dublado(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.Dublado.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/dublado",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 1,
+        },
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/dual",
+            "indexer": "Catálogo Betor",
+            "seeders": 4,
+            "peers": 8,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert candidates[0]["title"] == "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv"
+    assert "dublado" in candidates[1]["justificativa"].lower()
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_prefers_more_seeders_when_scores_tie(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.5.1 [portuguese,english]",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/low",
+            "indexer": "Catálogo Betor",
+            "seeders": 1,
+            "peers": 3,
+            "protocol": "torrent",
+            "size": 2,
+        },
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.5.1 [portuguese,english] FULLHD",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/high",
+            "indexer": "Catálogo Betor",
+            "seeders": 9,
+            "peers": 12,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert candidates[0]["seeders"] == 9
+    assert candidates[0]["peers"] == 12

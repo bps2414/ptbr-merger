@@ -2,7 +2,7 @@
 
 ---
 
-## Fase 1 — MVP (Em andamento ~90%)
+## Fase 1 — MVP (Concluída)
 
 ### Concluído
 
@@ -20,7 +20,7 @@
 
 - [x] **Teste real do ffmpeg** `[BLOQUEADOR]` — fluxo completo validado (extract + mux + replace_original) no filme Chainsaw Man: Reze Arc
 - [x] Corrigir threshold de sync e fallback automático entre candidatos após `SYNC_MISMATCH`
-- [ ] **Git inicializado** — controle de versão. Fazer ANTES de qualquer sessão de trabalho
+- [x] **Git inicializado** — controle de versão concluído
 
 ---
 
@@ -28,20 +28,20 @@
 
 ### Core — sem isso o sistema não é confiável em produção
 
-- [ ] **Verificação pós-mux** `[core]` — ffprobe no arquivo final confirmando que a faixa PT-BR está presente e com `language=por` correto antes de deletar o 1080p. Se falhar → mantém o 1080p e loga erro
-- [ ] **Fila persistente em JSON** `[core]` — salva estado em `queue.json` com tmdbId, candidato atual, tentativas já feitas e timestamp. Retoma de onde parou após crash ou reinício do Windows
-- [ ] **Retry com exponential backoff** `[core]` — chamadas de API com retry automático: 1s, 2s, 4s, 8s. Máximo configurável. Especialmente importante pra `find_best_ptbr_release` que pode demorar 60s
-- [ ] **Proteção contra loop infinito** `[core]` — se o mesmo filme falhar X vezes seguidas, marca como `ABANDONED` no `queue.json` e para de tentar. X configurável no `config.yml`
+- [x] **Verificação pós-mux** `[core]` — `validate_final_file` com ffprobe protege o replace do 4K e impede deleção destrutiva em saída inválida
+- [x] **Fila persistente em JSON** `[core]` — `queue.json` implementado como ledger operacional leve com anti-reentrância e estados do pipeline
+- [x] **Retry com exponential backoff** `[core]` — aplicado ao cliente Radarr para timeout, conexão, `429` e `5xx`
+- [x] **Proteção contra loop infinito** `[core]` — abandono após tentativas máximas configuráveis com estado `ABANDONED`
 
 ### Logging — diagnóstico completo
 
-- [ ] **Log estruturado em JSON** `[logging]` — além do log legível em `.log`, salvar cada evento em `history.json` com campos estruturados: `timestamp`, `tmdb_id`, `titulo`, `status`, `release_escolhida`, `candidatos_tentados`, `duracao_processo`. Facilita análise futura
-- [ ] **Log de performance** `[logging]` — logar tempo de cada etapa: busca de releases, download do 1080p, extract, mux, replace. Ajuda a identificar gargalos
-- [ ] **Log de decisões do scoring** `[logging]` — já existe parcialmente. Completar para logar por que cada candidato foi rejeitado (blacklist? qualidade? sync?) em vez de só logar os aceitos
+- [x] **Log estruturado em JSON** `[logging]` — `history.json` implementado com eventos-chave do pipeline
+- [x] **Log de performance** `[logging]` — tempos por etapa registrados no trigger e persistidos no histórico
+- [ ] **Log de decisões do scoring** `[logging]` — ainda vale ampliar o rastreio dos candidatos rejeitados por score/ausência de URL
 
 ### Notificações Discord — embed rico
 
-- [ ] **Embed completo de progresso** `[ux]` — substituir a mensagem simples atual por embed rico com:
+- [x] **Embed completo de progresso** `[ux]` — mensagem rica no Discord agora inclui:
   - Capa do filme buscada via API do TMDb (`https://image.tmdb.org/t/p/w300/{poster_path}`) como thumbnail
   - Título, ano e nota do TMDb
   - Release escolhida com indexer de origem
@@ -52,7 +52,7 @@
   - Barra de progresso textual: `█████████░ 90%`
   - Cor verde SUCCESS, laranja WARNING (sync mismatch tentando próximo), vermelho ERROR
 
-- [ ] **Notificação de progresso em tempo real** `[ux]` — editar a mensagem Discord durante o processo (via PATCH no webhook) mostrando o estado atual: `Buscando releases... → Baixando 1080p (45%)... → Extraindo áudio... → Muxando...`
+- [x] **Notificação de progresso em tempo real** `[ux]` — a mesma mensagem é criada com `wait=true` e editada via PATCH ao longo das etapas
 
 - [ ] **Notificação de NOT_FOUND com alternativa** `[ux]` — quando não achar PT-BR, embed informando que Bazarr foi acionado para legenda. Não deixar o usuário sem feedback
 
@@ -65,7 +65,7 @@
 - [ ] **Histórico de sucesso por grupo** `[perf]` — `group_history.json` que registra taxa de sucesso por release group. `BYNDR: 0/3 sync ok`, `SF: 2/2 sync ok`. Com o tempo o scoring considera isso como Nível 3.5 entre indexer BR e keywords medium
 - [ ] **Aprendizado de sync por source** `[perf]` — registrar qual combinação de sources (4K source + 1080p source) costuma ter sync ok. Ex: `MA.WEB-DL 4K + AMZN.WEB-DL 1080p` → historicamente compatível
 - [ ] **Retry agendado** `[perf]` — `NOT_FOUND` definitivo agenda retry automático em 3 e 7 dias no `queue.json`. Novos releases BR costumam aparecer dias depois do lançamento
-- [ ] **Detecção de corte por duração do 4K** `[perf]` — comparar duração do 4K com a duração esperada do corte padrão (buscada no TMDb via `runtime`). Se o 4K for muito diferente do runtime oficial, é um corte especial — filtrar candidatos com mais agressividade
+- [x] **Detecção de corte por duração do 4K** `[perf]` — heurística de runtime oficial implementada como diagnóstico de `RUNTIME_INCOMPATIBLE` / `CUT_MISMATCH`
 
 ### Processamento em lote
 
@@ -83,7 +83,7 @@
 
 - [ ] **Bazarr fallback inteligente** `[integração]` — `NOT_FOUND` definitivo chama `POST /api/subtitles` do Bazarr passando o path do filme. Força busca imediata de legenda PT-BR sem esperar o scan automático do Bazarr
 - [ ] **Integração Jellyfin** `[integração]` — após mux bem-sucedido, chama `POST /Items/{id}/Refresh` da API do Jellyfin. A nova faixa PT-BR aparece imediatamente na interface sem esperar o scan noturno
-- [ ] **Webhook Radarr de resposta** `[integração]` — adicionar tag `ptbr-merged` ao filme no Radarr após mux bem-sucedido. Permite filtrar na UI quais filmes já foram processados
+- [x] **Webhook Radarr de resposta** `[integração]` — tag `ptbr-merged` aplicada com sucesso ao filme após mux bem-sucedido
 
 ---
 
@@ -136,15 +136,15 @@
 ## Status atual
 
 ```
-Fase 1 ██████████████████  ~98%
-Fase 2 ░░░░░░░░░░░░░░░░░░   0%
-Fase 3 ░░░░░░░░░░░░░░░░░░   0%
-Fase 4 ░░░░░░░░░░░░░░░░░░   0%
+Fase 1 ██████████████████  100%
+Fase 2 ████████████████░░  ~85%
+Fase 3 ███░░░░░░░░░░░░░░░  ~15%
+Fase 4 ██░░░░░░░░░░░░░░░░  ~10%
 ```
 
 ### Próxima ação imediata
 ```
-git init && git add . && git commit -m "Fase 1 MVP"
+Fechar os itens restantes de observabilidade/limpeza e escolher o próximo bloco entre auto-offset, histórico inteligente de grupos ou dashboard.
 ```
 
 ---

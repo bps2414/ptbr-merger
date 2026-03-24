@@ -33,6 +33,12 @@ class QueueManager:
     def get_entry(self, tmdb_id: str) -> Optional[dict]:
         return self._read().get(str(tmdb_id))
 
+    def _merge_entry(self, entry: dict, **updates) -> dict:
+        merged = dict(entry)
+        merged.update(updates)
+        merged["updated_at"] = _utc_now()
+        return merged
+
     def can_process(self, tmdb_id: str) -> tuple[bool, Optional[str]]:
         entry = self.get_entry(tmdb_id)
         if not entry:
@@ -46,30 +52,30 @@ class QueueManager:
         payload = self._read()
         entry = payload.get(str(tmdb_id), {})
         attempts = int(entry.get("attempts", 0) or 0)
-        payload[str(tmdb_id)] = {
-            "tmdbId": str(tmdb_id),
-            "phase": phase,
-            "candidate_index": candidate_index,
-            "attempts": attempts,
-            "status": "PROCESSING",
-            "last_error": entry.get("last_error"),
-            "updated_at": _utc_now(),
-        }
+        payload[str(tmdb_id)] = self._merge_entry(
+            entry,
+            tmdbId=str(tmdb_id),
+            phase=phase,
+            candidate_index=candidate_index,
+            attempts=attempts,
+            status="PROCESSING",
+            last_error=entry.get("last_error"),
+        )
         self._write(payload)
         return payload[str(tmdb_id)]
 
     def record_pending(self, tmdb_id: str, phase: str, candidate_index: int = 0) -> dict:
         payload = self._read()
         entry = payload.get(str(tmdb_id), {})
-        payload[str(tmdb_id)] = {
-            "tmdbId": str(tmdb_id),
-            "phase": phase,
-            "candidate_index": candidate_index,
-            "attempts": int(entry.get("attempts", 0) or 0),
-            "status": "PENDING",
-            "last_error": entry.get("last_error"),
-            "updated_at": _utc_now(),
-        }
+        payload[str(tmdb_id)] = self._merge_entry(
+            entry,
+            tmdbId=str(tmdb_id),
+            phase=phase,
+            candidate_index=candidate_index,
+            attempts=int(entry.get("attempts", 0) or 0),
+            status="PENDING",
+            last_error=entry.get("last_error"),
+        )
         self._write(payload)
         return payload[str(tmdb_id)]
 
@@ -78,29 +84,40 @@ class QueueManager:
         entry = payload.get(str(tmdb_id), {})
         attempts = int(entry.get("attempts", 0) or 0) + 1
         status = "ABANDONED" if attempts >= self.max_attempts else "FAILED"
-        payload[str(tmdb_id)] = {
-            "tmdbId": str(tmdb_id),
-            "phase": phase,
-            "candidate_index": candidate_index,
-            "attempts": attempts,
-            "status": status,
-            "last_error": error,
-            "updated_at": _utc_now(),
-        }
+        payload[str(tmdb_id)] = self._merge_entry(
+            entry,
+            tmdbId=str(tmdb_id),
+            phase=phase,
+            candidate_index=candidate_index,
+            attempts=attempts,
+            status=status,
+            last_error=error,
+        )
         self._write(payload)
         return payload[str(tmdb_id)]
 
     def record_success(self, tmdb_id: str, phase: str, candidate_index: int = 0) -> dict:
         payload = self._read()
         entry = payload.get(str(tmdb_id), {})
-        payload[str(tmdb_id)] = {
-            "tmdbId": str(tmdb_id),
-            "phase": phase,
-            "candidate_index": candidate_index,
-            "attempts": int(entry.get("attempts", 0) or 0),
-            "status": "SUCCESS",
-            "last_error": None,
-            "updated_at": _utc_now(),
-        }
+        payload[str(tmdb_id)] = self._merge_entry(
+            entry,
+            tmdbId=str(tmdb_id),
+            phase=phase,
+            candidate_index=candidate_index,
+            attempts=int(entry.get("attempts", 0) or 0),
+            status="SUCCESS",
+            last_error=None,
+        )
         self._write(payload)
         return payload[str(tmdb_id)]
+
+    def attach_metadata(self, tmdb_id: str, **metadata) -> dict:
+        payload = self._read()
+        entry = payload.get(str(tmdb_id), {})
+        if not entry:
+            return {}
+        entry.update({key: value for key, value in metadata.items() if value is not None})
+        entry["updated_at"] = _utc_now()
+        payload[str(tmdb_id)] = entry
+        self._write(payload)
+        return entry

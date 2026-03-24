@@ -13,6 +13,9 @@ PTBRMerger is a Python pipeline that sits between Radarr, qBittorrent and FFmpeg
 Phase 2 hardening is already implemented in this repository. The current pipeline includes:
 
 - direct qBittorrent bypass mode with duplicate detection by infohash
+- PT-BR ranking with explicit weighting for `dublado`, `dual` and BR signals
+- seed-awareness before qBittorrent injection, skipping dead torrents with `0` seeders
+- qBittorrent queue bias that raises active `ptbrmerger` downloads above `radarr`
 - runtime/sync diagnostics with structured classification
 - operational ledger in `queue.json`
 - structured execution history in `history.json`
@@ -60,19 +63,21 @@ tests/
 1. Radarr triggers `src/trigger.py`.
 2. `src/analyzer.py` confirms the 4K file does not contain PT-BR audio.
 3. `src/radarr_client.py` searches releases and ranks eligible PT-BR candidates.
-4. `src/qbit_client.py` injects the chosen torrent into qBittorrent with:
+4. Releases with `0` seeders are discarded before qBittorrent injection whenever Radarr provides availability metadata.
+5. `src/qbit_client.py` injects the chosen torrent into qBittorrent with:
    - category: `ptbrmerger`
    - tag: `ptbrmerger-tmdbid-<tmdbId>`
-5. qBittorrent calls the same trigger again on torrent completion.
-6. `src/trigger.py` resolves the finished 1080p source, loads the original 4K and runs:
+   - queue priority favoring active `ptbrmerger` downloads over `radarr`
+6. qBittorrent calls the same trigger again on torrent completion.
+7. `src/trigger.py` resolves the finished 1080p source, loads the original 4K and runs:
    - sync diagnosis
    - stream detection
    - PT-BR extraction
    - mux
    - final validation
-7. Only after validation succeeds, the original 4K file is replaced.
-8. Radarr is rescanned and tagged with `ptbr-merged`.
-9. The qBittorrent torrent is removed only after real success.
+8. Only after validation succeeds, the original 4K file is replaced.
+9. Radarr is rescanned and tagged with `ptbr-merged`.
+10. The qBittorrent torrent is removed only after real success.
 
 ## Phase 2 Safety Guarantees
 
@@ -83,6 +88,9 @@ The current codebase is no longer a simple “extract and replace” script. It 
 
 - `history.json`
   Stores structured events such as candidate selection, fallback, failure cause, runtimes and success.
+
+- Seed-aware search
+  Releases with `seeders <= 0` are skipped before injection when Radarr exposes availability data. If all acceptable candidates are dead, the history records `NO_AVAILABLE_SEEDS`.
 
 - Sync diagnosis
   The pipeline classifies candidates as:
@@ -230,6 +238,50 @@ $env:PTBRMERGER_DRY_RUN="true"
 ```
 
 In dry-run mode the project logs the intended FFmpeg and API actions without mutating files or deleting torrents.
+
+## Operational Commands
+
+Tail the current log without opening an editor:
+
+```bash
+python -m src.tools.tail_log --lines 80 --follow
+```
+
+Or on Windows:
+
+```bat
+scripts\watch-log.bat
+```
+
+Show queue, recent history and `ptbrmerger` torrents:
+
+```bash
+python -m src.tools.status
+```
+
+Or on Windows:
+
+```bat
+scripts\status.bat
+```
+
+Reset one movie from the ledger by TMDB ID:
+
+```bash
+python -m src.tools.reset_queue_entry --tmdb 680493
+```
+
+Force an immediate Discord webhook refresh using the current qBittorrent state:
+
+```bash
+python -m src.tools.refresh_webhook --tmdb 945961
+```
+
+Or on Windows:
+
+```bat
+scripts\refresh-webhook.bat --tmdb 945961
+```
 
 ## Runtime Files
 

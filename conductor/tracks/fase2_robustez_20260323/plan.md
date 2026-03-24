@@ -1,70 +1,113 @@
 # Implementation Plan: Fase 2 - Robustez, Integridade e Diagnóstico Operacional
 
-**Objetivo:** Endurecer o PTBRMerger com persistência operacional leve, validação pós-mux, diagnósticos de runtime/sync/offset, retry para falhas transitórias, observabilidade estruturada e feedback operacional ao usuário e ao Radarr.
+**Objetivo:** endurecer o PTBRMerger para operação real com validação forte antes de ações destrutivas, diagnóstico de incompatibilidades, persistência operacional leve, observabilidade estruturada e feedback externo confiável.
 
-**Baseline já implementado e fora do escopo desta track:**
-- Detecção de duplicata do qBittorrent por `infohash`
+**Status atual:** implementado.
+
+## Baseline que já existia antes da execução desta track
+- Duplicata do qBittorrent detectada por `infohash`
 - Reaplicação de `category/tag` em torrents já existentes
 - Acionamento retroativo imediato quando o torrent duplicado já está concluído
-- Validação de sincronia pré-mux com fallback entre candidatos
+- Fallback entre candidatos após falhas de sync/stream
 
-## Phase 1: Persistência Operacional Leve (Ledger/Lock)
-- [ ] Task: Revalidar necessidade de `src/queue_manager.py` contra a arquitetura orientada a eventos
-    - [ ] Confirmar se um `ledger`/`lock` é suficiente antes de introduzir fila persistida
-    - [ ] Documentar claramente que o `trigger.py` não deve virar worker contínuo
-- [ ] Task: Se confirmado necessário, criar `src/queue_manager.py` (TDD)
-    - [ ] Escrever testes unitários para operações CRUD do `queue.json`
-    - [ ] Implementar controle de estados (PENDING, PROCESSING, ABANDONED) para fases internas do pipeline
-- [ ] Task: Integração no `trigger.py`
-    - [ ] Aplicar serialização/idempotência apenas em seções críticas entre eventos concorrentes
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Persistência Operacional Leve' (Protocol in workflow.md)
+## Phase 1: Persistência Operacional Leve
+- [x] Confirmar que o projeto continua orientado a eventos e não vira worker contínuo
+- [x] Criar `src/queue_manager.py`
+- [x] Persistir estado em `queue.json`
+- [x] Implementar estados `PENDING`, `PROCESSING`, `FAILED`, `ABANDONED`, `SUCCESS`
+- [x] Integrar o ledger no `trigger.py` para anti-reentrância e abandono por tentativas
+- [x] Cobrir ledger com testes unitários
+
+**Entregue em código**
+- `src/queue_manager.py`
+- integração no `src/trigger.py`
+- `tests/test_queue_manager.py`
 
 ## Phase 2: Safety Net do Pós-Mux
-- [ ] Task: Implementar Validador em `analyzer.py` (TDD)
-    - [ ] Escrever testes unitários para verificar presença de áudio `por` e duração comparada
-    - [ ] Implementar função `validate_final_file` usando `ffprobe`
-- [ ] Task: Blindagem em `merger.py`
-    - [ ] Integrar validador no fluxo de `replace_original` com política de "não deleção" em caso de erro
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Safety Net do Pós-Mux' (Protocol in workflow.md)
+- [x] Implementar `validate_final_file` em `src/analyzer.py`
+- [x] Confirmar faixa PT-BR e duração compatível antes do replace
+- [x] Adicionar `validate_and_replace` em `src/merger.py`
+- [x] Bloquear substituição destrutiva se a validação final falhar
+- [x] Preservar artefatos temporários em caso de falha, conforme config
+- [x] Mover cleanup destrutivo do qBittorrent para depois do sucesso real
+- [x] Cobrir a blindagem com testes
+
+**Entregue em código**
+- `src/analyzer.py`
+- `src/merger.py`
+- `src/trigger.py`
+- `tests/test_analyzer.py`
+- `tests/test_merger.py`
+- `tests/test_trigger.py`
 
 ## Phase 3: Sync Robustness & Diagnostics
-- [ ] Task: Adicionar heurística de runtime/corte no `analyzer.py` (TDD)
-    - [ ] Comparar runtime 4K e 1080p com runtime oficial do filme
-    - [ ] Classificar suspeita de corte especial antes do mux
-- [ ] Task: Introduzir diagnóstico de offset
-    - [ ] Registrar `diff` e estimativa de offset por candidato
-    - [ ] Diferenciar `offset simples` de `cut mismatch`
-    - [ ] Se implementado, manter auto-offset atrás de flag/config e com critério conservador
-- [ ] Task: Persistir proveniência e motivo do fallback
-    - [ ] Registrar release, indexer, infohash, source e razão do descarte
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sync Robustness & Diagnostics' (Protocol in workflow.md)
+- [x] Enriquecer análise com `runtime_4k`, `runtime_1080p` e `runtime_oficial`
+- [x] Introduzir classificação `SYNC_OK`, `CUT_MISMATCH`, `OFFSET_SUSPECTED`, `RUNTIME_INCOMPATIBLE`, `UNKNOWN_SYNC_FAILURE`
+- [x] Adicionar estimativa de offset como diagnóstico
+- [x] Persistir release, indexer, infohash, sync diff e offset estimado
+- [x] Registrar razão de fallback e falha no histórico
+- [x] Cobrir o diagnóstico com testes
+
+**Entregue em código**
+- `src/analyzer.py`
+- `src/trigger.py`
+- `history.json` como trilha estruturada em runtime
+- `tests/test_analyzer.py`
+- `tests/test_trigger.py`
 
 ## Phase 4: Resiliência de Rede & Runtime de Processo
-- [ ] Task: Criar Decorador `exponential_backoff` (TDD)
-    - [ ] Escrever testes unitários simulando falhas transitórias de API (`429`, `5xx`, timeouts, conexão)
-    - [ ] Escrever testes garantindo que `400/401/403/404` não entram em retry por padrão
-    - [ ] Implementar decorador em `src/radarr_client.py` com backoff (1s, 2s, 4s, 8s)
-- [ ] Task: Aplicar decorador em todos os métodos de rede do `radarr_client.py`
-- [ ] Task: Registrar runtime operacional por etapa
-    - [ ] Medir busca, download, extract, mux e replace
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Resiliência de Rede & Runtime de Processo' (Protocol in workflow.md)
+- [x] Implementar decorador `exponential_backoff` em `src/radarr_client.py`
+- [x] Retentar apenas timeout, conexão, `429` e `5xx`
+- [x] Garantir que `400/401/403/404` não entrem em retry padrão
+- [x] Aplicar retry ao cliente Radarr crítico
+- [x] Registrar runtime por etapa no `trigger.py`
+- [x] Expor tempos por etapa em log e histórico
+- [x] Cobrir retry com testes
+
+**Entregue em código**
+- `src/radarr_client.py`
+- `src/trigger.py`
+- `tests/test_radarr_client.py`
 
 ## Phase 5: Observabilidade & Discord Rich Feedback
-- [ ] Task: Implementar histórico estruturado
-    - [ ] Criar `history.json` com eventos-chave do pipeline
-    - [ ] Persistir runtime do filme, runtime das etapas, candidato escolhido e motivos de fallback
-- [ ] Task: Completar logging de decisões
-    - [ ] Logar candidatos rejeitados e o motivo explícito de rejeição
-- [ ] Task: Evoluir `notifier.py` para PATCH e Embeds
-    - [ ] Implementar criação com `wait=true` para capturar `message_id`
-    - [ ] Implementar edição da mesma mensagem via PATCH no endpoint do webhook
-    - [ ] Adicionar suporte a Embeds ricos (Thumbnail do Radarr, campos de status)
-- [ ] Task: Integração de progresso dinâmico no `trigger.py`
-    - [ ] Atualizar a mesma mensagem Discord durante as etapas do processo
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Observabilidade & Discord Rich Feedback' (Protocol in workflow.md)
+- [x] Criar `src/history_manager.py`
+- [x] Persistir eventos estruturados em `history.json`
+- [x] Completar logging de decisões e fallback relevantes
+- [x] Evoluir `src/notifier.py` para criação + edição da mesma mensagem via webhook
+- [x] Adicionar embeds ricos com poster/backdrop, progresso, ETA, release e diagnóstico
+- [x] Integrar progresso dinâmico no `trigger.py`
+- [x] Cobrir notifier/history com testes
+
+**Entregue em código**
+- `src/history_manager.py`
+- `src/notifier.py`
+- `src/trigger.py`
+- `tests/test_history_manager.py`
+- `tests/test_notifier.py`
 
 ## Phase 6: External State Feedback
-- [ ] Task: Integrar feedback mínimo ao Radarr
-    - [ ] Aplicar tag `ptbr-merged` após sucesso final
-    - [ ] Garantir que a tag não quebre idempotência nem reprocessamento controlado
-- [ ] Task: Conductor - User Manual Verification 'Phase 6: External State Feedback' (Protocol in workflow.md)
+- [x] Aplicar tag `ptbr-merged` no Radarr após sucesso final
+- [x] Manter operação idempotente via Movie Editor `applyTags=add`
+- [x] Garantir que o sucesso final só seja emitido depois de `rescan` + tag
+- [x] Validar o caminho com testes
+
+**Entregue em código**
+- `src/radarr_client.py`
+- `src/trigger.py`
+- `tests/test_radarr_client.py`
+- `tests/test_trigger.py`
+
+## Verificação executada
+- [x] `pytest -q`
+- [x] `python -m compileall src tests`
+- [ ] `ruff check src tests` (bloqueado: `ruff` não instalado neste ambiente)
+
+## Artefatos auxiliares entregues junto
+- [x] `README.md` reescrito para refletir o estado real do projeto
+- [x] `.gitignore` mínimo para `history.json`, `queue.json` e `*.pyc`
+- [x] Repositório GitHub criado e push realizado
+
+## Pendências pós-Phase 2
+- [ ] Refinar ainda mais o logging de todos os candidatos rejeitados por score/ausência de URL
+- [ ] Limpeza de arquivos rastreados de log/cache já existentes no repositório
+- [ ] Avançar para os itens restantes da Fase 3/Fase 4 do roadmap principal

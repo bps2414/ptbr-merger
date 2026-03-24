@@ -2,6 +2,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from src.notifier import warning
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -17,8 +19,12 @@ class HistoryManager:
     def _read(self) -> list[dict]:
         if not self.history_file.exists():
             return []
-        with open(self.history_file, "r", encoding="utf-8") as file:
-            data = json.load(file) or []
+        try:
+            with open(self.history_file, "r", encoding="utf-8") as file:
+                data = json.load(file) or []
+        except json.JSONDecodeError as exc:
+            warning(f"history.json inválido ou corrompido em {self.history_file}: {exc}. Reiniciando histórico em memória.")
+            return []
         return data if isinstance(data, list) else []
 
     def _write(self, payload: list[dict]) -> None:

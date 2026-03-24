@@ -24,6 +24,7 @@ _HEADERS = {"X-Api-Key": _API_KEY}
 _PROFILE_ID_CACHE = {}
 _TAG_ID_CACHE = {}
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+_LAST_SEARCH_SUMMARY: dict[str, dict] = {}
 
 
 def _get_timeout() -> int:
@@ -134,6 +135,29 @@ def get_movie_by_tmdbid(tmdb_id: str) -> Optional[dict]:
     return None
 
 
+def get_movie_by_file_path(file_path: str | Path) -> Optional[dict]:
+    target_path = Path(file_path)
+    target_path_str = str(target_path).lower()
+    imdb_marker = None
+    for part in target_path.parts:
+        if "[imdbid-" in part.lower():
+            imdb_marker = part.lower().split("[imdbid-")[-1].split("]")[0]
+            break
+
+    movies = _request("GET", "/api/v3/movie", timeout=60)
+    for movie in movies if isinstance(movies, list) else []:
+        movie_file_path = str((movie.get("movieFile") or {}).get("path") or "").lower()
+        root_path = str(movie.get("path") or "").lower()
+        imdb_id = str(movie.get("imdbId") or "").lower()
+        if movie_file_path and movie_file_path == target_path_str:
+            return movie
+        if root_path and target_path_str.startswith(root_path):
+            return movie
+        if imdb_marker and imdb_id and imdb_marker == imdb_id:
+            return movie
+    return None
+
+
 def arquivo_existe_em_temp(tmdb_id: str) -> Optional[Path]:
     temp_folder = Path(config.radarr.ptbrmerger_root_folder)
     if not temp_folder.exists() or not temp_folder.is_dir():
@@ -165,9 +189,48 @@ def _is_blocked_quality(quality_name: str) -> bool:
     return any(blocked_name.upper() in quality_upper for blocked_name in blocked)
 
 
-def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tuple[int, str]:
+def _keyword_present(title_lower: str, keyword: str) -> bool:
     import re
 
+    keyword_lower = keyword.lower()
+    if len(keyword_lower) <= 3:
+        return bool(re.search(rf"\b{re.escape(keyword_lower)}\b", title_lower))
+    return keyword_lower in title_lower
+
+
+def _keyword_group_matches(title_lower: str, keywords: List[str]) -> list[str]:
+    return [keyword for keyword in keywords if _keyword_present(title_lower, keyword)]
+
+
+def _extract_availability_metric(release: dict, *field_names: str) -> int | None:
+    for field_name in field_names:
+        value = release.get(field_name)
+        if value in (None, ""):
+            continue
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def _seeders_for_release(release: dict) -> int | None:
+    return _extract_availability_metric(release, "seeders", "seedCount", "seedersCount")
+
+
+def _peers_for_release(release: dict) -> int | None:
+    return _extract_availability_metric(release, "peers", "peersCount", "leechers", "leechersCount")
+
+
+def _protocol_for_release(release: dict) -> str | None:
+    return release.get("protocol") or release.get("downloadProtocol")
+
+
+def get_last_release_search_summary(tmdb_id: str) -> dict:
+    return dict(_LAST_SEARCH_SUMMARY.get(str(tmdb_id), {}))
+
+
+def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tuple[int, str]:
     title = release.get("title", "")
     title_lower = title.lower()
     title_upper = title.upper()
@@ -177,29 +240,36 @@ def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tu
     score = 0
     matched_keywords = []
 
-    for keyword in getattr(config.ptbr_keywords, "high_priority", []):
-        if keyword.lower() in title_lower:
-            score += 8
-            matched_keywords.append(f"[L4]{keyword}")
+    all_keywords = list(getattr(config.ptbr_keywords, "high_priority", [])) + list(getattr(config.ptbr_keywords, "medium_priority", []))
+    dubbed_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dublado", "dublagem", "nacional"))]
+    dual_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dual", "multi"))]
+    ptbr_keywords = [
+        keyword
+        for keyword in getattr(config.ptbr_keywords, "high_priority", [])
+        if keyword not in dubbed_keywords and keyword not in dual_keywords
+    ]
+
+    if _keyword_group_matches(title_lower, dubbed_keywords):
+        score += 9
+        matched_keywords.append("[PTBR]dublado")
+
+    if _keyword_group_matches(title_lower, ptbr_keywords):
+        score += 7
+        matched_keywords.append("[PTBR]audio")
+
+    if _keyword_group_matches(title_lower, dual_keywords):
+        score += 10
+        matched_keywords.append("[DUAL]multi")
 
     for br_indexer in getattr(config.ptbr_keywords, "indexer_names_br", []):
         if br_indexer.lower() in indexer_name.lower():
             score += 4
-            matched_keywords.append(f"[L3]indexer:{br_indexer}")
+            matched_keywords.append(f"[SRC]indexer:{br_indexer}")
             break
-
-    for keyword in getattr(config.ptbr_keywords, "medium_priority", []):
-        if len(keyword) <= 3:
-            if re.search(rf"\b{re.escape(keyword.lower())}\b", title_lower):
-                score += 2
-                matched_keywords.append(f"[L2]{keyword}")
-        elif keyword.lower() in title_lower:
-            score += 2
-            matched_keywords.append(f"[L2]{keyword}")
 
     if "WEBDL" in quality_name.upper() or "WEB-DL" in quality_name.upper():
         score += 1
-        matched_keywords.append("[L1]WEBDL")
+        matched_keywords.append("[SRC]WEBDL")
 
     cut_keywords_list = ["REPACK", "EXTENDED", "THEATRICAL", "IMAX", "DIRECTORS.CUT", "UNRATED"]
     candidate_cut_keywords = [keyword for keyword in cut_keywords_list if keyword in title_upper]
@@ -210,13 +280,13 @@ def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tu
 
         if has_in_4k and has_in_1080p:
             score += 5
-            matched_keywords.append(f"[+5]{keyword}")
+            matched_keywords.append(f"[CUT]+{keyword}")
         elif has_in_4k and not has_in_1080p:
             score -= 10
-            matched_keywords.append(f"[-10]Falta {keyword}")
+            matched_keywords.append(f"[CUT]-Falta {keyword}")
         elif not has_in_4k and has_in_1080p:
             score -= 10
-            matched_keywords.append(f"[-10]Sobra {keyword}")
+            matched_keywords.append(f"[CUT]-Sobra {keyword}")
 
     if matched_keywords:
         return score, f"Tiebreaker {score} (Keywords: {', '.join(matched_keywords)})"
@@ -226,6 +296,13 @@ def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tu
 def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = None) -> List[dict]:
     exclude_titles = exclude_titles or []
     min_score = getattr(config.radarr, "ptbrmerger_min_score", 10000)
+    summary = {
+        "tmdbId": str(tmdb_id),
+        "total_releases": 0,
+        "eligible_count": 0,
+        "skipped_no_seeds": [],
+        "reason": "NO_MATCHES",
+    }
 
     movie = get_movie_by_tmdbid(tmdb_id)
     if not movie:
@@ -268,6 +345,7 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         debug("Busca retornou zero releases.")
         return []
 
+    summary["total_releases"] = len(releases)
     all_scores = sorted([release.get("customFormatScore", 0) for release in releases], reverse=True)
     info(f"Busca retornou {len(releases)} releases. Top 5 scores: {all_scores[:5]}")
 
@@ -278,6 +356,9 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         title = release.get("title", "")
         quality_name = release.get("quality", {}).get("quality", {}).get("name", "")
         url = release.get("downloadUrl") or release.get("magnetUrl")
+        seeders = _seeders_for_release(release)
+        peers = _peers_for_release(release)
+        protocol = _protocol_for_release(release)
 
         if cf_score < min_score or not url:
             continue
@@ -289,6 +370,20 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
             continue
         if _is_blocked_quality(quality_name):
             debug(f"Release rejeitada pela qualidade: {title} [{quality_name}]")
+            continue
+        if seeders is not None and seeders <= 0:
+            info(
+                f"Release ignorada por indisponibilidade de seeds: {title} "
+                f"[seeders={seeders}, peers={peers if peers is not None else 'N/A'}]"
+            )
+            summary["skipped_no_seeds"].append(
+                {
+                    "title": title,
+                    "indexer": release.get("indexer", ""),
+                    "seeders": seeders,
+                    "peers": peers,
+                }
+            )
             continue
 
         tiebreaker_score, justificativa = _calculate_tiebreaker(release, original_cut_keywords)
@@ -306,16 +401,24 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
                 "indexer": release.get("indexer", ""),
                 "downloadUrl": release.get("downloadUrl"),
                 "magnetUrl": release.get("magnetUrl"),
+                "seeders": seeders,
+                "peers": peers,
+                "protocol": protocol,
+                "rejection_reason": None,
             }
         )
 
     if not candidates:
+        if summary["skipped_no_seeds"]:
+            summary["reason"] = "NO_AVAILABLE_SEEDS"
+        _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
         debug(f"Nenhum release elegível encontrado (min_score={min_score}).")
         return []
 
     candidates.sort(
         key=lambda candidate: (
             candidate["tiebreaker_score"],
+            candidate["seeders"] if candidate.get("seeders") is not None else -1,
             1 if "WEBDL" in candidate["quality"].upper() or "WEB-DL" in candidate["quality"].upper() else 0,
             -candidate["size"],
         ),
@@ -328,6 +431,9 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
             f"{candidate['title']} ({candidate['justificativa']})"
         )
 
+    summary["eligible_count"] = len(candidates[:5])
+    summary["reason"] = "OK"
+    _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
     return candidates[:5]
 
 

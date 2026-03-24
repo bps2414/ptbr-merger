@@ -67,6 +67,9 @@ def test_build_embed_payload_includes_cover_progress_and_eta():
             "score": 47025,
             "process_runtime": 92.4,
             "eta_seconds": 180,
+            "qbit_state": "downloading",
+            "num_seeds": 4,
+            "num_leechs": 2,
             "diff": 0.0,
             "offset_estimate": 0.0,
         },
@@ -84,4 +87,16 @@ def test_build_embed_payload_includes_cover_progress_and_eta():
     assert "ETA" in field_names
     assert "Fase" in field_names
     assert "Release" in field_names
+    assert "Estado qBit" in field_names
+    assert "Seeds" in field_names
+    assert "Peers" in field_names
     assert "Diagnóstico" in field_names
+
+
+def test_build_message_progress_is_human_readable():
+    message = notifier._build_message(
+        "PROGRESS",
+        {"title": "Alien: Romulus", "year": "2024"},
+    )
+
+    assert message == "PROGRESS: Processando Alien: Romulus (2024)."

@@ -29,6 +29,17 @@ _ACTIVE_STATES = {
     "allocating",
     "moving",
 }
+_PRIORITY_ACTIVE_STATES = {
+    "metaDL",
+    "forcedMetaDL",
+    "downloading",
+    "forcedDL",
+    "queuedDL",
+    "stalledDL",
+    "checkingDL",
+    "checkingResumeData",
+    "allocating",
+}
 
 
 @dataclass
@@ -40,6 +51,10 @@ class QbitAddResult:
     save_path: str | None = None
     existing: bool = False
     completed: bool = False
+    progress: float | None = None
+    eta_seconds: int | None = None
+    num_seeds: int | None = None
+    num_leechs: int | None = None
 
 
 def _build_tag(tmdb_id: str) -> str:
@@ -103,6 +118,10 @@ def _torrent_to_result(torrent: dict, success: bool = True, existing: bool = Fal
         save_path=torrent.get("save_path"),
         existing=existing,
         completed=_progress_pct(torrent) >= 100.0,
+        progress=_progress_pct(torrent),
+        eta_seconds=torrent.get("eta"),
+        num_seeds=torrent.get("num_seeds"),
+        num_leechs=torrent.get("num_leechs"),
     )
 
 
@@ -136,6 +155,143 @@ def _get_torrent_by_hash(session: requests.Session, torrent_hash: str) -> dict |
     except (requests.exceptions.RequestException, ValueError) as e:
         warning(f"Falha consultando torrent por hash no qBittorrent ({torrent_hash[:8]}...): {e}")
     return None
+
+
+def _fetch_all_torrents(session: requests.Session) -> list[dict]:
+    try:
+        response = session.get(
+            urljoin(_BASE_URL, "/api/v2/torrents/info"),
+            params={"filter": "all"},
+            timeout=10,
+        )
+        response.raise_for_status()
+        items = response.json()
+        return items if isinstance(items, list) else []
+    except (requests.exceptions.RequestException, ValueError) as e:
+        warning(f"Falha consultando lista completa de torrents no qBittorrent: {e}")
+        return []
+
+
+def _is_ptbrmerger_torrent(torrent: dict) -> bool:
+    category = str(torrent.get("category", "") or "")
+    tags = str(torrent.get("tags", "") or "")
+    return category == "ptbrmerger" or "ptbrmerger-tmdbid-" in tags
+
+
+def _is_priority_active(torrent: dict) -> bool:
+    state = str(torrent.get("state", "") or "")
+    return state in _PRIORITY_ACTIVE_STATES and _progress_pct(torrent) < 100.0
+
+
+def _apply_priority_action(session: requests.Session, endpoint: str, hashes: list[str]) -> None:
+    if not hashes:
+        return
+    session.post(
+        urljoin(_BASE_URL, endpoint),
+        data={"hashes": "|".join(sorted(set(hashes)))},
+        timeout=10,
+    ).raise_for_status()
+
+
+def _prioritize_ptbrmerger_downloads_with_session(
+    session: requests.Session,
+    slow_categories: tuple[str, ...] = ("radarr",),
+) -> bool:
+    torrents = _fetch_all_torrents(session)
+    if not torrents:
+        return False
+
+    ptbr_hashes = [
+        torrent.get("hash")
+        for torrent in torrents
+        if torrent.get("hash") and _is_ptbrmerger_torrent(torrent) and _is_priority_active(torrent)
+    ]
+    if not ptbr_hashes:
+        return False
+
+    slow_hashes = [
+        torrent.get("hash")
+        for torrent in torrents
+        if torrent.get("hash")
+        and str(torrent.get("category", "") or "") in slow_categories
+        and not _is_ptbrmerger_torrent(torrent)
+        and _is_priority_active(torrent)
+    ]
+
+    try:
+        _apply_priority_action(session, "/api/v2/torrents/topPrio", ptbr_hashes)
+        _apply_priority_action(session, "/api/v2/torrents/bottomPrio", slow_hashes)
+        info(
+            f"Prioridade do qBittorrent ajustada: {len(ptbr_hashes)} torrent(s) ptbrmerger no topo "
+            f"e {len(slow_hashes)} torrent(s) rebaixado(s) nas categorias {', '.join(slow_categories)}."
+        )
+        return True
+    except requests.exceptions.RequestException as e:
+        warning(f"Falha ajustando prioridade do qBittorrent para ptbrmerger: {e}")
+        return False
+
+
+def prioritize_ptbrmerger_downloads(slow_categories: tuple[str, ...] = ("radarr",)) -> bool:
+    session = login()
+    if not session:
+        return False
+    return _prioritize_ptbrmerger_downloads_with_session(session, slow_categories=slow_categories)
+
+
+def list_ptbr_torrents() -> list[dict]:
+    session = login()
+    if not session:
+        return []
+
+    try:
+        items = _fetch_all_torrents(session)
+        rows = []
+        for item in items:
+            category = item.get("category", "")
+            tags = item.get("tags", "")
+            if category != "ptbrmerger" and "ptbrmerger-tmdbid-" not in tags:
+                continue
+            rows.append(
+                {
+                    "hash": item.get("hash"),
+                    "name": item.get("name"),
+                    "state": item.get("state"),
+                    "progress": _progress_pct(item),
+                    "category": category,
+                    "tags": tags,
+                    "save_path": item.get("save_path"),
+                    "content_path": item.get("content_path"),
+                    "num_seeds": item.get("num_seeds"),
+                    "num_leechs": item.get("num_leechs"),
+                    "eta": item.get("eta"),
+                }
+            )
+        return rows
+    except (requests.exceptions.RequestException, ValueError) as e:
+        warning(f"Falha consultando torrents ptbrmerger no qBittorrent: {e}")
+        return []
+
+
+def get_torrent_debug_status(torrent_hash: str) -> dict | None:
+    session = login()
+    if not session or not torrent_hash:
+        return None
+    torrent = _get_torrent_by_hash(session, str(torrent_hash).strip())
+    if not torrent:
+        return None
+    return {
+        "hash": torrent.get("hash"),
+        "name": torrent.get("name"),
+        "state": torrent.get("state"),
+        "progress": _progress_pct(torrent),
+        "category": torrent.get("category"),
+        "tags": torrent.get("tags"),
+        "save_path": torrent.get("save_path"),
+        "content_path": torrent.get("content_path"),
+        "num_seeds": torrent.get("num_seeds"),
+        "num_leechs": torrent.get("num_leechs"),
+        "eta": torrent.get("eta"),
+    }
 
 
 def _extract_infohash_from_magnet(magnet_uri: str) -> str | None:
@@ -277,6 +433,7 @@ def add_torrent(url: str, tmdb_id: str) -> QbitAddResult:
         if duplicate_torrent:
             _apply_category_and_tags(session, infohash, category, tag)
             duplicate_torrent = _get_torrent_by_hash(session, infohash) or duplicate_torrent
+            _prioritize_ptbrmerger_downloads_with_session(session)
             warning(
                 f"O torrent PT-BR (TMDB {tmdb_id}) já existia no qBittorrent. Reaproveitando item duplicado: "
                 f"{_describe_torrent(duplicate_torrent)}"
@@ -315,6 +472,7 @@ def add_torrent(url: str, tmdb_id: str) -> QbitAddResult:
                 if duplicate_torrent:
                     _apply_category_and_tags(session, infohash, category, tag)
                     duplicate_torrent = _get_torrent_by_hash(session, infohash) or duplicate_torrent
+                    _prioritize_ptbrmerger_downloads_with_session(session)
                     warning(
                         f"qBittorrent não exibiu o torrent pela tag {tag}, mas o infohash já existia localmente. "
                         f"Reaproveitando item: {_describe_torrent(duplicate_torrent)}"
@@ -347,6 +505,7 @@ def add_torrent(url: str, tmdb_id: str) -> QbitAddResult:
             )
 
         if _is_confirmed_state(representative):
+            _prioritize_ptbrmerger_downloads_with_session(session)
             info(
                 f"Torrent PT-BR (TMDB {tmdb_id}) confirmado no qBittorrent na categoria ptbrmerger: "
                 f"{_describe_torrent(representative)}"

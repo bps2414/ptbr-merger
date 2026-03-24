@@ -97,6 +97,33 @@ def _enrich_context_with_movie(context: dict, movie: dict | None) -> None:
         context["backdrop_url"] = backdrop_url
 
 
+def _resolve_manual_context(file_path: Path, tmdb_id: str, title: str, year: str) -> tuple[str, str, str]:
+    if tmdb_id:
+        return str(tmdb_id), title, year
+
+    movie = radarr_client.get_movie_by_file_path(file_path)
+    if not movie:
+        return str(tmdb_id), title, year
+
+    resolved_tmdb = str(movie.get("tmdbId") or tmdb_id or "")
+    resolved_title = movie.get("title") or title
+    resolved_year = str(movie.get("year") or year or "")
+    return resolved_tmdb, resolved_title, resolved_year
+
+
+def _hydrate_context_from_qbit_result(context: dict, add_result: qbit_client.QbitAddResult) -> None:
+    if add_result.progress is not None:
+        context["progress_percent"] = int(round(float(add_result.progress)))
+    if add_result.eta_seconds not in (None, -1):
+        context["eta_seconds"] = add_result.eta_seconds
+    if add_result.num_seeds is not None:
+        context["num_seeds"] = add_result.num_seeds
+    if add_result.num_leechs is not None:
+        context["num_leechs"] = add_result.num_leechs
+    if add_result.state:
+        context["qbit_state"] = add_result.state
+
+
 def _record_history(context: dict, status: str, phase: str, **extra) -> None:
     event = {
         "tmdbId": context.get("tmdbId"),
@@ -127,6 +154,22 @@ def _update_progress(context: dict, phase: str) -> None:
 
 def _status_for_failure(queue_entry: dict, base_status: str) -> str:
     return "ABANDONED" if queue_entry.get("status") == "ABANDONED" else base_status
+
+
+def _normalize_infohash(torrent_hash: str | None) -> str | None:
+    if not torrent_hash:
+        return None
+    normalized = str(torrent_hash).strip().lower()
+    return normalized or None
+
+
+def _remember_infohash(context: dict, torrent_hash: str | None) -> None:
+    normalized = _normalize_infohash(torrent_hash)
+    if not normalized:
+        return
+    seen_hashes = context.setdefault("seen_infohashes", [])
+    if normalized not in seen_hashes:
+        seen_hashes.append(normalized)
 
 
 def _optimize_in_place(file_path: Path, context: dict, is_dry_run: bool) -> None:
@@ -171,9 +214,13 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
     info(f"O filme 4K {title} não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.")
     candidates = radarr_client.find_best_ptbr_release(tmdb_id)
     if not candidates:
+        search_summary = radarr_client.get_last_release_search_summary(tmdb_id) if tmdb_id else {}
+        status = "NO_AVAILABLE_SEEDS" if search_summary.get("reason") == "NO_AVAILABLE_SEEDS" else "NOT_FOUND"
+        if status == "NO_AVAILABLE_SEEDS":
+            warning(f"Nenhum candidato PT-BR com seeds disponÃ­veis foi encontrado para {title}.")
         warning(f"Nenhum candidato Dual Áudio encontrado para {title}. Iniciando otimização universal do original...")
         context["process_runtime"] = time.perf_counter() - overall_start
-        _record_history(context, "NOT_FOUND", "search")
+        _record_history(context, status, "search", search_summary=search_summary or None)
         _optimize_in_place(file_path, context, is_dry_run)
         notify_status("NOT_FOUND", context)
         return
@@ -197,6 +244,8 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
     info("Injetando torrent capturado diretamente no client P2P...")
     add_result = qbit_client.add_torrent(best["url"], tmdb_id)
     context["infohash"] = add_result.torrent_hash
+    _remember_infohash(context, add_result.torrent_hash)
+    _hydrate_context_from_qbit_result(context, add_result)
 
     if not add_result.success:
         context["process_runtime"] = time.perf_counter() - overall_start
@@ -209,6 +258,9 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
     info("Sucesso! O qBittorrent agora possui autonomia para baixar o áudio e acionar este script retroativamente.")
     if not (add_result.existing and add_result.completed):
         queue_manager.record_pending(tmdb_id, "await-download", candidate_index=0)
+        if context.get("discord_message_id"):
+            queue_manager.attach_metadata(tmdb_id, discord_message_id=context.get("discord_message_id"))
+        _update_progress(context, "download-await")
 
     if add_result.existing and add_result.completed:
         info("O torrent PT-BR já existia concluído no qBittorrent. Acionando processamento retroativo imediatamente.")
@@ -238,6 +290,10 @@ def run_merger(
     file_1080p = file_path
     context = dict(context)
     context["tmdbId"] = str(tmdb_id)
+    _remember_infohash(context, radarr_download_id or context.get("infohash"))
+    existing_entry = queue_manager.get_entry(tmdb_id)
+    if existing_entry and existing_entry.get("discord_message_id") and not context.get("discord_message_id"):
+        context["discord_message_id"] = existing_entry.get("discord_message_id")
     if candidates and current_index < len(candidates):
         candidate = candidates[current_index]
         context.update(
@@ -273,16 +329,75 @@ def run_merger(
         stage_timings[stage_name] = time.perf_counter() - stage_start
 
     def trigger_fallback(reason_text: str) -> None:
-        if candidates and current_index + 1 < len(candidates):
-            next_candidate = candidates[current_index + 1]
-            info(f"Fallback acionado por {reason_text}. Tentando candidato #{current_index + 2}: {next_candidate['title']}")
-            _record_history(context, "FALLBACK", "fallback", fallback_reason=reason_text, next_release=next_candidate["title"])
-            if not is_dry_run:
-                qbit_client.add_torrent(next_candidate["url"], tmdb_id)
-            else:
+        if not candidates or current_index + 1 >= len(candidates):
+            info(f"Fallback acionado por {reason_text}, mas a lista de candidatos jÃ¡ esgotou.")
+            return
+
+        seen_hashes = set(context.get("seen_infohashes", []))
+        for next_index in range(current_index + 1, len(candidates)):
+            next_candidate = candidates[next_index]
+            info(f"Fallback acionado por {reason_text}. Tentando candidato #{next_index + 1}: {next_candidate['title']}")
+            _record_history(
+                context,
+                "FALLBACK",
+                "fallback",
+                fallback_reason=reason_text,
+                next_release=next_candidate["title"],
+                next_candidate_index=next_index + 1,
+            )
+            if is_dry_run:
                 info(f"[DRY RUN - MERGER] Injetaria o fallback no qBittorrent: {next_candidate['title']}")
-        else:
-            info(f"Fallback acionado por {reason_text}, mas a lista de candidatos já esgotou.")
+                return
+
+            add_result = qbit_client.add_torrent(next_candidate["url"], tmdb_id)
+            duplicate_hash = _normalize_infohash(add_result.torrent_hash)
+            if duplicate_hash and duplicate_hash in seen_hashes:
+                warning(
+                    f"Fallback ignorado: candidato #{next_index + 1} resolve para o mesmo infohash jÃ¡ tentado "
+                    f"({duplicate_hash[:8]}...)."
+                )
+                _record_history(
+                    context,
+                    "SKIPPED_DUPLICATE_CONTENT",
+                    "fallback",
+                    fallback_reason=reason_text,
+                    skipped_release=next_candidate["title"],
+                    skipped_infohash=duplicate_hash,
+                    skipped_candidate_index=next_index + 1,
+                )
+                continue
+
+            _remember_infohash(context, add_result.torrent_hash)
+            seen_hashes = set(context.get("seen_infohashes", []))
+
+            if add_result.success and add_result.existing and add_result.completed:
+                info("Fallback reaproveitou um torrent jÃ¡ concluÃ­do. Continuando o processamento imediatamente.")
+                qbit_location = add_result.content_path or add_result.save_path
+                if qbit_location:
+                    qbit_root = Path(qbit_location)
+                    next_path = qbit_root if qbit_root.is_file() else _get_largest_mkv(qbit_root)
+                    if next_path:
+                        run_merger(
+                            next_path,
+                            0,
+                            tmdb_id,
+                            context,
+                            is_dry_run,
+                            add_result.torrent_hash or "",
+                            candidates,
+                            next_index,
+                        )
+                        return
+                    warning("Fallback encontrou torrent concluÃ­do, mas nÃ£o foi possÃ­vel resolver o arquivo .mkv.")
+                else:
+                    warning("Fallback encontrou torrent concluÃ­do, mas o qBittorrent nÃ£o informou o path do conteÃºdo.")
+                continue
+
+            return
+
+        info(f"Fallback acionado por {reason_text}, mas todos os candidatos restantes reaproveitam conteÃºdo jÃ¡ tentado.")
+        return
+
 
     try:
         resolve_start = time.perf_counter()
@@ -480,6 +595,8 @@ def main() -> None:
         if not file_path:
             raise ValueError("O Radarr não informou a env radarr_moviefile_path.")
 
+        tmdb_id, title, year = _resolve_manual_context(Path(file_path), tmdb_id, title, year)
+        context = _base_context(tmdb_id, title, year)
         run_analyzer(Path(file_path), tmdb_id, title, year, is_dry_run, "")
     except Exception as exc:
         error(f"[FATAL] Falha não recuperável no trigger: {exc}")

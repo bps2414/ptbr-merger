@@ -164,6 +164,8 @@ def notify_status(status: str, context: dict) -> None:
 
 def _build_message(status: str, context: dict) -> str:
     movie_name = _movie_name(context)
+    if status == "PROGRESS":
+        return f"PROGRESS: Processando {movie_name}."
 
     if status == "SUCCESS":
         return f"SUCCESS: Áudio PT-BR injetado com sucesso no filme {movie_name}"
@@ -221,6 +223,13 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         {"name": "Tempo decorrido", "value": runtime_text, "inline": True},
         {"name": "Diagnóstico", "value": _diagnostic_summary(context), "inline": False},
     ]
+
+    if context.get("qbit_state"):
+        fields.append({"name": "Estado qBit", "value": str(context["qbit_state"]), "inline": True})
+    if context.get("num_seeds") is not None:
+        fields.append({"name": "Seeds", "value": str(context["num_seeds"]), "inline": True})
+    if context.get("num_leechs") is not None:
+        fields.append({"name": "Peers", "value": str(context["num_leechs"]), "inline": True})
 
     if context.get("release_title"):
         fields.append({"name": "Release", "value": str(context["release_title"])[:1024], "inline": False})
