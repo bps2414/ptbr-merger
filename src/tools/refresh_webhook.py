@@ -5,7 +5,7 @@ import src.qbit_client as qbit_client
 import src.radarr_client as radarr_client
 from src.config import get_config
 from src.history_manager import HistoryManager
-from src.notifier import info, send_progress_update, warning
+from src.notifier import info, notify_status, send_progress_update, warning
 from src.queue_manager import QueueManager
 
 config = get_config()
@@ -103,6 +103,60 @@ def build_refresh_payload(entry: dict, movie: dict | None, events: list[dict], t
     return _phase_for_queue_entry(entry, torrent), context
 
 
+def _status_for_entry(entry: dict, events: list[dict], tmdb_id: str) -> str:
+    latest = _latest_event(events, tmdb_id)
+    latest_status = str(latest.get("status") or "")
+    if latest_status:
+        return latest_status
+    status = str(entry.get("status") or "")
+    if status == "SUCCESS":
+        return "SUCCESS"
+    if status == "ABANDONED":
+        return "ABANDONED"
+    return "PROGRESS"
+
+
+def _context_from_history_only(tmdb_id: str, movie: dict | None, events: list[dict]) -> tuple[str, dict] | None:
+    latest = _latest_event(events, tmdb_id)
+    status = str(latest.get("status") or "")
+    if not status:
+        return None
+
+    context = {
+        "tmdbId": tmdb_id,
+        "title": (movie or {}).get("title") or latest.get("title") or f"TMDB_{tmdb_id}",
+        "year": str((movie or {}).get("year") or latest.get("year") or ""),
+        "candidate_index": latest.get("candidate_index"),
+        "release_title": latest.get("release_title"),
+        "indexer": latest.get("indexer"),
+        "score": latest.get("score"),
+        "diff": latest.get("sync_diff"),
+        "offset_estimate": latest.get("offset_estimate"),
+        "process_runtime": latest.get("process_runtime"),
+        "group": latest.get("group"),
+        "source_4k": latest.get("source_4k"),
+        "source_1080p": latest.get("source_1080p"),
+        "history_bonus": latest.get("history_bonus"),
+        "history_reason": latest.get("history_reason"),
+        "offset_applied": latest.get("offset_applied"),
+        "offset_applied_seconds": latest.get("offset_applied_seconds"),
+        "offset_outcome": latest.get("offset_outcome"),
+        "fingerprint_category": latest.get("fingerprint_category"),
+        "fingerprint_confidence": latest.get("fingerprint_confidence"),
+        "fingerprint_offset": latest.get("fingerprint_offset"),
+        "offset_strategy": latest.get("offset_strategy"),
+    }
+
+    poster_url = _extract_image_url(movie, "poster")
+    backdrop_url = _extract_image_url(movie, "fanart")
+    if poster_url:
+        context["poster_url"] = poster_url
+    if backdrop_url:
+        context["backdrop_url"] = backdrop_url
+
+    return status, context
+
+
 def refresh_webhooks(tmdb_id: str | None = None) -> int:
     queue_manager = QueueManager(BASE_DIR / config.processing.queue_file, max_attempts=config.processing.max_attempts)
     history_manager = HistoryManager(
@@ -120,20 +174,47 @@ def refresh_webhooks(tmdb_id: str | None = None) -> int:
             continue
         if not entry.get("discord_message_id"):
             continue
-        if entry.get("status") in {"SUCCESS", "ABANDONED"}:
-            continue
-
         current_tmdb = str(entry.get("tmdbId"))
         movie = radarr_client.get_movie_by_tmdbid(current_tmdb)
         torrent = _find_torrent_for_tmdb(torrent_rows, current_tmdb)
         phase, context = build_refresh_payload(entry, movie, history_events, torrent)
-        message_id = send_progress_update(phase=phase, context=context, message_id=context.get("discord_message_id"))
+        status = _status_for_entry(entry, history_events, current_tmdb)
+
+        if status == "PROGRESS":
+            message_id = send_progress_update(phase=phase, context=context, message_id=context.get("discord_message_id"))
+        else:
+            notify_status(status, context)
+            message_id = context.get("discord_message_id")
         if message_id:
             queue_manager.attach_metadata(current_tmdb, discord_message_id=message_id)
             updated += 1
             info(f"Webhook atualizado para TMDB {current_tmdb} na fase {phase}.")
         else:
             warning(f"Falha ao atualizar webhook para TMDB {current_tmdb}.")
+
+    if tmdb_id and updated == 0:
+        current_tmdb = str(tmdb_id)
+        movie = radarr_client.get_movie_by_tmdbid(current_tmdb)
+        history_only = _context_from_history_only(current_tmdb, movie, history_events)
+        if history_only:
+            status, context = history_only
+            notify_status(status, context)
+            message_id = context.get("discord_message_id")
+            if message_id:
+                status_phase = "analyzer" if status == "SKIPPED_HAS_PTBR" else "refresh"
+                existing_entry = queue_manager.get_entry(current_tmdb)
+                if existing_entry:
+                    queue_manager.attach_metadata(current_tmdb, discord_message_id=message_id)
+                else:
+                    if status in {"SUCCESS", "SKIPPED_HAS_PTBR"}:
+                        queue_manager.record_success(current_tmdb, status_phase, candidate_index=0)
+                    elif status == "ABANDONED":
+                        queue_manager.record_failure(current_tmdb, status_phase, "refresh_terminal_status", candidate_index=0)
+                    else:
+                        queue_manager.record_pending(current_tmdb, status_phase, candidate_index=0)
+                    queue_manager.attach_metadata(current_tmdb, discord_message_id=message_id)
+                updated += 1
+                info(f"Webhook terminal recriado para TMDB {current_tmdb} com base no histórico.")
 
     return updated
 

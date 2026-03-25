@@ -325,6 +325,8 @@ Force an immediate Discord webhook refresh using the current qBittorrent state:
 python -m src.tools.refresh_webhook --tmdb 945961
 ```
 
+The refresh command also rebuilds terminal webhook messages from `history.json` for flows like `SKIPPED_HAS_PTBR`, even if the original queue entry is missing or already finished.
+
 Or on Windows:
 
 ```bat

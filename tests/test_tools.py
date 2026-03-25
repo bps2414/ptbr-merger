@@ -2,6 +2,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -114,3 +115,112 @@ def test_build_refresh_payload_uses_queue_history_and_torrent_state():
     assert context["qbit_state"] == "downloading"
     assert context["num_seeds"] == 4
     assert context["fingerprint_category"] == "FINGERPRINT_OFFSET_OK"
+
+
+@patch("src.tools.refresh_webhook.notify_status")
+@patch("src.tools.refresh_webhook.radarr_client.get_movie_by_tmdbid")
+@patch("src.tools.refresh_webhook.qbit_client.list_ptbr_torrents")
+def test_refresh_webhooks_updates_terminal_skipped_entry(
+    mock_list_ptbr_torrents,
+    mock_get_movie,
+    mock_notify_status,
+    tmp_path: Path,
+):
+    import src.tools.refresh_webhook as refresh_webhook
+
+    queue_file = tmp_path / "queue.json"
+    history_file = tmp_path / "history.json"
+    queue_file.write_text(
+        json.dumps(
+            {
+                "1084242": {
+                    "tmdbId": "1084242",
+                    "phase": "analyzer",
+                    "candidate_index": 0,
+                    "attempts": 0,
+                    "status": "SUCCESS",
+                    "discord_message_id": "discord-final",
+                }
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    history_file.write_text(
+        json.dumps(
+            [
+                {
+                    "tmdbId": "1084242",
+                    "title": "Zootopia 2",
+                    "year": "2025",
+                    "status": "SKIPPED_HAS_PTBR",
+                    "phase": "analyzer",
+                }
+            ],
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    mock_get_movie.return_value = {"title": "Zootopia 2", "year": 2025, "images": []}
+    mock_list_ptbr_torrents.return_value = []
+
+    original_base_dir = refresh_webhook.BASE_DIR
+    refresh_webhook.BASE_DIR = tmp_path
+    try:
+        updated = refresh_webhook.refresh_webhooks(tmdb_id="1084242")
+    finally:
+        refresh_webhook.BASE_DIR = original_base_dir
+
+    assert updated == 1
+    mock_notify_status.assert_called_once()
+    assert mock_notify_status.call_args.args[0] == "SKIPPED_HAS_PTBR"
+    assert mock_notify_status.call_args.args[1]["discord_message_id"] == "discord-final"
+
+
+@patch("src.tools.refresh_webhook.notify_status")
+@patch("src.tools.refresh_webhook.radarr_client.get_movie_by_tmdbid")
+@patch("src.tools.refresh_webhook.qbit_client.list_ptbr_torrents")
+def test_refresh_webhooks_can_create_terminal_message_from_history_without_queue_entry(
+    mock_list_ptbr_torrents,
+    mock_get_movie,
+    mock_notify_status,
+    tmp_path: Path,
+):
+    import src.tools.refresh_webhook as refresh_webhook
+
+    history_file = tmp_path / "history.json"
+    history_file.write_text(
+        json.dumps(
+            [
+                {
+                    "tmdbId": "1084242",
+                    "title": "Zootopia 2",
+                    "year": "2025",
+                    "status": "SKIPPED_HAS_PTBR",
+                    "phase": "analyzer",
+                }
+            ],
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    mock_get_movie.return_value = {"title": "Zootopia 2", "year": 2025, "images": []}
+    mock_list_ptbr_torrents.return_value = []
+
+    def _notify(status, context):
+        context["discord_message_id"] = "discord-created"
+
+    mock_notify_status.side_effect = _notify
+
+    original_base_dir = refresh_webhook.BASE_DIR
+    refresh_webhook.BASE_DIR = tmp_path
+    try:
+        updated = refresh_webhook.refresh_webhooks(tmdb_id="1084242")
+    finally:
+        refresh_webhook.BASE_DIR = original_base_dir
+
+    assert updated == 1
+    mock_notify_status.assert_called_once()
+    queue_payload = json.loads((tmp_path / "queue.json").read_text(encoding="utf-8"))
+    assert queue_payload["1084242"]["status"] == "SUCCESS"
+    assert queue_payload["1084242"]["discord_message_id"] == "discord-created"

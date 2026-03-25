@@ -293,10 +293,15 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
     _update_progress(context, "search")
 
     if analyzer.has_ptbr_audio(file_path):
+        queue_manager.begin(tmdb_id, "analyzer", candidate_index=0)
         info(f"O filme 4K {title} já possui áudio nativo PT-BR. Iniciando otimização universal...")
         _record_history(context, "SKIPPED_HAS_PTBR", "analyzer")
         _optimize_in_place(file_path, context, is_dry_run)
+        context["process_runtime"] = time.perf_counter() - overall_start
+        queue_manager.record_success(tmdb_id, "analyzer", candidate_index=0)
         notify_status("SKIPPED_HAS_PTBR", context)
+        if context.get("discord_message_id"):
+            queue_manager.attach_metadata(tmdb_id, discord_message_id=context["discord_message_id"])
         return
 
     info(f"O filme 4K {title} não possui áudio nativo PT-BR. Acionando Bypass qBittorrent.")

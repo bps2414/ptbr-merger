@@ -682,3 +682,38 @@ def test_resolve_manual_context_uses_radarr_match_when_tmdb_is_missing(mock_get_
     assert tmdb_id == "945961"
     assert title == "Alien: Romulus"
     assert year == "2024"
+
+
+@patch("src.trigger.notify_status")
+@patch("src.trigger.send_progress_update", return_value="discord-progress")
+@patch("src.trigger._optimize_in_place")
+@patch("src.trigger.analyzer.has_ptbr_audio", return_value=True)
+def test_run_analyzer_persists_terminal_skipped_has_ptbr_state(
+    _mock_has_ptbr_audio,
+    mock_optimize_in_place,
+    _mock_send_progress,
+    mock_notify_status,
+    tmp_path,
+):
+    import src.trigger as trigger
+
+    trigger.queue_manager = QueueManager(tmp_path / "queue.json", max_attempts=3)
+    trigger.history_manager = HistoryManager(tmp_path / "history.json", max_entries=500)
+    trigger.group_history_manager = GroupHistoryManager(tmp_path / "group_history.json")
+
+    def _notify(status, context):
+        assert status == "SKIPPED_HAS_PTBR"
+        context["discord_message_id"] = "discord-final"
+
+    mock_notify_status.side_effect = _notify
+
+    movie_file = tmp_path / "movie4k.mkv"
+    movie_file.write_text("4k")
+
+    run_analyzer(movie_file, "1084242", "Zootopia 2", "2025", False, "")
+
+    entry = trigger.queue_manager.get_entry("1084242")
+    assert entry["status"] == "SUCCESS"
+    assert entry["phase"] == "analyzer"
+    assert entry["discord_message_id"] == "discord-final"
+    mock_optimize_in_place.assert_called_once()
