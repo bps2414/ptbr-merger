@@ -104,6 +104,41 @@ def test_add_torrent_reuses_existing_duplicate_and_applies_metadata(mock_login, 
     assert session.post.call_count == 2
 
 
+@patch("src.qbit_client._extract_infohash_from_url")
+@patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)
+@patch("src.qbit_client.login")
+def test_add_torrent_prefers_known_infohash_over_url_resolution(mock_login, _mock_prioritize, mock_extract_infohash):
+    session = MagicMock()
+    duplicate_payload = [
+        {
+            "hash": "knownhash123",
+            "state": "uploading",
+            "name": "Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+            "content_path": r"D:\Filmes\Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+            "save_path": r"D:\Filmes",
+            "progress": 1.0,
+        }
+    ]
+    session.get.side_effect = [
+        _response("[]", json_data=[]),
+        _response("payload", json_data=duplicate_payload),
+        _response("payload", json_data=duplicate_payload),
+    ]
+    session.post.return_value = _response("")
+    mock_login.return_value = session
+
+    result = qbit_client.add_torrent(
+        "https://tracker.example/torrent/123",
+        "1218925",
+        known_infohash="knownhash123",
+    )
+
+    assert result.success is True
+    assert result.existing is True
+    assert result.torrent_hash == "knownhash123"
+    mock_extract_infohash.assert_not_called()
+
+
 @patch("src.qbit_client._extract_infohash_from_url", return_value="af4673c60613cb4e7b2e71319e883af04b990c26")
 @patch("src.qbit_client.time.sleep", return_value=None)
 @patch("src.qbit_client._prioritize_ptbrmerger_downloads_with_session", return_value=True)

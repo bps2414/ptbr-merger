@@ -390,3 +390,76 @@ def test_find_best_ptbr_release_skips_exploratory_dual_with_explicit_foreign_aud
     candidates = radarr_client.find_best_ptbr_release("51")
 
     assert candidates == []
+
+
+@patch("src.radarr_client.group_history_manager.score_candidate", return_value=(-40, "combo-cut:-36, group-bad:-4"))
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_skips_precheck_bad_candidates(
+    mock_request,
+    mock_get_movie,
+    _mock_score_candidate,
+):
+    mock_get_movie.return_value = {
+        "id": 51,
+        "movieFile": {"path": r"D:\media\Sonic.3.2160p.WEB-DL.mkv"},
+        "runtime": 110,
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/strict",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 2,
+        }
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("51")
+
+    assert candidates == []
+    summary = radarr_client.get_last_release_search_summary("51")
+    assert summary["reason"] == "NO_MATCHES"
+    assert summary["skipped_precheck"][0]["title"] == "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv"
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_records_low_score_and_missing_url_rejections(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.Dublado.mkv",
+            "customFormatScore": 9999,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/low",
+            "indexer": "Catálogo Betor",
+            "seeders": 3,
+            "size": 1,
+        },
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "",
+            "magnetUrl": "",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert candidates == []
+    summary = radarr_client.get_last_release_search_summary("49")
+    assert len(summary["skipped_low_score_or_url"]) == 2
+    assert summary["skipped_low_score_or_url"][0]["missing_url"] is False
+    assert summary["skipped_low_score_or_url"][1]["missing_url"] is True

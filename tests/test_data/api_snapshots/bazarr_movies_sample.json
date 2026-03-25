@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "title": "Chainsaw Man - The Movie: Reze Arc",
+      "sceneName": "Chainsaw.Man.The.Movie.Reze.Arc.2025",
+      "tmdbId": 1218925,
+      "subtitles": [
+        {
+          "language": "pt-BR",
+          "forced": false
+        },
+        {
+          "language": "en",
+          "forced": false
+        }
+      ]
+    },
+    {
+      "title": "The Crow",
+      "tmdbid": 9495,
+      "missing_subtitles": [
+        "en"
+      ]
+    }
+  ]
+}

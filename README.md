@@ -19,6 +19,7 @@ Phase 2 hardening is already implemented in this repository. The current pipelin
 - qBittorrent queue bias that raises active `ptbrmerger` downloads above `radarr`
 - runtime/sync diagnostics with structured classification
 - operational ledger in `queue.json`
+- scheduled retry ledger in `retry_queue.json`
 - structured execution history in `history.json`
 - final-file validation before destructive replacement
 - Radarr success feedback via `ptbr-merged`
@@ -26,6 +27,10 @@ Phase 2 hardening is already implemented in this repository. The current pipelin
 - compatibility learning in `group_history.json` with lighter penalties for generic sources
 - conservative auto-offset for clearly eligible `OFFSET_SUSPECTED` candidates
 - NumPy-based audio fingerprinting for higher-confidence offset decisions
+- partial pre-check before download using evidence level, seeds and compatibility history
+- optional Bazarr subtitle fallback lookup for `NOT_FOUND` / `NO_AVAILABLE_SEEDS`
+- operational preflight to check environment blockers before a real movie run
+- runtime hygiene tooling to archive and reset queue/history/group history safely
 
 ## Stack
 
@@ -50,7 +55,13 @@ src/
   trigger.py          orchestration entrypoint for Radarr/qBittorrent events
 
 tests/
-  unit and integration-style coverage for analyzer, notifier, trigger, queue, history, qbit and Radarr client
+  unit coverage for analyzer, notifier, trigger, queue, history, qbit and Radarr client
+  test_media_integration.py     real ffmpeg/ffprobe integration over generated MKV fixtures
+  test_api_snapshots.py         API snapshot compatibility tests for Radarr/qBittorrent/Bazarr payload shapes
+  support/media_fixtures.py     deterministic corpus generator used by tests and scripts
+  support/api_snapshots.py      payload sanitizers and snapshot writer helpers
+  test_data/media_fixtures/     versioned manifest for local media fixtures
+  test_data/api_snapshots/      sanitized API snapshot corpus and manifest
 ```
 
 ## Current Flow
@@ -133,6 +144,9 @@ The current codebase is no longer a simple “extract and replace” script. It 
 - Retry/backoff
   Radarr API calls retry only on transient failures like timeout, connection issues, `429` and `5xx`.
 
+- Scheduled recovery loop
+  Recoverable failures such as `NOT_FOUND`, `NO_AVAILABLE_SEEDS`, `FINGERPRINT_LOW_CONFIDENCE` and `OFFSET_SUSPECTED_FAILED` can be queued for later replay through `retry_queue.json`.
+
 - Discord status editing
   The webhook creates one message and updates it as the process advances.
 
@@ -150,7 +164,77 @@ Project dependencies:
 requests>=2.31.0
 PyYAML>=6.0
 loguru>=0.7.0
+numpy>=1.26.0
 ```
+
+## Testing Without Downloading Real 4K Movies
+
+Phase 3C adds a deterministic local media corpus so sync, fingerprint, mux and stream detection can be validated without downloading full movies.
+
+The corpus covers:
+
+- `native_ptbr_ok`
+- `dual_sync_ok`
+- `dual_offset_ok`
+- `dual_cut_mismatch`
+- `ptbr_mistagged`
+- `chapters_and_subs`
+
+Generate the corpus manually:
+
+```bash
+python scripts/generate_media_fixtures.py --output-dir tmp/media-fixtures
+```
+
+Run only the real-media integration layer:
+
+```bash
+pytest -q tests/test_media_integration.py
+```
+
+Run the full suite:
+
+```bash
+pytest -q
+python -m compileall src tests
+```
+
+The fixtures are synthetic, deterministic and local. They use real `ffmpeg/ffprobe`, but they do not download anything from the internet.
+
+## Testing API Payload Drift Without Live Downloads
+
+Phase 3D adds a second deterministic compatibility layer for external service payloads.
+
+It covers:
+
+- Radarr movie and release payload shape drift
+- qBittorrent `/api/v2/torrents/info` shape compatibility
+- Bazarr movie payloads returned as either a raw list or a wrapped `data` object
+- preservation of `infoHash` from Radarr releases into the internal candidate model
+
+Capture sanitized snapshots from live services when available:
+
+```bash
+python scripts/capture_api_snapshots.py
+```
+
+This writes or refreshes snapshots under:
+
+```text
+tests/test_data/api_snapshots/
+```
+
+Run only the API compatibility layer:
+
+```bash
+pytest -q tests/test_api_snapshots.py
+```
+
+Important constraints:
+
+- the snapshots are sanitized before being stored in the repository
+- qBittorrent and Bazarr snapshots may remain representative fixtures if those services are offline or not authenticated in the local config
+- Radarr snapshots are captured from the live local instance when available
 
 ## Configuration
 
@@ -206,6 +290,20 @@ processing:
   queue_file: queue.json
   max_attempts: 3
   preserve_failed_artifacts: true
+
+retry:
+  queue_file: retry_queue.json
+  enabled: true
+  delay_hours:
+    - 1
+    - 6
+    - 24
+  max_attempts: 3
+
+bazarr:
+  url: ""
+  api_key: ""
+  language: pt-BR
 
 diagnostics:
   enable_runtime_heuristics: true
@@ -317,6 +415,8 @@ Show queue, recent history and `ptbrmerger` torrents:
 python -m src.tools.status
 ```
 
+This snapshot now includes `retry_queue.json` as well.
+
 Or on Windows:
 
 ```bat
@@ -335,6 +435,37 @@ Force an immediate Discord webhook refresh using the current qBittorrent state:
 python -m src.tools.refresh_webhook --tmdb 945961
 ```
 
+Run an operational preflight before testing a real movie:
+
+```bash
+python -m src.tools.preflight --json
+```
+
+Or on Windows:
+
+```bat
+scripts\preflight.bat
+```
+
+Archive and reset runtime state safely before a controlled real-movie test:
+
+```bash
+python -m src.tools.runtime_hygiene --json
+python -m src.tools.runtime_hygiene --apply --json
+```
+
+Or on Windows:
+
+```bat
+scripts\runtime-hygiene.bat
+```
+
+Replay due retries from `retry_queue.json`:
+
+```bash
+python src/trigger.py --retry-pending
+```
+
 The refresh command also rebuilds terminal webhook messages from `history.json` for flows like `SKIPPED_HAS_PTBR`, even if the original queue entry is missing or already finished.
 
 Or on Windows:
@@ -348,6 +479,7 @@ scripts\refresh-webhook.bat --tmdb 945961
 The project creates lightweight operational files in the repository root by default:
 
 - `queue.json`
+- `retry_queue.json`
 - `history.json`
 - `group_history.json`
 
@@ -366,8 +498,10 @@ The repository currently includes coverage for:
 - stream detection and sync diagnosis
 - qBittorrent injection and duplicate handling
 - Radarr retry/tag behavior
+- API payload compatibility for Radarr, qBittorrent and Bazarr snapshot shapes
 - Discord embed generation and editable progress messages
 - queue/history persistence
+- operational preflight and runtime hygiene tooling
 - trigger orchestration and final validation paths
 
 ## Notes

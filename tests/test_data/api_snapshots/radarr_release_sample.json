@@ -1,0 +1,196 @@
+[
+  {
+    "title": "Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+    "downloadUrl": "http://sanitized.local/6/download?apikey=<redacted>&link=<redacted>&file=Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+    "magnetUrl": "",
+    "protocol": "torrent",
+    "indexer": "Torrentio (Prowlarr)",
+    "customFormatScore": 18525,
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "webdl",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "size": 2619930112,
+    "seeders": 274,
+    "leechers": 0,
+    "infoHash": "dc61ee6830fe2fb1c32918ac8a7cb7b79f8d8425",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "releaseGroup": null,
+    "sceneSource": false
+  },
+  {
+    "title": "Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+    "downloadUrl": "http://sanitized.local/5/download?apikey=<redacted>&link=<redacted>&file=Chainsaw.Man.O.Filme.Arco.da.Reze.2025.1080p.WEB-DL.DUAL.5.1",
+    "magnetUrl": "",
+    "protocol": "torrent",
+    "indexer": "Catálogo BeTor (Prowlarr)",
+    "customFormatScore": 18525,
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "webdl",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "size": 2618165248,
+    "seeders": 0,
+    "leechers": 5,
+    "infoHash": "dc61ee6830fe2fb1c32918ac8a7cb7b79f8d8425",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "releaseGroup": null,
+    "sceneSource": false
+  },
+  {
+    "title": "Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF [ja,portuguese]",
+    "downloadUrl": "http://sanitized.local/5/download?apikey=<redacted>&link=<redacted>&file=Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF+%5Bja%2Cportuguese%5D",
+    "magnetUrl": "",
+    "protocol": "torrent",
+    "indexer": "Catálogo BeTor (Prowlarr)",
+    "customFormatScore": 17525,
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "webdl",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "size": 2618165248,
+    "seeders": 9,
+    "leechers": 12,
+    "infoHash": "c6468948c11eac4da27fab00c9969c2f3618bb1e",
+    "languages": [
+      {
+        "id": 18,
+        "name": "Portuguese"
+      }
+    ],
+    "releaseGroup": "SF",
+    "sceneSource": false
+  },
+  {
+    "title": "[ItachiUchiha] Chainsaw Man – The Movie: Reze Arc (2025) [WEBRip 1080p (800p) DS4K][AV1 EAC3+OPUS][Multi Audio][JPN][ENG][ITA][DE][ES-LA][ES-ES][FR][PT-BR][RU][Multi Subs] | Reze-hen",
+    "downloadUrl": "http://sanitized.local/6/download?apikey=<redacted>&link=<redacted>&file=%5BItachiUchiha%5D+Chainsaw+Man+%E2%80%93+The+Movie%3A+Reze+Arc+(2025)+%5BWEBRip+1080p+(800p)+DS4K%5D%5BAV1+EAC3%2BOPUS%5D%5BMulti+Audio%5D%5BJPN%5D%5BENG%5D%5BITA%5D%5BDE%5D%5BES-LA%5D%5BES-ES%5D%5BFR%5D%5BPT-BR%5D%5BRU%5D%5BMulti+Subs%5D+%7C+Reze-hen",
+    "magnetUrl": "",
+    "protocol": "torrent",
+    "indexer": "Torrentio (Prowlarr)",
+    "customFormatScore": -9980500,
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "size": 2920577792,
+    "seeders": 250,
+    "leechers": 0,
+    "infoHash": "80dffdddd1b01f006c6f76626193bda6b1aefae4",
+    "languages": [
+      {
+        "id": 4,
+        "name": "German"
+      },
+      {
+        "id": 3,
+        "name": "Spanish"
+      },
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 5,
+        "name": "Italian"
+      },
+      {
+        "id": 2,
+        "name": "French"
+      },
+      {
+        "id": 30,
+        "name": "Portuguese (Brazil)"
+      },
+      {
+        "id": 11,
+        "name": "Russian"
+      }
+    ],
+    "releaseGroup": "ItachiUchiha",
+    "sceneSource": false
+  },
+  {
+    "title": "Chainsaw Man The Movie Reze Arc 2025 REPACK 1080p AMZN WEB-DL DUAL DDP5 1 H",
+    "downloadUrl": "http://sanitized.local/6/download?apikey=<redacted>&link=<redacted>&file=Chainsaw+Man+The+Movie+Reze+Arc+2025+REPACK+1080p+AMZN+WEB-DL+DUAL+DDP5+1+H",
+    "magnetUrl": "",
+    "protocol": "torrent",
+    "indexer": "Torrentio (Prowlarr)",
+    "customFormatScore": 20275,
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "webdl",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 2,
+        "real": 0,
+        "isRepack": true
+      }
+    },
+    "size": 5454608384,
+    "seeders": 8,
+    "leechers": 0,
+    "infoHash": "5debd02280a17dede57bddda4ea74c1de580fdf0",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "releaseGroup": null,
+    "sceneSource": false
+  }
+]

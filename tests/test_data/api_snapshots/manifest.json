@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "snapshots": {
+    "radarr_movie_sample.json": {
+      "service": "radarr",
+      "source": "live-captured-sanitized",
+      "captured_at": "2026-03-25",
+      "notes": "Captured from the local Radarr instance and sanitized for repository storage."
+    },
+    "radarr_release_sample.json": {
+      "service": "radarr",
+      "source": "live-captured-sanitized",
+      "captured_at": "2026-03-25",
+      "notes": "Release rows captured from the local Radarr instance and sanitized."
+    },
+    "qbit_torrents_info_sample.json": {
+      "service": "qbittorrent",
+      "source": "representative-shape",
+      "captured_at": "2026-03-25",
+      "notes": "qBittorrent was offline during Phase 3D execution, so this snapshot preserves the current expected API shape for compatibility tests."
+    },
+    "bazarr_movies_sample.json": {
+      "service": "bazarr",
+      "source": "representative-shape",
+      "captured_at": "2026-03-25",
+      "notes": "Bazarr was reachable but not authenticated in this workspace config, so this snapshot preserves the current expected payload shape for compatibility tests."
+    }
+  }
+}

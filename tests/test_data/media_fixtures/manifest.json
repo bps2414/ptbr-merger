@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "fixtures": {
+    "native_ptbr_ok": {
+      "description": "Arquivo curto com audio PT-BR nativo para validar optimize-only e deteccao de stream.",
+      "expected": {
+        "has_ptbr": true
+      }
+    },
+    "dual_sync_ok": {
+      "description": "Par de arquivos com runtime e audio compativeis para merge real.",
+      "expected": {
+        "sync_category": "SYNC_OK"
+      }
+    },
+    "dual_offset_ok": {
+      "description": "Par com offset simples para validar fingerprint e auto-offset conservador.",
+      "expected": {
+        "fingerprint_category": "FINGERPRINT_OFFSET_OK"
+      }
+    },
+    "dual_cut_mismatch": {
+      "description": "Par estruturalmente diferente para validar rejeicao por drift/cut mismatch.",
+      "expected": {
+        "fingerprint_categories": [
+          "FINGERPRINT_DRIFT_SUSPECTED",
+          "FINGERPRINT_CUT_MISMATCH"
+        ]
+      }
+    },
+    "ptbr_mistagged": {
+      "description": "Arquivo com audio PT-BR real, mas language=und e title indicando PT-BR.",
+      "expected": {
+        "has_ptbr": true
+      }
+    },
+    "chapters_and_subs": {
+      "description": "Arquivo com chapters e subtitle real para validar preservacao no optimize-only.",
+      "expected": {
+        "has_chapters": true,
+        "has_subtitles": true
+      }
+    }
+  }
+}

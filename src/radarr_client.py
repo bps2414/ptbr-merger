@@ -328,6 +328,51 @@ def get_last_release_search_summary(tmdb_id: str) -> dict:
     return dict(_LAST_SEARCH_SUMMARY.get(str(tmdb_id), {}))
 
 
+def _log_search_summary(summary: dict) -> None:
+    if not summary:
+        return
+    counts = {
+        "low_score_or_url": len(summary.get("skipped_low_score_or_url", [])),
+        "blacklist": len(summary.get("skipped_blacklist", [])),
+        "quality": len(summary.get("skipped_quality", [])),
+        "no_seeds": len(summary.get("skipped_no_seeds", [])),
+        "no_ptbr": len(summary.get("skipped_no_ptbr_evidence", [])),
+        "precheck": len(summary.get("skipped_precheck", [])),
+    }
+    info(
+        "Resumo da busca PT-BR: "
+        + ", ".join(f"{key}={value}" for key, value in counts.items())
+        + f", eligible={summary.get('eligible_count', 0)}, reason={summary.get('reason', 'UNKNOWN')}"
+    )
+
+    for row in summary.get("skipped_low_score_or_url", [])[:3]:
+        debug(
+            "Rejeição low_score_or_url: "
+            f"title={row.get('title')} cf_score={row.get('cf_score')} missing_url={row.get('missing_url')}"
+        )
+
+
+def _precheck_candidate(
+    *,
+    evidence_level: str,
+    history_bonus: int,
+    history_reason: str,
+    seeders: int | None,
+) -> tuple[str, str]:
+    severe_negative = max(getattr(config.scoring, "history_penalty_cut_mismatch", 18) * 2, 30)
+    if history_bonus <= -severe_negative:
+        return "BAD", "history-severe-negative"
+    if evidence_level == "exploratory" and history_bonus < 0:
+        return "BAD", "exploratory-history-negative"
+    if seeders is not None and seeders <= 1:
+        return "WEAK", "low-seeds"
+    if evidence_level in {"soft", "exploratory"}:
+        return "WEAK", f"{evidence_level}-evidence"
+    if history_bonus < 0 or "bad" in (history_reason or "").lower():
+        return "WEAK", "history-warning"
+    return "GOOD", "eligible"
+
+
 def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tuple[int, str]:
     title = release.get("title", "")
     title_lower = title.lower()
@@ -392,8 +437,12 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         "eligible_count": 0,
         "soft_candidate_count": 0,
         "exploratory_candidate_count": 0,
+        "skipped_low_score_or_url": [],
+        "skipped_blacklist": [],
+        "skipped_quality": [],
         "skipped_no_seeds": [],
         "skipped_no_ptbr_evidence": [],
+        "skipped_precheck": [],
         "reason": "NO_MATCHES",
     }
     max_candidates = getattr(config.radarr, "ptbrmerger_max_candidates", 10)
@@ -457,15 +506,27 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         release_metadata = parse_release_metadata(title)
 
         if cf_score < min_score or not url:
+            summary["skipped_low_score_or_url"].append(
+                {
+                    "title": title,
+                    "indexer": release.get("indexer", ""),
+                    "cf_score": cf_score,
+                    "missing_url": not bool(url),
+                }
+            )
             continue
         if title in exclude_titles:
             debug(f"Release excluída (já tentada): {title}")
             continue
         if _is_blacklisted(title):
             debug(f"Release rejeitada pela blacklist: {title}")
+            summary["skipped_blacklist"].append({"title": title, "indexer": release.get("indexer", "")})
             continue
         if _is_blocked_quality(quality_name):
             debug(f"Release rejeitada pela qualidade: {title} [{quality_name}]")
+            summary["skipped_quality"].append(
+                {"title": title, "indexer": release.get("indexer", ""), "quality": quality_name}
+            )
             continue
         if seeders is not None and seeders <= 0:
             info(
@@ -500,12 +561,30 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
             group=release_metadata["group"],
         )
         effective_score = tiebreaker_score + history_bonus
+        precheck_result, precheck_reason = _precheck_candidate(
+            evidence_level="strict",
+            history_bonus=history_bonus,
+            history_reason=history_reason,
+            seeders=seeders,
+        )
+        if precheck_result == "BAD":
+            info(f"Release ignorada por pre-check ruim: {title} [motivo={precheck_reason}]")
+            summary["skipped_precheck"].append(
+                {
+                    "title": title,
+                    "indexer": release.get("indexer", ""),
+                    "result": precheck_result,
+                    "reason": precheck_reason,
+                }
+            )
+            continue
         info(f"Release detectada [Score {cf_score}][{quality_name}]: {title} | Tiebreaker: {tiebreaker_score}")
 
         candidates.append(
             {
                 "title": title,
                 "url": url,
+                "infohash": (release.get("infoHash") or release.get("infohash") or "").lower() or None,
                 "cf_score": cf_score,
                 "tiebreaker_score": tiebreaker_score,
                 "justificativa": justificativa,
@@ -525,6 +604,8 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
                 "history_reason": history_reason,
                 "effective_score": effective_score,
                 "history_metadata": release_metadata,
+                "precheck_result": precheck_result,
+                "precheck_reason": precheck_reason,
             }
         )
 
@@ -532,6 +613,7 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         if summary["skipped_no_seeds"]:
             summary["reason"] = "NO_AVAILABLE_SEEDS"
         _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
+        _log_search_summary(summary)
         debug(f"Nenhum release elegível encontrado (min_score={min_score}).")
         return []
 
@@ -547,13 +629,14 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
 
     for index, candidate in enumerate(candidates[:max_candidates], 1):
         info(
-            f"Candidato #{index} [Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][{candidate['quality']}]: "
-            f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']})"
+            f"Candidato #{index} [Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][Precheck {candidate.get('precheck_result', 'N/A')}][{candidate['quality']}]: "
+            f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']} | precheck:{candidate.get('precheck_reason', 'n/a')})"
         )
 
     summary["eligible_count"] = len(candidates[:max_candidates])
     summary["reason"] = "OK"
     _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
+    _log_search_summary(summary)
     return candidates[:max_candidates]
 
 
@@ -598,9 +681,17 @@ def _build_release_candidate(
         effective_score -= 10
         justificativa = f"{justificativa} | exploratory-evidence:{evidence_reason}"
 
+    precheck_result, precheck_reason = _precheck_candidate(
+        evidence_level=evidence_level,
+        history_bonus=history_bonus,
+        history_reason=history_reason,
+        seeders=seeders,
+    )
+
     return {
         "title": title,
         "url": release.get("downloadUrl") or release.get("magnetUrl"),
+        "infohash": (release.get("infoHash") or release.get("infohash") or "").lower() or None,
         "cf_score": release.get("customFormatScore", 0),
         "tiebreaker_score": tiebreaker_score,
         "justificativa": justificativa,
@@ -622,6 +713,8 @@ def _build_release_candidate(
         "history_metadata": release_metadata,
         "evidence_level": evidence_level,
         "evidence_reason": evidence_reason,
+        "precheck_result": precheck_result,
+        "precheck_reason": precheck_reason,
     }
 
 
@@ -632,6 +725,8 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
     for candidate in strict_candidates:
         candidate.setdefault("evidence_level", "strict")
         candidate.setdefault("evidence_reason", "minimum-ptbr-evidence")
+        candidate.setdefault("precheck_result", "GOOD")
+        candidate.setdefault("precheck_reason", "eligible")
     if len(strict_candidates) >= max_candidates:
         return strict_candidates[:max_candidates]
 
@@ -687,6 +782,9 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         soft_ok, soft_reason = _has_relaxed_ptbr_evidence(release)
         if soft_ok:
             candidate = _build_release_candidate(release, original_cut_keywords, source_4k, "soft", soft_reason)
+            if candidate["precheck_result"] == "BAD":
+                info(f"Release soft ignorada por pre-check ruim: {title} [motivo={candidate['precheck_reason']}]")
+                continue
             soft_candidates.append(candidate)
             info(
                 f"Release mantida como fallback permissivo: {title} "
@@ -698,6 +796,9 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         if not exploratory_ok:
             continue
         candidate = _build_release_candidate(release, original_cut_keywords, source_4k, "exploratory", exploratory_reason)
+        if candidate["precheck_result"] == "BAD":
+            info(f"Release exploratória ignorada por pre-check ruim: {title} [motivo={candidate['precheck_reason']}]")
+            continue
         exploratory_candidates.append(candidate)
         info(
             f"Release mantida como fallback exploratório: {title} "
@@ -717,8 +818,8 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
     if soft_candidates or exploratory_candidates:
         for index, candidate in enumerate(merged[:max_candidates], 1):
             info(
-                f"Candidato #{index} [{candidate.get('evidence_level', 'strict')}][Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][{candidate['quality']}]: "
-                f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']})"
+                f"Candidato #{index} [{candidate.get('evidence_level', 'strict')}][Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][Precheck {candidate.get('precheck_result', 'N/A')}][{candidate['quality']}]: "
+                f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']} | precheck:{candidate.get('precheck_reason', 'n/a')})"
             )
     return merged[:max_candidates]
 

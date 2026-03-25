@@ -100,3 +100,33 @@ def test_build_message_progress_is_human_readable():
     )
 
     assert message == "PROGRESS: Processando Alien: Romulus (2024)."
+
+
+def test_build_message_not_found_includes_bazarr_context_when_available():
+    message = notifier._build_message(
+        "NOT_FOUND",
+        {"title": "Sonic the Hedgehog 3", "year": "2024", "bazarr_status": "subtitle-found"},
+    )
+
+    assert "Bazarr: subtitle-found." in message
+
+
+def test_build_embed_payload_includes_retry_context():
+    payload = notifier._build_embed_payload(
+        "NO_AVAILABLE_SEEDS",
+        {
+            "title": "Sonic the Hedgehog 3",
+            "year": "2024",
+            "tmdbId": "939243",
+            "retry_reason": "NO_AVAILABLE_SEEDS",
+            "retry_scheduled_at": "2026-03-25T18:00:00+00:00",
+            "process_runtime": 12,
+        },
+        phase="search",
+    )
+
+    embed = payload["embeds"][0]
+    field_names = [field["name"] for field in embed["fields"]]
+
+    assert "Retry" in field_names
+    assert "Próxima tentativa" in field_names

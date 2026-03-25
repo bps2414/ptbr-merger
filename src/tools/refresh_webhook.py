@@ -71,6 +71,8 @@ def build_refresh_payload(entry: dict, movie: dict | None, events: list[dict], t
         "source_1080p": latest.get("source_1080p"),
         "history_bonus": latest.get("history_bonus"),
         "history_reason": latest.get("history_reason"),
+        "precheck_result": latest.get("precheck_result"),
+        "precheck_reason": latest.get("precheck_reason"),
         "offset_applied": latest.get("offset_applied"),
         "offset_applied_seconds": latest.get("offset_applied_seconds"),
         "offset_outcome": latest.get("offset_outcome"),
@@ -78,6 +80,10 @@ def build_refresh_payload(entry: dict, movie: dict | None, events: list[dict], t
         "fingerprint_confidence": latest.get("fingerprint_confidence"),
         "fingerprint_offset": latest.get("fingerprint_offset"),
         "offset_strategy": latest.get("offset_strategy"),
+        "retry_reason": latest.get("retry_reason"),
+        "retry_scheduled_at": latest.get("retry_scheduled_at"),
+        "bazarr_status": latest.get("bazarr_status"),
+        "bazarr_available": latest.get("bazarr_available"),
     }
 
     poster_url = _extract_image_url(movie, "poster")
@@ -138,6 +144,8 @@ def _context_from_history_only(tmdb_id: str, movie: dict | None, events: list[di
         "source_1080p": latest.get("source_1080p"),
         "history_bonus": latest.get("history_bonus"),
         "history_reason": latest.get("history_reason"),
+        "precheck_result": latest.get("precheck_result"),
+        "precheck_reason": latest.get("precheck_reason"),
         "offset_applied": latest.get("offset_applied"),
         "offset_applied_seconds": latest.get("offset_applied_seconds"),
         "offset_outcome": latest.get("offset_outcome"),
@@ -145,6 +153,10 @@ def _context_from_history_only(tmdb_id: str, movie: dict | None, events: list[di
         "fingerprint_confidence": latest.get("fingerprint_confidence"),
         "fingerprint_offset": latest.get("fingerprint_offset"),
         "offset_strategy": latest.get("offset_strategy"),
+        "retry_reason": latest.get("retry_reason"),
+        "retry_scheduled_at": latest.get("retry_scheduled_at"),
+        "bazarr_status": latest.get("bazarr_status"),
+        "bazarr_available": latest.get("bazarr_available"),
     }
 
     poster_url = _extract_image_url(movie, "poster")

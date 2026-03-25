@@ -1,0 +1,79 @@
+[
+  {
+    "id": 44,
+    "title": "Chainsaw Man - The Movie: Reze Arc",
+    "year": 2025,
+    "tmdbId": 1218925,
+    "imdbId": "tt30472557",
+    "runtime": 99,
+    "hasFile": true,
+    "path": "D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]",
+    "movieFile": {
+      "movieId": 44,
+      "relativePath": "Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv",
+      "path": "D:\\data\\media\\movies\\Chainsaw Man The Movie Reze Arc_(2025)_[imdbid-tt30472557]\\Chainsaw-Man-The-Movie-Reze-Arc-(2025)[imdbid-tt30472557][WEBDL-2160p][MA][DV-HDR10Plus][EAC3-Atmos5.1][h265][audio-[JA+EN]][subs-[PT]]-BYNDR.mkv",
+      "size": 19711050337,
+      "dateAdded": "2026-03-23T19:29:48Z",
+      "releaseGroup": "BYNDR",
+      "edition": "",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        },
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 18,
+          "name": "WEBDL-2160p",
+          "source": "webdl",
+          "resolution": 2160,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": true
+        }
+      },
+      "indexerFlags": 0,
+      "mediaInfo": {
+        "audioBitrate": 640000,
+        "audioChannels": 5.1,
+        "audioCodec": "EAC3",
+        "audioLanguages": "por/jpn/eng",
+        "audioStreamCount": 3,
+        "videoBitDepth": 10,
+        "videoBitrate": 24546519,
+        "videoCodec": "h265",
+        "videoFps": 23.976,
+        "videoDynamicRange": "HDR",
+        "videoDynamicRangeType": "DV HDR10Plus",
+        "resolution": "3840x2160",
+        "runTime": "1:40:15",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/eng/eng/por/por"
+      },
+      "originalFilePath": "movies\\Chainsaw.Man.The.Movie.Reze.Arc.2025.REPACK.2160p.MA.WEB-DL.DUAL.DDP5.1.Atmos.DV.HDR10P.H.265-BYNDR.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 14
+    },
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/44/poster.jpg?lastWrite=639098909697984732",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/poster.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/44/fanart.jpg?lastWrite=639098909703050937",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/fanart.jpg"
+      }
+    ],
+    "status": "released"
+  }
+]

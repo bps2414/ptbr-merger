@@ -411,7 +411,7 @@ def remove_torrent(torrent_hash: str, delete_files: bool = True) -> None:
     except requests.exceptions.RequestException as e:
         error(f"Deleção Qbit via API abortada em Falha de Requisição: {e}. O áudio remanescerá no HDD do seeder.")
 
-def add_torrent(url: str, tmdb_id: str) -> QbitAddResult:
+def add_torrent(url: str, tmdb_id: str, known_infohash: str | None = None) -> QbitAddResult:
     """
     Injeta um torrent (magnet ou arquivo URL) diretamente no qBittorrent, definindo
     a categoria e a tag contendo o TMDB ID para recuperação no script de post-download.
@@ -426,7 +426,7 @@ def add_torrent(url: str, tmdb_id: str) -> QbitAddResult:
     category = "ptbrmerger"
     existing_torrents = _list_torrents_by_tag(session, tag)
     known_hashes = {t.get("hash") for t in existing_torrents if t.get("hash")}
-    infohash = _extract_infohash_from_url(url)
+    infohash = (str(known_infohash).strip().lower() if known_infohash else "") or _extract_infohash_from_url(url)
 
     if infohash:
         duplicate_torrent = _get_torrent_by_hash(session, infohash)

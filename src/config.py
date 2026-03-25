@@ -59,7 +59,19 @@ class ProcessingConfig:
     max_attempts: int = 3
     preserve_failed_artifacts: bool = True
 
+@dataclass
+class RetryConfig:
+    queue_file: str = "retry_queue.json"
+    enabled: bool = True
+    delay_hours: list[int] = field(default_factory=lambda: [1, 6, 24])
+    max_attempts: int = 3
 
+
+@dataclass
+class BazarrConfig:
+    url: str = ""
+    api_key: str = ""
+    language: str = "pt-BR"
 @dataclass
 class DiagnosticsConfig:
     enable_runtime_heuristics: bool = True
@@ -109,6 +121,8 @@ class AppConfig:
     logging: LoggingConfig
     ptbr_keywords: PtbrKeywordsConfig
     processing: ProcessingConfig
+    retry: RetryConfig
+    bazarr: BazarrConfig
     diagnostics: DiagnosticsConfig
     scoring: ScoringConfig
     fingerprint: FingerprintConfig
@@ -172,6 +186,8 @@ def load_config(config_path: Path) -> AppConfig:
         logging=LoggingConfig(**data.get("logging", {})),
         ptbr_keywords=PtbrKeywordsConfig(**data.get("ptbr_keywords", {})),
         processing=ProcessingConfig(**data.get("processing", {})),
+        retry=RetryConfig(**data.get("retry", {})),
+        bazarr=BazarrConfig(**data.get("bazarr", {})),
         diagnostics=DiagnosticsConfig(**data.get("diagnostics", {})),
         scoring=ScoringConfig(**data.get("scoring", {})),
         fingerprint=FingerprintConfig(**data.get("fingerprint", {})),

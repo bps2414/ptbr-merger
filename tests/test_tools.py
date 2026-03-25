@@ -2,12 +2,17 @@ import json
 import os
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
+
+import requests
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from src.tools.preflight import run_preflight
 from src.tools.reset_queue_entry import reset_queue_entry
 from src.tools.refresh_webhook import build_refresh_payload
+from src.tools.runtime_hygiene import apply_runtime_hygiene, build_runtime_hygiene_plan
 from src.tools.status import build_status_snapshot
 from src.tools.tail_log import read_last_lines
 
@@ -25,6 +30,7 @@ def test_build_status_snapshot_reads_queue_and_history(tmp_path: Path):
     queue_file = tmp_path / "queue.json"
     history_file = tmp_path / "history.json"
     group_history_file = tmp_path / "group_history.json"
+    retry_queue_file = tmp_path / "retry_queue.json"
     queue_file.write_text(
         json.dumps({"680493": {"status": "FAILED", "attempts": 1}}, indent=2),
         encoding="utf-8",
@@ -37,18 +43,24 @@ def test_build_status_snapshot_reads_queue_and_history(tmp_path: Path):
         json.dumps([{"group": "sf", "source_4k": "AMZN.WEBDL", "source_1080p": "AMZN.WEBDL", "result": "SUCCESS"}], indent=2),
         encoding="utf-8",
     )
+    retry_queue_file.write_text(
+        json.dumps({"680493": {"reason": "NO_AVAILABLE_SEEDS", "retry_count": 0}}, indent=2),
+        encoding="utf-8",
+    )
 
     snapshot = build_status_snapshot(
         queue_file=queue_file,
         history_file=history_file,
         torrent_rows=[],
         group_history_file=group_history_file,
+        retry_queue_file=retry_queue_file,
     )
 
     assert snapshot["queue"]["680493"]["status"] == "FAILED"
     assert snapshot["history"][-1]["status"] == "FALLBACK"
     assert snapshot["torrents"] == []
     assert snapshot["compatibility"]["top_groups"][0]["group"] == "sf"
+    assert snapshot["retry_queue"]["680493"]["reason"] == "NO_AVAILABLE_SEEDS"
 
 
 def test_reset_queue_entry_removes_specific_tmdb_id(tmp_path: Path):
@@ -69,6 +81,88 @@ def test_reset_queue_entry_removes_specific_tmdb_id(tmp_path: Path):
     contents = json.loads(queue_file.read_text(encoding="utf-8"))
     assert "680493" not in contents
     assert contents["1368166"]["status"] == "SUCCESS"
+
+
+def test_build_runtime_hygiene_plan_reports_targets(tmp_path: Path):
+    queue_file = tmp_path / "queue.json"
+    queue_file.write_text("{}", encoding="utf-8")
+
+    plan = build_runtime_hygiene_plan([queue_file], tmp_path / ".runtime-archive")
+
+    assert plan["archive_root"].endswith(".runtime-archive")
+    assert plan["files"][0]["exists"] is True
+    assert plan["files"][0]["reset_to"] == "dict"
+
+
+def test_apply_runtime_hygiene_archives_and_resets_files(tmp_path: Path):
+    queue_file = tmp_path / "queue.json"
+    history_file = tmp_path / "history.json"
+    queue_file.write_text(json.dumps({"939243": {"status": "FAILED"}}, indent=2), encoding="utf-8")
+    history_file.write_text(json.dumps([{"tmdbId": "939243"}], indent=2), encoding="utf-8")
+
+    result = apply_runtime_hygiene([queue_file, history_file], tmp_path / ".runtime-archive")
+
+    assert Path(result["archive_dir"]).exists()
+    assert json.loads(queue_file.read_text(encoding="utf-8")) == {}
+    assert json.loads(history_file.read_text(encoding="utf-8")) == []
+    assert all(item["reset"] is True for item in result["results"])
+
+
+@patch("src.tools.preflight.qbit_login")
+@patch("src.tools.preflight.requests.get")
+def test_run_preflight_reports_warns_and_blockers(mock_get, mock_qbit_login, tmp_path: Path):
+    queue_file = tmp_path / "queue.json"
+    history_file = tmp_path / "history.json"
+    group_history_file = tmp_path / "group_history.json"
+    retry_queue_file = tmp_path / "retry_queue.json"
+    temp_root = tmp_path / "temp-root"
+    temp_root.mkdir()
+    queue_file.write_text("{}", encoding="utf-8")
+    history_file.write_text("[]", encoding="utf-8")
+    group_history_file.write_text("[]", encoding="utf-8")
+    retry_queue_file.write_text("{}", encoding="utf-8")
+
+    cfg = SimpleNamespace(
+        ffmpeg=SimpleNamespace(ffmpeg_path="python", ffprobe_path="python"),
+        radarr=SimpleNamespace(
+            url="http://localhost:7878",
+            api_key="token",
+            ptbrmerger_root_folder=str(temp_root),
+        ),
+        qbittorrent=SimpleNamespace(url="http://localhost:8080"),
+        bazarr=SimpleNamespace(url="", api_key="", language="pt-BR"),
+        notifications=SimpleNamespace(discord_webhook_url=""),
+        processing=SimpleNamespace(queue_file=queue_file.name),
+        retry=SimpleNamespace(queue_file=retry_queue_file.name),
+        logging=SimpleNamespace(history_file=history_file.name, group_history_file=group_history_file.name),
+    )
+
+    radarr_response = SimpleNamespace(
+        status_code=200,
+        text='{"version":"5.0.0"}',
+        json=lambda: {"version": "5.0.0"},
+        raise_for_status=lambda: None,
+    )
+
+    def _request(url, **kwargs):
+        if url.endswith("/api/v3/system/status"):
+            return radarr_response
+        raise requests.exceptions.ConnectionError("unexpected-url")
+
+    mock_get.side_effect = _request
+    mock_qbit_login.return_value = None
+
+    with patch("src.tools.preflight.get_config", return_value=cfg):
+        report = run_preflight(base_dir=tmp_path)
+
+    statuses = {check["name"]: check["status"] for check in report["checks"]}
+    assert report["status"] == "BLOCKER"
+    assert statuses["ffmpeg"] == "OK"
+    assert statuses["ffprobe"] == "OK"
+    assert statuses["radarr"] == "OK"
+    assert statuses["qbittorrent"] == "BLOCKER"
+    assert statuses["bazarr"] == "WARN"
+    assert statuses["discord"] == "WARN"
 
 
 def test_build_refresh_payload_uses_queue_history_and_torrent_state():

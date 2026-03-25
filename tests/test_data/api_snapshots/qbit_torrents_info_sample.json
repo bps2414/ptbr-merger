@@ -1,0 +1,28 @@
+[
+  {
+    "hash": "c6468948c11eac4da27fab00c9969c2f3618bb1e",
+    "name": "Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF",
+    "state": "downloading",
+    "progress": 0.642,
+    "category": "ptbrmerger",
+    "tags": "ptbrmerger-tmdbid-1218925",
+    "save_path": "D:\\media\\temp\\ptbrmerger",
+    "content_path": "D:\\media\\temp\\ptbrmerger\\Chainsaw.Man.O.Filme.-.Arco.da.Reze.2025.WEB-DL.1080p.x264.DUAL.5.1-SF",
+    "num_seeds": 4,
+    "num_leechs": 2,
+    "eta": 394
+  },
+  {
+    "hash": "179d38aa6054d62ca974a24717b9e05cbc6f0450",
+    "name": "Zootopia 2 2025 WEB-DL 2160p x265 DV HDR10 DUAL 5.1",
+    "state": "downloading",
+    "progress": 0.2282,
+    "category": "radarr",
+    "tags": "",
+    "save_path": "D:\\media\\torrents\\movies",
+    "content_path": "D:\\media\\torrents\\movies\\Zootopia 2 2025 WEB-DL 2160p x265 DV HDR10 DUAL 5.1",
+    "num_seeds": 9,
+    "num_leechs": 1,
+    "eta": 1120
+  }
+]

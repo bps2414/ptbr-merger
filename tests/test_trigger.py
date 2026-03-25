@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -10,6 +11,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from src.history_manager import HistoryManager
 from src.qbit_client import QbitAddResult
 from src.queue_manager import QueueManager
+from src.retry_queue_manager import RetryQueueManager
 from src.sync_intelligence import GroupHistoryManager
 from src.trigger import _resolve_manual_context, run_analyzer, run_merger
 
@@ -21,16 +23,19 @@ def isolate_trigger_state(tmp_path):
     original_queue_manager = trigger.queue_manager
     original_history_manager = trigger.history_manager
     original_group_history_manager = trigger.group_history_manager
+    original_retry_queue_manager = getattr(trigger, "retry_queue_manager", None)
 
     trigger.queue_manager = QueueManager(tmp_path / "queue.json", max_attempts=3)
     trigger.history_manager = HistoryManager(tmp_path / "history.json", max_entries=500)
     trigger.group_history_manager = GroupHistoryManager(tmp_path / "group_history.json")
+    trigger.retry_queue_manager = RetryQueueManager(tmp_path / "retry_queue.json")
 
     yield
 
     trigger.queue_manager = original_queue_manager
     trigger.history_manager = original_history_manager
     trigger.group_history_manager = original_group_history_manager
+    trigger.retry_queue_manager = original_retry_queue_manager
 
 
 @patch("src.trigger.run_merger")
@@ -52,7 +57,7 @@ def test_run_analyzer_processes_completed_duplicate_immediately(
     movie_file = Path(r"D:\media\movie4k.mkv")
     matched_1080p = Path(r"D:\Filmes\A.Empregada.2025.1080p.WEB-DL.DUAL.5.1\A.Empregada.2025.1080p.WEB-DL.DUAL.5.1.mkv")
 
-    mock_find_best_release.return_value = [{"url": "https://tracker.example/torrent/123"}]
+    mock_find_best_release.return_value = [{"url": "https://tracker.example/torrent/123", "infohash": "knownhash123"}]
     mock_add_torrent.return_value = QbitAddResult(
         success=True,
         torrent_hash="ff9b9024d88c50f30b03f76e16172a180a450daa",
@@ -75,8 +80,10 @@ def test_run_analyzer_processes_completed_duplicate_immediately(
     assert args[3]["infohash"] == "ff9b9024d88c50f30b03f76e16172a180a450daa"
     assert args[4] is False
     assert args[5] == "ff9b9024d88c50f30b03f76e16172a180a450daa"
-    assert args[6] == [{"url": "https://tracker.example/torrent/123"}]
+    assert args[6] == [{"url": "https://tracker.example/torrent/123", "infohash": "knownhash123"}]
     assert args[7] == 0
+    assert mock_add_torrent.call_args.args == ("https://tracker.example/torrent/123", "1368166")
+    assert mock_add_torrent.call_args.kwargs == {"known_infohash": "knownhash123"}
 
 
 @patch("src.trigger.qbit_client.remove_torrent")
@@ -404,6 +411,7 @@ def test_run_merger_falls_back_when_auto_offset_validation_fails(
 
     assert any(call.args[0] == "OFFSET_SUSPECTED_FAILED" for call in mock_notify_status.call_args_list)
     assert mock_add_torrent.call_args.args == ("https://tracker/2", "945961")
+    assert mock_add_torrent.call_args.kwargs == {"known_infohash": None}
     assert trigger.group_history_manager.summarize()["recent_attempts"][-1]["result"] == "OFFSET_SUSPECTED_FAILED"
     trigger.config.fingerprint.enabled = False
 
@@ -527,7 +535,7 @@ def test_run_merger_immediately_reprocesses_completed_duplicate_fallback(
             current_index=0,
         )
 
-    mock_add_torrent.assert_called_once_with("https://tracker/2", "680493")
+    mock_add_torrent.assert_called_once_with("https://tracker/2", "680493", known_infohash=None)
     mock_remove_torrent.assert_called_once_with("aed99a85e83722d31ccb742a757c700923819619", delete_files=True)
     recursive_args = mock_recursive_run_merger.call_args.args
     assert recursive_args[0] == file_1080p
@@ -664,7 +672,9 @@ def test_run_merger_skips_fallback_candidates_with_duplicate_infohash(
 
     assert mock_add_torrent.call_count == 2
     assert mock_add_torrent.call_args_list[0].args == ("https://tracker/2", "680493")
+    assert mock_add_torrent.call_args_list[0].kwargs == {"known_infohash": None}
     assert mock_add_torrent.call_args_list[1].args == ("https://tracker/3", "680493")
+    assert mock_add_torrent.call_args_list[1].kwargs == {"known_infohash": None}
     recursive_args = mock_recursive_run_merger.call_args.args
     assert recursive_args[5] == "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     assert recursive_args[7] == 2
@@ -721,3 +731,116 @@ def test_run_analyzer_persists_terminal_skipped_has_ptbr_state(
     assert entry["phase"] == "analyzer"
     assert entry["discord_message_id"] == "discord-final"
     mock_optimize_in_place.assert_called_once()
+
+
+@patch("src.trigger.notify_status")
+@patch("src.trigger._optimize_in_place")
+@patch("src.trigger.bazarr_client.lookup_ptbr_subtitles", return_value={"configured": False, "available": False, "reason": "disabled"})
+@patch("src.trigger.radarr_client.get_last_release_search_summary", return_value={"reason": "NO_AVAILABLE_SEEDS"})
+@patch("src.trigger.radarr_client.find_best_ptbr_release", return_value=[])
+@patch("src.trigger.analyzer.has_ptbr_audio", return_value=False)
+def test_run_analyzer_schedules_retry_for_no_available_seeds(
+    _mock_has_ptbr_audio,
+    _mock_find_best_release,
+    _mock_summary,
+    mock_bazarr_lookup,
+    mock_optimize,
+    mock_notify_status,
+    tmp_path,
+):
+    import src.trigger as trigger
+
+    trigger.queue_manager = QueueManager(tmp_path / "queue.json", max_attempts=3)
+    trigger.history_manager = HistoryManager(tmp_path / "history.json", max_entries=500)
+    trigger.group_history_manager = GroupHistoryManager(tmp_path / "group_history.json")
+    trigger.retry_queue_manager = RetryQueueManager(tmp_path / "retry_queue.json")
+
+    movie_file = tmp_path / "movie4k.mkv"
+    movie_file.write_text("4k")
+
+    run_analyzer(movie_file, "1084242", "Zootopia 2", "2025", False, "")
+
+    retry_entry = trigger.retry_queue_manager.get_entry("1084242")
+    assert retry_entry["reason"] == "NO_AVAILABLE_SEEDS"
+    assert retry_entry["retry_count"] == 0
+    mock_bazarr_lookup.assert_called_once()
+    mock_optimize.assert_called_once()
+    mock_notify_status.assert_called_once()
+
+
+@patch("src.trigger.notify_status")
+@patch("src.trigger.analyzer.diagnose_sync")
+@patch("src.trigger.radarr_client.get_movie_by_tmdbid")
+def test_run_merger_schedules_retry_for_fingerprint_low_confidence(
+    mock_get_movie,
+    mock_diagnose_sync,
+    mock_notify_status,
+    tmp_path,
+):
+    import src.trigger as trigger
+
+    trigger.queue_manager = QueueManager(tmp_path / "queue.json", max_attempts=3)
+    trigger.history_manager = HistoryManager(tmp_path / "history.json", max_entries=500)
+    trigger.group_history_manager = GroupHistoryManager(tmp_path / "group_history.json")
+    trigger.retry_queue_manager = RetryQueueManager(tmp_path / "retry_queue.json")
+
+    file_4k = tmp_path / "movie4k.mkv"
+    file_1080p = tmp_path / "movie1080p.mkv"
+    file_4k.write_text("4k")
+    file_1080p.write_text("1080p")
+
+    mock_get_movie.return_value = {
+        "id": 42,
+        "title": "The Housemaid",
+        "year": 2025,
+        "runtime": 120,
+        "movieFile": {"path": str(file_4k)},
+    }
+    mock_diagnose_sync.return_value = {
+        "sync_ok": False,
+        "category": "FINGERPRINT_LOW_CONFIDENCE",
+        "diff": 14.2,
+        "runtime_4k": 7200.0,
+        "runtime_1080p": 7214.2,
+        "runtime_oficial": 7200.0,
+        "offset_estimate": 14.2,
+        "offset_confidence": 0.4,
+    }
+
+    run_merger(file_1080p, 0, "1368166", {"title": "The Housemaid", "year": "2025"}, False, "", candidates=[], current_index=0)
+
+    retry_entry = trigger.retry_queue_manager.get_entry("1368166")
+    assert retry_entry["reason"] == "FINGERPRINT_LOW_CONFIDENCE"
+    mock_notify_status.assert_called()
+
+
+@patch("src.trigger.run_analyzer")
+@patch("src.trigger.radarr_client.get_movie_by_tmdbid")
+def test_process_pending_retries_replays_due_entries(
+    mock_get_movie,
+    mock_run_analyzer,
+    tmp_path,
+):
+    import src.trigger as trigger
+
+    trigger.retry_queue_manager = RetryQueueManager(tmp_path / "retry_queue.json", retry_delays_hours=[1], max_attempts=3)
+    trigger.queue_manager = QueueManager(tmp_path / "queue.json", max_attempts=3)
+
+    file_4k = tmp_path / "movie4k.mkv"
+    file_4k.write_text("4k")
+    mock_get_movie.return_value = {
+        "id": 42,
+        "title": "The Housemaid",
+        "year": 2025,
+        "movieFile": {"path": str(file_4k)},
+    }
+
+    trigger.retry_queue_manager.schedule_retry("1368166", "NOT_FOUND")
+    payload = trigger.retry_queue_manager._read()
+    payload["1368166"]["next_retry_at"] = (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat()
+    trigger.retry_queue_manager._write(payload)
+
+    processed = trigger.process_pending_retries()
+
+    assert processed == 1
+    mock_run_analyzer.assert_called_once()

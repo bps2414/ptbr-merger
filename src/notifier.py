@@ -59,6 +59,7 @@ _STATUS_VISUALS = {
     "SUCCESS": {"icon": "✅", "label": "Merge concluído"},
     "SKIPPED_HAS_PTBR": {"icon": "🎞️", "label": "Otimização direta"},
     "NOT_FOUND": {"icon": "🔎", "label": "Sem dual compatível"},
+    "NO_AVAILABLE_SEEDS": {"icon": "🌱", "label": "Sem seeds úteis"},
     "NOT_FOUND_STREAM": {"icon": "🎧", "label": "Faixa PT-BR ausente"},
     "SYNC_MISMATCH": {"icon": "⏱️", "label": "Sync incompatível"},
     "RUNTIME_INCOMPATIBLE": {"icon": "📏", "label": "Runtime incompatível"},
@@ -110,6 +111,7 @@ def _status_label(status: str) -> str:
         "SUCCESS": "Concluído",
         "SKIPPED_HAS_PTBR": "Otimização local",
         "NOT_FOUND": "Sem dual compatível",
+        "NO_AVAILABLE_SEEDS": "Sem seeds úteis",
         "NOT_FOUND_STREAM": "Faixa PT-BR ausente",
         "SYNC_MISMATCH": "Sync incompatível",
         "RUNTIME_INCOMPATIBLE": "Runtime incompatível",
@@ -157,6 +159,12 @@ def _diagnostic_summary(context: dict) -> str:
         parts.append(str(context["fingerprint_category"]))
     if context.get("fingerprint_confidence") is not None:
         parts.append(f"fp {float(context['fingerprint_confidence']):.3f}")
+    if context.get("retry_reason"):
+        parts.append(f"retry {context['retry_reason']}")
+    if context.get("bazarr_status"):
+        parts.append(f"bazarr {context['bazarr_status']}")
+    if context.get("precheck_result"):
+        parts.append(f"precheck {context['precheck_result']}")
     return " • ".join(parts) if parts else "Sem anomalias detectadas até aqui"
 
 
@@ -170,6 +178,7 @@ def notify_status(status: str, context: dict) -> None:
         info(message)
     elif status in (
         "NOT_FOUND",
+        "NO_AVAILABLE_SEEDS",
         "NOT_FOUND_STREAM",
         "SYNC_MISMATCH",
         "RUNTIME_INCOMPATIBLE",
@@ -193,6 +202,7 @@ def notify_status(status: str, context: dict) -> None:
 
 def _build_message(status: str, context: dict) -> str:
     movie_name = _movie_name(context)
+    bazarr_suffix = f" Bazarr: {context.get('bazarr_status')}." if context.get("bazarr_status") else ""
     if status == "PROGRESS":
         return f"PROGRESS: Processando {movie_name}."
 
@@ -201,7 +211,9 @@ def _build_message(status: str, context: dict) -> str:
     if status == "SKIPPED_HAS_PTBR":
         return f"SKIPPED: O filme {movie_name} já possui faixa de áudio PT-BR."
     if status == "NOT_FOUND":
-        return f"NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme {movie_name}."
+        return f"NOT_FOUND: Nenhuma versão PT-BR aceitável encontrada para o filme {movie_name}.{bazarr_suffix}"
+    if status == "NO_AVAILABLE_SEEDS":
+        return f"NO_AVAILABLE_SEEDS: releases PT-BR foram encontrados, mas todos estão sem seeds úteis para {movie_name}.{bazarr_suffix}"
     if status == "NOT_FOUND_STREAM":
         return f"NOT_FOUND_STREAM: Versão baixada, mas stream de idioma 'por' ausente em {movie_name}."
     if status == "SYNC_MISMATCH":
@@ -238,6 +250,7 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         "SKIPPED_HAS_PTBR": 0x64748B,
         "DUPLICATE_CALL": 0x64748B,
         "NOT_FOUND": 0xF59E0B,
+        "NO_AVAILABLE_SEEDS": 0xF59E0B,
         "NOT_FOUND_STREAM": 0xF59E0B,
         "SYNC_MISMATCH": 0xF97316,
         "RUNTIME_INCOMPATIBLE": 0xF97316,
@@ -272,6 +285,12 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         fields.append({"name": "Seeds", "value": str(context["num_seeds"]), "inline": True})
     if context.get("num_leechs") is not None:
         fields.append({"name": "Peers", "value": str(context["num_leechs"]), "inline": True})
+    if context.get("retry_reason"):
+        fields.append({"name": "Retry", "value": str(context["retry_reason"]), "inline": True})
+    if context.get("retry_scheduled_at"):
+        fields.append({"name": "Próxima tentativa", "value": str(context["retry_scheduled_at"]), "inline": True})
+    if context.get("bazarr_status"):
+        fields.append({"name": "Bazarr", "value": str(context["bazarr_status"]), "inline": True})
 
     if context.get("release_title"):
         fields.append({"name": "Release", "value": str(context["release_title"])[:1024], "inline": False})
@@ -287,6 +306,10 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         fields.append({"name": "History bonus", "value": str(context["history_bonus"]), "inline": True})
     if context.get("history_reason"):
         fields.append({"name": "Histórico", "value": str(context["history_reason"])[:1024], "inline": False})
+    if context.get("precheck_result"):
+        fields.append({"name": "Precheck", "value": str(context["precheck_result"]), "inline": True})
+    if context.get("precheck_reason"):
+        fields.append({"name": "Precheck motivo", "value": str(context["precheck_reason"]), "inline": True})
     if context.get("source_4k") or context.get("source_1080p"):
         fields.append(
             {

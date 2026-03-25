@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import src.analyzer as analyzer
 import src.audio_fingerprint as audio_fingerprint
+import src.bazarr_client as bazarr_client
 import src.merger as merger
 import src.qbit_client as qbit_client
 import src.radarr_client as radarr_client
@@ -15,6 +16,7 @@ from src.config import get_config
 from src.history_manager import HistoryManager
 from src.notifier import debug, error, info, notify_status, send_progress_update, warning
 from src.queue_manager import QueueManager
+from src.retry_queue_manager import RetryQueueManager
 from src.sync_intelligence import GroupHistoryManager, parse_release_metadata
 
 config = get_config()
@@ -28,6 +30,11 @@ group_history_manager = GroupHistoryManager(
     BASE_DIR / config.logging.group_history_file,
     max_entries=getattr(config.logging, "group_history_max_entries", 1000),
 )
+retry_queue_manager = RetryQueueManager(
+    BASE_DIR / config.retry.queue_file,
+    retry_delays_hours=getattr(config.retry, "delay_hours", [1, 6, 24]),
+    max_attempts=getattr(config.retry, "max_attempts", 3),
+)
 
 
 def parse_args():
@@ -38,6 +45,7 @@ def parse_args():
     parser.add_argument("--qbit-category", type=str, help="Categoria do torrent repassada via %%L.")
     parser.add_argument("--qbit-tags", type=str, help="Tags delimitadas por vírgula repassadas via %%G.")
     parser.add_argument("--qbit-hash", type=str, help="Info hash do qBittorrent via %%I.")
+    parser.add_argument("--retry-pending", action="store_true", help="Processa itens de retry_queue.json já vencidos.")
     return parser.parse_known_args()[0]
 
 
@@ -178,6 +186,8 @@ def _record_history(context: dict, status: str, phase: str, **extra) -> None:
         "source_1080p": context.get("source_1080p"),
         "history_bonus": context.get("history_bonus"),
         "history_reason": context.get("history_reason"),
+        "precheck_result": context.get("precheck_result"),
+        "precheck_reason": context.get("precheck_reason"),
         "offset_applied": context.get("offset_applied"),
         "offset_applied_seconds": context.get("offset_applied_seconds"),
         "offset_outcome": context.get("offset_outcome"),
@@ -186,6 +196,10 @@ def _record_history(context: dict, status: str, phase: str, **extra) -> None:
         "fingerprint_offset": context.get("fingerprint_offset"),
         "fingerprint_positions_used": context.get("fingerprint_positions_used"),
         "offset_strategy": context.get("offset_strategy"),
+        "retry_reason": context.get("retry_reason"),
+        "retry_scheduled_at": context.get("retry_scheduled_at"),
+        "bazarr_status": context.get("bazarr_status"),
+        "bazarr_available": context.get("bazarr_available"),
     }
     event.update(extra)
     history_manager.append({key: value for key, value in event.items() if value is not None})
@@ -199,6 +213,26 @@ def _update_progress(context: dict, phase: str) -> None:
 
 def _status_for_failure(queue_entry: dict, base_status: str) -> str:
     return "ABANDONED" if queue_entry.get("status") == "ABANDONED" else base_status
+
+
+def _schedule_retry_if_eligible(status: str, context: dict, **metadata) -> None:
+    if not getattr(config.retry, "enabled", True):
+        return
+    retryable_statuses = {"NOT_FOUND", "NO_AVAILABLE_SEEDS", "FINGERPRINT_LOW_CONFIDENCE", "OFFSET_SUSPECTED_FAILED"}
+    if status not in retryable_statuses:
+        return
+    retry_entry = retry_queue_manager.schedule_retry(
+        context["tmdbId"],
+        status,
+        metadata={
+            "title": context.get("title"),
+            "year": context.get("year"),
+            "last_release_title": context.get("release_title"),
+            **metadata,
+        },
+    )
+    context["retry_scheduled_at"] = retry_entry.get("next_retry_at")
+    context["retry_reason"] = status
 
 
 def _record_group_history(context: dict, result: str, diagnosis_category: str | None = None) -> None:
@@ -313,9 +347,13 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
             warning(f"Nenhum candidato PT-BR com seeds disponÃ­veis foi encontrado para {title}.")
         warning(f"Nenhum candidato Dual Áudio encontrado para {title}. Iniciando otimização universal do original...")
         context["process_runtime"] = time.perf_counter() - overall_start
-        _record_history(context, status, "search", search_summary=search_summary or None)
+        bazarr_result = bazarr_client.lookup_ptbr_subtitles(tmdb_id, title=title, year=year)
+        context["bazarr_status"] = bazarr_result.get("reason")
+        context["bazarr_available"] = bazarr_result.get("available")
+        _schedule_retry_if_eligible(status, context, search_summary=search_summary or None)
+        _record_history(context, status, "search", search_summary=search_summary or None, bazarr_result=bazarr_result)
         _optimize_in_place(file_path, context, is_dry_run)
-        notify_status("NOT_FOUND", context)
+        notify_status(status, context)
         return
 
     best = candidates[0]
@@ -330,6 +368,8 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
             "source_4k": best.get("source_4k"),
             "history_bonus": best.get("history_bonus"),
             "history_reason": best.get("history_reason"),
+            "precheck_result": best.get("precheck_result"),
+            "precheck_reason": best.get("precheck_reason"),
         }
     )
     _record_history(context, "CANDIDATE_SELECTED", "search")
@@ -340,7 +380,7 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
 
     _update_progress(context, "inject")
     info("Injetando torrent capturado diretamente no client P2P...")
-    add_result = qbit_client.add_torrent(best["url"], tmdb_id)
+    add_result = qbit_client.add_torrent(best["url"], tmdb_id, known_infohash=best.get("infohash"))
     context["infohash"] = add_result.torrent_hash
     _remember_infohash(context, add_result.torrent_hash)
     _hydrate_context_from_qbit_result(context, add_result)
@@ -405,6 +445,8 @@ def run_merger(
                 "source_4k": candidate.get("source_4k"),
                 "history_bonus": candidate.get("history_bonus"),
                 "history_reason": candidate.get("history_reason"),
+                "precheck_result": candidate.get("precheck_result"),
+                "precheck_reason": candidate.get("precheck_reason"),
             }
         )
 
@@ -465,7 +507,11 @@ def run_merger(
                 info(f"[DRY RUN - MERGER] Injetaria o fallback no qBittorrent: {next_candidate['title']}")
                 return
 
-            add_result = qbit_client.add_torrent(next_candidate["url"], tmdb_id)
+            add_result = qbit_client.add_torrent(
+                next_candidate["url"],
+                tmdb_id,
+                known_infohash=next_candidate.get("infohash"),
+            )
             duplicate_hash = _normalize_infohash(add_result.torrent_hash)
             if duplicate_hash and duplicate_hash in seen_hashes:
                 warning(
@@ -604,6 +650,7 @@ def run_merger(
                 else "SYNC_MISMATCH"
             )
             status = _status_for_failure(queue_entry, base_status)
+            _schedule_retry_if_eligible(status, context)
             notify_status(status, {**context, "diff": diagnosis.get("diff")})
             _record_history(
                 context,
@@ -685,6 +732,7 @@ def run_merger(
                     context["process_runtime"] = time.perf_counter() - started_at
                     context["offset_outcome"] = "failed"
                     status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    _schedule_retry_if_eligible(status, context, error=str(offset_err))
                     notify_status(status, {**context, "error": str(offset_err)})
                     _record_history(
                         context,
@@ -722,6 +770,7 @@ def run_merger(
                     context["process_runtime"] = time.perf_counter() - started_at
                     context["offset_outcome"] = "failed"
                     status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    _schedule_retry_if_eligible(status, context, error=str(validation_err))
                     notify_status(status, {**context, "error": str(validation_err)})
                     _record_history(
                         context,
@@ -801,12 +850,53 @@ def run_merger(
             error(f"WARNING não fatal: falha no cleanup remoto do qBittorrent: {server_err}")
 
 
+def process_pending_retries() -> int:
+    processed = 0
+    for entry in retry_queue_manager.get_due_entries():
+        tmdb_id = str(entry.get("tmdbId") or "")
+        if not tmdb_id:
+            continue
+        can_process, _ = queue_manager.can_process(tmdb_id)
+        if not can_process:
+            continue
+
+        movie = radarr_client.get_movie_by_tmdbid(tmdb_id)
+        if not movie or not movie.get("movieFile") or not movie["movieFile"].get("path"):
+            retry_queue_manager.bump_retry(tmdb_id)
+            continue
+
+        file_path = Path(movie["movieFile"]["path"])
+        if not file_path.exists():
+            retry_queue_manager.bump_retry(tmdb_id)
+            continue
+
+        retry_queue_manager.remove(tmdb_id)
+        run_analyzer(
+            file_path=file_path,
+            tmdb_id=tmdb_id,
+            title=movie.get("title") or entry.get("title") or "",
+            year=str(movie.get("year") or entry.get("year") or ""),
+            is_dry_run=False,
+            radarr_download_id="",
+        )
+        processed += 1
+
+    return processed
+
+
 def main() -> None:
     args = parse_args()
     is_dry_run = args.dry_run or str(os.environ.get("PTBRMERGER_DRY_RUN", "")).lower() == "true"
 
     if is_dry_run:
         info("========== EXECUTANDO MODULO MASTER EM [DRY-RUN] ==========")
+    else:
+        info("========== EXECUTANDO MODULO MASTER ==========")
+
+    if args.retry_pending:
+        processed = process_pending_retries()
+        info(f"Retries pendentes processados: {processed}")
+        return
 
     if args.qbit_category:
         if args.qbit_category.lower() == "ptbrmerger":

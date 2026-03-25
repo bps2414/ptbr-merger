@@ -5,3 +5,11 @@ queue.json
 group_history.json
 config.yml
 .env
+retry_queue.json
+ptbrmerger.log
+debug_stdout.txt
+debug_stderr.txt
+.runtime-archive/
+tmp/
+.codex/
+tests/test_data/api_snapshots/capture_report.json
