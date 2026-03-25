@@ -7,6 +7,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import src.analyzer as analyzer
+import src.audio_fingerprint as audio_fingerprint
 import src.merger as merger
 import src.qbit_client as qbit_client
 import src.radarr_client as radarr_client
@@ -14,6 +15,7 @@ from src.config import get_config
 from src.history_manager import HistoryManager
 from src.notifier import debug, error, info, notify_status, send_progress_update, warning
 from src.queue_manager import QueueManager
+from src.sync_intelligence import GroupHistoryManager, parse_release_metadata
 
 config = get_config()
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +23,10 @@ queue_manager = QueueManager(BASE_DIR / config.processing.queue_file, max_attemp
 history_manager = HistoryManager(
     BASE_DIR / config.logging.history_file,
     max_entries=getattr(config.logging, "history_max_entries", 500),
+)
+group_history_manager = GroupHistoryManager(
+    BASE_DIR / config.logging.group_history_file,
+    max_entries=getattr(config.logging, "group_history_max_entries", 1000),
 )
 
 
@@ -46,6 +52,32 @@ def _get_largest_mkv(folder_path: Path) -> Path | None:
     if not mkv_files:
         return None
     return max(mkv_files, key=lambda path: path.stat().st_size)
+
+
+def _resolve_qbit_completed_file(qbit_hash: str | None, qbit_path: str | None) -> Path | None:
+    torrent_status = qbit_client.get_torrent_debug_status(qbit_hash or "")
+    if torrent_status:
+        content_path = torrent_status.get("content_path")
+        if content_path:
+            content_obj = Path(content_path)
+            if content_obj.exists():
+                if content_obj.is_file() and content_obj.suffix.lower() == ".mkv":
+                    return content_obj
+                if content_obj.is_dir():
+                    resolved = _get_largest_mkv(content_obj)
+                    if resolved:
+                        return resolved
+
+    if not qbit_path:
+        return None
+
+    path_obj = Path(qbit_path)
+    if path_obj.exists():
+        if path_obj.is_file() and path_obj.suffix.lower() == ".mkv":
+            return path_obj
+        if path_obj.is_dir():
+            return _get_largest_mkv(path_obj)
+    return None
 
 
 def _resolve_4k_file(tmdb_id: str) -> Path:
@@ -141,6 +173,19 @@ def _record_history(context: dict, status: str, phase: str, **extra) -> None:
         "sync_diff": context.get("diff"),
         "offset_estimate": context.get("offset_estimate"),
         "process_runtime": context.get("process_runtime"),
+        "group": context.get("group"),
+        "source_4k": context.get("source_4k"),
+        "source_1080p": context.get("source_1080p"),
+        "history_bonus": context.get("history_bonus"),
+        "history_reason": context.get("history_reason"),
+        "offset_applied": context.get("offset_applied"),
+        "offset_applied_seconds": context.get("offset_applied_seconds"),
+        "offset_outcome": context.get("offset_outcome"),
+        "fingerprint_category": context.get("fingerprint_category"),
+        "fingerprint_confidence": context.get("fingerprint_confidence"),
+        "fingerprint_offset": context.get("fingerprint_offset"),
+        "fingerprint_positions_used": context.get("fingerprint_positions_used"),
+        "offset_strategy": context.get("offset_strategy"),
     }
     event.update(extra)
     history_manager.append({key: value for key, value in event.items() if value is not None})
@@ -154,6 +199,41 @@ def _update_progress(context: dict, phase: str) -> None:
 
 def _status_for_failure(queue_entry: dict, base_status: str) -> str:
     return "ABANDONED" if queue_entry.get("status") == "ABANDONED" else base_status
+
+
+def _record_group_history(context: dict, result: str, diagnosis_category: str | None = None) -> None:
+    group_history_manager.append_attempt(
+        {
+            "tmdbId": context.get("tmdbId"),
+            "release_title": context.get("release_title"),
+            "indexer": context.get("indexer"),
+            "group": context.get("group", "unknown"),
+            "source_4k": context.get("source_4k", "unknown"),
+            "source_1080p": context.get("source_1080p", "unknown"),
+            "runtime_4k": context.get("runtime_4k"),
+            "runtime_1080p": context.get("runtime_1080p"),
+            "runtime_oficial": context.get("runtime_oficial"),
+            "diagnosis_category": diagnosis_category or context.get("diagnosis_category"),
+            "sync_diff": context.get("diff"),
+            "offset_estimate": context.get("offset_estimate"),
+            "fingerprint_category": context.get("fingerprint_category"),
+            "fingerprint_confidence": context.get("fingerprint_confidence"),
+            "fingerprint_offset": context.get("fingerprint_offset"),
+            "result": result,
+        }
+    )
+
+
+def _should_run_fingerprint(diagnosis: dict) -> bool:
+    if not getattr(config.fingerprint, "enabled", False):
+        return False
+    if diagnosis.get("fingerprint_recommended"):
+        return True
+    return bool(
+        getattr(config.fingerprint, "allow_borderline_cut_retry", False)
+        and diagnosis.get("category") == "CUT_MISMATCH"
+        and float(diagnosis.get("diff") or 0.0) <= float(getattr(config.fingerprint, "max_offset_seconds", 90))
+    )
 
 
 def _normalize_infohash(torrent_hash: str | None) -> str | None:
@@ -185,6 +265,14 @@ def _optimize_in_place(file_path: Path, context: dict, is_dry_run: bool) -> None
             )
             info("[DRY RUN - OPTIMIZER] Otimização universal simulada:")
             info(f"   CMD -> {ffmpeg_cmd}")
+            if add_result.success:
+                remove_failed_candidate()
+            if add_result.success:
+                remove_failed_candidate()
+            if add_result.success:
+                remove_failed_candidate()
+            if add_result.success:
+                remove_failed_candidate()
             return
 
         merger.mux_audio(file_path, None, output_tmp)
@@ -231,7 +319,12 @@ def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_ru
             "candidate_index": 1,
             "release_title": best.get("title"),
             "indexer": best.get("indexer"),
-            "score": best.get("tiebreaker_score"),
+            "score": best.get("effective_score", best.get("tiebreaker_score")),
+            "group": best.get("group"),
+            "source_1080p": best.get("source_1080p"),
+            "source_4k": best.get("source_4k"),
+            "history_bonus": best.get("history_bonus"),
+            "history_reason": best.get("history_reason"),
         }
     )
     _record_history(context, "CANDIDATE_SELECTED", "search")
@@ -301,7 +394,12 @@ def run_merger(
                 "candidate_index": current_index + 1,
                 "release_title": candidate.get("title"),
                 "indexer": candidate.get("indexer"),
-                "score": candidate.get("tiebreaker_score"),
+                "score": candidate.get("effective_score", candidate.get("tiebreaker_score")),
+                "group": candidate.get("group"),
+                "source_1080p": candidate.get("source_1080p"),
+                "source_4k": candidate.get("source_4k"),
+                "history_bonus": candidate.get("history_bonus"),
+                "history_reason": candidate.get("history_reason"),
             }
         )
 
@@ -324,12 +422,25 @@ def run_merger(
     should_cleanup_qbit = False
     success = False
     preserve_failed = getattr(config.processing, "preserve_failed_artifacts", True)
+    failed_candidate_removed = False
 
     def mark_stage(stage_name: str, stage_start: float) -> None:
         stage_timings[stage_name] = time.perf_counter() - stage_start
 
+    def remove_failed_candidate() -> None:
+        nonlocal failed_candidate_removed
+        failed_hash = _normalize_infohash(radarr_download_id or context.get("infohash"))
+        if failed_candidate_removed or is_dry_run or not failed_hash:
+            return
+        try:
+            qbit_client.remove_torrent(failed_hash, delete_files=True)
+            failed_candidate_removed = True
+        except Exception as cleanup_err:
+            error(f"WARNING nÃ£o fatal: falha removendo candidato rejeitado do qBittorrent: {cleanup_err}")
+
     def trigger_fallback(reason_text: str) -> None:
         if not candidates or current_index + 1 >= len(candidates):
+            remove_failed_candidate()
             info(f"Fallback acionado por {reason_text}, mas a lista de candidatos jÃ¡ esgotou.")
             return
 
@@ -371,6 +482,7 @@ def run_merger(
             seen_hashes = set(context.get("seen_infohashes", []))
 
             if add_result.success and add_result.existing and add_result.completed:
+                remove_failed_candidate()
                 info("Fallback reaproveitou um torrent jÃ¡ concluÃ­do. Continuando o processamento imediatamente.")
                 qbit_location = add_result.content_path or add_result.save_path
                 if qbit_location:
@@ -393,6 +505,8 @@ def run_merger(
                     warning("Fallback encontrou torrent concluÃ­do, mas o qBittorrent nÃ£o informou o path do conteÃºdo.")
                 continue
 
+            if add_result.success:
+                remove_failed_candidate()
             return
 
         info(f"Fallback acionado por {reason_text}, mas todos os candidatos restantes reaproveitam conteÃºdo jÃ¡ tentado.")
@@ -405,6 +519,8 @@ def run_merger(
         _enrich_context_with_movie(context, original_movie)
         runtime_oficial = _runtime_to_seconds(original_movie)
         file_4k = _resolve_4k_file(tmdb_id)
+        if not context.get("source_4k") or context.get("source_4k") == "unknown":
+            context["source_4k"] = parse_release_metadata(file_4k.name)["source"]
         output_tmp = file_4k.parent / "output_tmp.mkv"
         audio_ptbr = file_1080p.parent / "audio_ptbr.eac3"
         mark_stage("resolve", resolve_start)
@@ -419,10 +535,50 @@ def run_merger(
                 "runtime_oficial": diagnosis.get("runtime_oficial"),
                 "diff": diagnosis.get("diff"),
                 "offset_estimate": diagnosis.get("offset_estimate"),
+                "diagnosis_category": diagnosis.get("category"),
+                "auto_offset_eligible": diagnosis.get("auto_offset_eligible"),
+                "auto_offset_reason": diagnosis.get("auto_offset_reason"),
+                "fingerprint_reason": diagnosis.get("fingerprint_reason"),
             }
         )
 
-        if not diagnosis.get("sync_ok"):
+        fingerprint_result = None
+        if _should_run_fingerprint(diagnosis):
+            fingerprint_stage_start = time.perf_counter()
+            fingerprint_result = audio_fingerprint.fingerprint_sync(
+                file_4k=file_4k,
+                file_1080p=file_1080p,
+                duration_4k=float(diagnosis.get("runtime_4k") or 0.0),
+            )
+            mark_stage("fingerprint", fingerprint_stage_start)
+            context.update(
+                {
+                    "fingerprint_category": fingerprint_result.get("category"),
+                    "fingerprint_confidence": fingerprint_result.get("confidence"),
+                    "fingerprint_offset": fingerprint_result.get("best_offset_seconds"),
+                    "fingerprint_positions_used": fingerprint_result.get("positions_used"),
+                }
+            )
+
+            if fingerprint_result.get("category") == "FINGERPRINT_SYNC_OK":
+                diagnosis["sync_ok"] = True
+                diagnosis["category"] = "SYNC_OK"
+                diagnosis["offset_estimate"] = 0.0
+            elif fingerprint_result.get("category") == "FINGERPRINT_OFFSET_OK":
+                diagnosis["category"] = "OFFSET_SUSPECTED"
+                diagnosis["auto_offset_eligible"] = True
+                diagnosis["auto_offset_reason"] = "fingerprint-eligible"
+                diagnosis["offset_estimate"] = fingerprint_result.get("best_offset_seconds")
+            elif fingerprint_result.get("category") in {"FINGERPRINT_DRIFT_SUSPECTED", "FINGERPRINT_CUT_MISMATCH", "FINGERPRINT_LOW_CONFIDENCE"}:
+                diagnosis["sync_ok"] = False
+                diagnosis["category"] = fingerprint_result.get("category")
+                diagnosis["auto_offset_eligible"] = False
+                diagnosis["auto_offset_reason"] = "fingerprint-blocked"
+                context["diagnosis_category"] = diagnosis["category"]
+
+        auto_offset_active = bool(diagnosis.get("category") == "OFFSET_SUSPECTED" and diagnosis.get("auto_offset_eligible"))
+
+        if not diagnosis.get("sync_ok") and not auto_offset_active:
             queue_entry = queue_manager.record_failure(
                 tmdb_id,
                 diagnosis.get("category", "sync"),
@@ -430,12 +586,33 @@ def run_merger(
                 candidate_index=current_index,
             )
             context["process_runtime"] = time.perf_counter() - started_at
-            base_status = diagnosis.get("category") if diagnosis.get("category") in {"SYNC_MISMATCH", "RUNTIME_INCOMPATIBLE", "OFFSET_SUSPECTED"} else "SYNC_MISMATCH"
+            base_status = (
+                diagnosis.get("category")
+                if diagnosis.get("category") in {
+                    "SYNC_MISMATCH",
+                    "RUNTIME_INCOMPATIBLE",
+                    "OFFSET_SUSPECTED",
+                    "FINGERPRINT_DRIFT_SUSPECTED",
+                    "FINGERPRINT_CUT_MISMATCH",
+                    "FINGERPRINT_LOW_CONFIDENCE",
+                }
+                else "SYNC_MISMATCH"
+            )
             status = _status_for_failure(queue_entry, base_status)
             notify_status(status, {**context, "diff": diagnosis.get("diff")})
-            _record_history(context, status, "sync", sync_category=diagnosis.get("category"))
+            _record_history(
+                context,
+                status,
+                "sync",
+                sync_category=diagnosis.get("category"),
+                fingerprint_category=context.get("fingerprint_category"),
+                fingerprint_confidence=context.get("fingerprint_confidence"),
+            )
+            _record_group_history(context, diagnosis.get("category", status), diagnosis_category=diagnosis.get("category"))
             if status != "ABANDONED":
                 trigger_fallback(diagnosis.get("category", "SYNC_MISMATCH"))
+            else:
+                remove_failed_candidate()
             return
 
         stream_start = time.perf_counter()
@@ -447,8 +624,11 @@ def run_merger(
             status = _status_for_failure(queue_entry, "NOT_FOUND_STREAM")
             notify_status(status, context)
             _record_history(context, status, "stream-check")
+            _record_group_history(context, "NOT_FOUND_STREAM", diagnosis_category=diagnosis.get("category"))
             if status != "ABANDONED":
                 trigger_fallback("NOT_FOUND_STREAM")
+            else:
+                remove_failed_candidate()
             return
 
         extract_start = time.perf_counter()
@@ -462,6 +642,16 @@ def run_merger(
         mark_stage("extract", extract_start)
 
         mux_start = time.perf_counter()
+        offset_seconds = None
+        if auto_offset_active:
+            offset_seconds = float(diagnosis.get("offset_estimate") or 0.0)
+            context["offset_applied"] = True
+            context["offset_applied_seconds"] = offset_seconds
+            context["offset_outcome"] = "attempting"
+            context["offset_strategy"] = "fingerprint" if context.get("fingerprint_category") == "FINGERPRINT_OFFSET_OK" else "heuristic"
+        else:
+            context["offset_applied"] = False
+            context["offset_strategy"] = "none"
         if is_dry_run:
             allowed_indices = analyzer.get_allowed_streams(file_4k)
             map_args = " ".join([f"-map 0:{idx}" for idx in allowed_indices])
@@ -469,10 +659,43 @@ def run_merger(
                 f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {audio_ptbr.name} "
                 f"-map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 {output_tmp.name}"
             )
+            if offset_seconds not in (None, 0.0):
+                ffmpeg_cmd_mux = (
+                    f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -itsoffset {offset_seconds:.3f} -i {audio_ptbr.name} "
+                    f"-map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 {output_tmp.name}"
+                )
             info(f"   M -> {ffmpeg_cmd_mux}")
         else:
             _update_progress(context, "mux")
-            merger.mux_audio(file_4k, audio_ptbr, output_tmp)
+            try:
+                merger.mux_audio(file_4k, audio_ptbr, output_tmp, audio_offset_seconds=offset_seconds)
+            except Exception as offset_err:
+                if auto_offset_active:
+                    queue_entry = queue_manager.record_failure(
+                        tmdb_id,
+                        "offset-auto",
+                        f"offset_failed:{offset_err}",
+                        candidate_index=current_index,
+                    )
+                    context["process_runtime"] = time.perf_counter() - started_at
+                    context["offset_outcome"] = "failed"
+                    status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    notify_status(status, {**context, "error": str(offset_err)})
+                    _record_history(
+                        context,
+                        status,
+                        "offset-mux",
+                        error=str(offset_err),
+                        auto_offset_reason=diagnosis.get("auto_offset_reason"),
+                        offset_strategy=context.get("offset_strategy"),
+                    )
+                    _record_group_history(context, "OFFSET_SUSPECTED_FAILED", diagnosis_category=diagnosis.get("category"))
+                    if status != "ABANDONED":
+                        trigger_fallback("OFFSET_SUSPECTED_FAILED")
+                    else:
+                        remove_failed_candidate()
+                    return
+                raise
         mark_stage("mux", mux_start)
 
         validate_start = time.perf_counter()
@@ -481,7 +704,35 @@ def run_merger(
             validation = {"valid": True, "reason": "OK"}
         else:
             _update_progress(context, "validate")
-            validation = merger.validate_and_replace(output_tmp, file_4k)
+            try:
+                validation = merger.validate_and_replace(output_tmp, file_4k)
+            except Exception as validation_err:
+                if auto_offset_active:
+                    queue_entry = queue_manager.record_failure(
+                        tmdb_id,
+                        "offset-validate",
+                        f"offset_validation_failed:{validation_err}",
+                        candidate_index=current_index,
+                    )
+                    context["process_runtime"] = time.perf_counter() - started_at
+                    context["offset_outcome"] = "failed"
+                    status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    notify_status(status, {**context, "error": str(validation_err)})
+                    _record_history(
+                        context,
+                        status,
+                        "offset-validate",
+                        error=str(validation_err),
+                        auto_offset_reason=diagnosis.get("auto_offset_reason"),
+                        offset_strategy=context.get("offset_strategy"),
+                    )
+                    _record_group_history(context, "OFFSET_SUSPECTED_FAILED", diagnosis_category=diagnosis.get("category"))
+                    if status != "ABANDONED":
+                        trigger_fallback("OFFSET_SUSPECTED_FAILED")
+                    else:
+                        remove_failed_candidate()
+                    return
+                raise
         mark_stage("validate_replace", validate_start)
 
         should_cleanup_qbit = True
@@ -496,12 +747,21 @@ def run_merger(
             mark_stage("rescan_tag", rescan_start)
 
         success = True
+        if auto_offset_active:
+            context["offset_outcome"] = "success"
         queue_manager.record_success(tmdb_id, "merge", candidate_index=current_index)
         context["process_runtime"] = time.perf_counter() - started_at
         context["validation_reason"] = validation.get("reason")
         info(f"Tempos por etapa: {stage_timings}")
         notify_status("SUCCESS", context)
-        _record_history(context, "SUCCESS", "merge", stage_timings=stage_timings)
+        if context.get("fingerprint_category") == "FINGERPRINT_SYNC_OK":
+            success_status = "FINGERPRINT_SYNC_OK"
+        elif context.get("offset_strategy") == "fingerprint":
+            success_status = "FINGERPRINT_OFFSET_OK"
+        else:
+            success_status = "SUCCESS"
+        _record_history(context, "SUCCESS", "merge", stage_timings=stage_timings, offset_strategy=context.get("offset_strategy"))
+        _record_group_history(context, success_status, diagnosis_category=diagnosis.get("category"))
     except Exception as mux_err:
         queue_entry = queue_manager.record_failure(tmdb_id, "merge", str(mux_err), candidate_index=current_index)
         context["process_runtime"] = time.perf_counter() - started_at
@@ -553,9 +813,12 @@ def main() -> None:
                 error("TMDB ID não foi encontrado na tag do torrent Bypass. O MUX não poderá ser pareado.")
                 sys.exit(0)
 
-            path_obj = _get_largest_mkv(Path(args.qbit_path)) if args.qbit_path else None
+            path_obj = _resolve_qbit_completed_file(args.qbit_hash, args.qbit_path)
             if not path_obj:
-                error(f"Arquivo .mkv ausente no diretório retornado pelo qBittorrent (%D): {args.qbit_path}")
+                error(
+                    "Arquivo .mkv ausente para o torrent concluído do qBittorrent. "
+                    f"hash={args.qbit_hash or ''} | path={args.qbit_path or ''}"
+                )
                 sys.exit(0)
 
             original_movie = radarr_client.get_movie_by_tmdbid(tmdb_id)

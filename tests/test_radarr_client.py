@@ -210,3 +210,183 @@ def test_find_best_ptbr_release_prefers_more_seeders_when_scores_tie(mock_reques
 
     assert candidates[0]["seeders"] == 9
     assert candidates[0]["peers"] == 12
+
+
+@patch("src.radarr_client.group_history_manager.score_candidate")
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_uses_history_bonus_to_promote_known_good_combo(mock_request, mock_get_movie, mock_score_candidate):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\Movie.2026.2160p.AMZN.WEB-DL.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.Dublado.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/dublado",
+            "indexer": "Catálogo Betor",
+            "seeders": 8,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 1,
+        },
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.PT-BR-BYNDR",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/dual",
+            "indexer": "Catálogo Betor",
+            "seeders": 2,
+            "peers": 8,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+    mock_score_candidate.side_effect = [(0, "history:none"), (12, "combo-success:+12")]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert candidates[0]["title"] == "Movie.2026.1080p.WEB-DL.DUAL.PT-BR-BYNDR"
+    assert candidates[0]["history_bonus"] == 12
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_skips_generic_non_ptbr_remux_even_with_high_cf_score(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 56,
+        "movieFile": {"path": r"D:\media\the-crow-4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "The.Crow.1994.4K.Remastered.1080p.BluRay.Remux.DTS-HD.5.1",
+            "customFormatScore": 10300,
+            "quality": {"quality": {"name": "Remux-1080p"}},
+            "downloadUrl": "https://tracker.example/remux",
+            "indexer": "Torrentio (Prowlarr)",
+            "seeders": 20,
+            "peers": 30,
+            "protocol": "torrent",
+            "size": 28000000000,
+        }
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("56")
+
+    assert candidates == []
+
+
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_accepts_dual_on_br_indexer_without_explicit_ptbr_token(mock_request, mock_get_movie):
+    mock_get_movie.return_value = {
+        "id": 49,
+        "movieFile": {"path": r"D:\media\movie4k.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEBRip.DUAL.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBRip-1080p"}},
+            "downloadUrl": "https://tracker.example/dual",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 1,
+        }
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("49")
+
+    assert len(candidates) == 1
+    assert candidates[0]["title"] == "Movie.2026.1080p.WEBRip.DUAL.mkv"
+
+
+@patch("src.radarr_client.group_history_manager.score_candidate", return_value=(0, "history:none"))
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_adds_exploratory_dual_candidates_after_strict_bank(
+    mock_request,
+    mock_get_movie,
+    _mock_score_candidate,
+):
+    mock_get_movie.return_value = {
+        "id": 51,
+        "movieFile": {"path": r"D:\media\Sonic.3.2160p.WEB-DL.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Movie.2026.1080p.WEB-DL.DUAL.PT-BR.mkv",
+            "customFormatScore": 15000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/strict",
+            "indexer": "Catálogo Betor",
+            "seeders": 5,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 2,
+        },
+        {
+            "title": "Movie.2026.1080p.WEB-DL.Dual.Audio.Multi-Subs",
+            "customFormatScore": 14900,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/exploratory",
+            "indexer": "Torrentio (Prowlarr)",
+            "seeders": 8,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("51")
+
+    assert len(candidates) == 2
+    assert candidates[0]["evidence_level"] == "strict"
+    assert candidates[1]["evidence_level"] == "exploratory"
+    assert "exploratory-evidence:dual-exploratory" in candidates[1]["justificativa"]
+
+
+@patch("src.radarr_client.group_history_manager.score_candidate", return_value=(0, "history:none"))
+@patch("src.radarr_client.get_movie_by_tmdbid")
+@patch("src.radarr_client._request")
+def test_find_best_ptbr_release_skips_exploratory_dual_with_explicit_foreign_audio_markers(
+    mock_request,
+    mock_get_movie,
+    _mock_score_candidate,
+):
+    mock_get_movie.return_value = {
+        "id": 51,
+        "movieFile": {"path": r"D:\media\Sonic.3.2160p.WEB-DL.mkv"},
+    }
+    mock_request.return_value = [
+        {
+            "title": "Sonic.3.La.Película.2024.1080p-Dual-Lat",
+            "customFormatScore": 18500,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/lat",
+            "indexer": "Torrentio (Prowlarr)",
+            "seeders": 10,
+            "peers": 10,
+            "protocol": "torrent",
+            "size": 2,
+        },
+        {
+            "title": "Sonic.3.Il.Film.2024.iTA-ENG.WEBDL.1080p.x264-CYBER.mkv",
+            "customFormatScore": 18000,
+            "quality": {"quality": {"name": "WEBDL-1080p"}},
+            "downloadUrl": "https://tracker.example/ita",
+            "indexer": "Torrentio (Prowlarr)",
+            "seeders": 7,
+            "peers": 7,
+            "protocol": "torrent",
+            "size": 2,
+        },
+    ]
+
+    candidates = radarr_client.find_best_ptbr_release("51")
+
+    assert candidates == []

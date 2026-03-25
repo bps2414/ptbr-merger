@@ -14,6 +14,7 @@ Phase 2 hardening is already implemented in this repository. The current pipelin
 
 - direct qBittorrent bypass mode with duplicate detection by infohash
 - PT-BR ranking with explicit weighting for `dublado`, `dual` and BR signals
+- multi-bank candidate search with `strict`, `soft` and `exploratory` fallback banks
 - seed-awareness before qBittorrent injection, skipping dead torrents with `0` seeders
 - qBittorrent queue bias that raises active `ptbrmerger` downloads above `radarr`
 - runtime/sync diagnostics with structured classification
@@ -22,6 +23,9 @@ Phase 2 hardening is already implemented in this repository. The current pipelin
 - final-file validation before destructive replacement
 - Radarr success feedback via `ptbr-merged`
 - Discord webhook progress updates with editable embeds
+- compatibility learning in `group_history.json` with lighter penalties for generic sources
+- conservative auto-offset for clearly eligible `OFFSET_SUSPECTED` candidates
+- NumPy-based audio fingerprinting for higher-confidence offset decisions
 
 ## Stack
 
@@ -62,7 +66,10 @@ tests/
 
 1. Radarr triggers `src/trigger.py`.
 2. `src/analyzer.py` confirms the 4K file does not contain PT-BR audio.
-3. `src/radarr_client.py` searches releases and ranks eligible PT-BR candidates.
+3. `src/radarr_client.py` searches releases and ranks candidates in banks:
+   - `strict`: explicit PT-BR evidence
+   - `soft`: relaxed PT-BR evidence
+   - `exploratory`: dual/multi fallback candidates kept as last resort
 4. Releases with `0` seeders are discarded before qBittorrent injection whenever Radarr provides availability metadata.
 5. `src/qbit_client.py` injects the chosen torrent into qBittorrent with:
    - category: `ptbrmerger`
@@ -89,6 +96,17 @@ The current codebase is no longer a simple “extract and replace” script. It 
 - `history.json`
   Stores structured events such as candidate selection, fallback, failure cause, runtimes and success.
 
+- `group_history.json`
+  Stores compatibility outcomes by release group and source pairing so future searches can promote known-good combos without over-penalizing generic `WEBDL -> WEBDL` cases.
+
+- Audio fingerprint sync
+  For `OFFSET_SUSPECTED` candidates, the pipeline can sample short PCM windows from the 4K and 1080p files, correlate them and decide between:
+  - `FINGERPRINT_SYNC_OK`
+  - `FINGERPRINT_OFFSET_OK`
+  - `FINGERPRINT_DRIFT_SUSPECTED`
+  - `FINGERPRINT_CUT_MISMATCH`
+  - `FINGERPRINT_LOW_CONFIDENCE`
+
 - Seed-aware search
   Releases with `seeders <= 0` are skipped before injection when Radarr exposes availability data. If all acceptable candidates are dead, the history records `NO_AVAILABLE_SEEDS`.
 
@@ -99,6 +117,12 @@ The current codebase is no longer a simple “extract and replace” script. It 
   - `OFFSET_SUSPECTED`
   - `RUNTIME_INCOMPATIBLE`
   - `UNKNOWN_SYNC_FAILURE`
+
+- Conservative auto-offset
+  Only `OFFSET_SUSPECTED` candidates that pass confidence and maximum-offset gates are retried with `-itsoffset`. Structural mismatches still go straight to fallback.
+
+- Exploratory fallback bank
+  Releases that do not meet the strict PT-BR gate but still look plausibly useful, such as generic `dual/multi` titles, can be preserved as last-resort fallback candidates instead of being discarded immediately.
 
 - Final-file validation
   The final MKV is checked for:
@@ -142,6 +166,7 @@ radarr:
   ptbrmerger_root_folder: D:\data\temp\ptbrmerger
   ptbrmerger_tag_name: ptbrmerger
   ptbrmerger_min_score: 10000
+  ptbrmerger_max_candidates: 10
   timeout: 10
   success_tag_label: ptbr-merged
 
@@ -176,6 +201,29 @@ diagnostics:
   enable_runtime_heuristics: true
   enable_offset_diagnostics: true
   offset_suspected_threshold_seconds: 180
+  enable_auto_offset: false
+  auto_offset_max_seconds: 90
+  auto_offset_min_confidence: 0.85
+
+scoring:
+  history_bonus_success: 8
+  history_penalty_cut_mismatch: 18
+  history_penalty_runtime_incompatible: 14
+  history_min_group_samples: 2
+  history_min_source_samples: 2
+
+fingerprint:
+  enabled: false
+  sample_rate: 2000
+  window_seconds: 12
+  max_offset_seconds: 90
+  min_confidence: 0.7
+  consistency_tolerance_seconds: 0.75
+  positions:
+    - head
+    - mid
+    - tail
+  allow_borderline_cut_retry: false
 
 ptbr_keywords:
   high_priority:
@@ -289,6 +337,7 @@ The project creates lightweight operational files in the repository root by defa
 
 - `queue.json`
 - `history.json`
+- `group_history.json`
 
 These are gitignored in this repository because they are runtime state, not source code.
 

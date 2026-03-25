@@ -60,9 +60,18 @@ def test_diagnose_sync_detects_cut_mismatch_when_diff_is_large(mock_get_duration
     assert diagnosis["diff"] == pytest.approx(305.791, abs=0.001)
 
 
+@patch("src.analyzer.config")
 @patch("src.analyzer.get_duration")
-def test_diagnose_sync_marks_small_drift_as_offset_suspected(mock_get_duration):
+def test_diagnose_sync_marks_small_drift_as_offset_suspected(mock_get_duration, mock_config):
     mock_get_duration.side_effect = [7200.0, 7245.0]
+    mock_config.sync.max_duration_diff_seconds = 30
+    mock_config.diagnostics.offset_suspected_threshold_seconds = 180
+    mock_config.diagnostics.enable_runtime_heuristics = True
+    mock_config.diagnostics.enable_offset_diagnostics = True
+    mock_config.diagnostics.enable_auto_offset = False
+    mock_config.diagnostics.auto_offset_max_seconds = 90
+    mock_config.diagnostics.auto_offset_min_confidence = 0.85
+    mock_config.fingerprint.enabled = False
 
     diagnosis = diagnose_sync(
         Path("movie4k.mkv"),
@@ -72,6 +81,33 @@ def test_diagnose_sync_marks_small_drift_as_offset_suspected(mock_get_duration):
 
     assert diagnosis["category"] == "OFFSET_SUSPECTED"
     assert diagnosis["offset_estimate"] == pytest.approx(45.0, abs=0.001)
+    assert diagnosis["auto_offset_eligible"] is False
+    assert diagnosis["fingerprint_recommended"] is False
+
+
+@patch("src.analyzer.get_duration")
+@patch("src.analyzer.config")
+def test_diagnose_sync_marks_offset_as_auto_offset_eligible(mock_config, mock_get_duration):
+    mock_get_duration.side_effect = [7200.0, 7245.0]
+    mock_config.sync.max_duration_diff_seconds = 30
+    mock_config.diagnostics.offset_suspected_threshold_seconds = 180
+    mock_config.diagnostics.enable_runtime_heuristics = True
+    mock_config.diagnostics.enable_offset_diagnostics = True
+    mock_config.diagnostics.enable_auto_offset = True
+    mock_config.diagnostics.auto_offset_max_seconds = 90
+    mock_config.diagnostics.auto_offset_min_confidence = 0.85
+    mock_config.fingerprint.enabled = True
+
+    diagnosis = diagnose_sync(
+        Path("movie4k.mkv"),
+        Path("movie1080p.mkv"),
+        runtime_oficial=None,
+    )
+
+    assert diagnosis["category"] == "OFFSET_SUSPECTED"
+    assert diagnosis["auto_offset_eligible"] is True
+    assert diagnosis["auto_offset_reason"] == "eligible"
+    assert diagnosis["fingerprint_recommended"] is True
 
 
 @patch("src.analyzer.get_duration")

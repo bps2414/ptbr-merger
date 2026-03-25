@@ -66,6 +66,18 @@ def build_refresh_payload(entry: dict, movie: dict | None, events: list[dict], t
         "diff": latest.get("sync_diff"),
         "offset_estimate": latest.get("offset_estimate"),
         "process_runtime": latest.get("process_runtime"),
+        "group": latest.get("group"),
+        "source_4k": latest.get("source_4k"),
+        "source_1080p": latest.get("source_1080p"),
+        "history_bonus": latest.get("history_bonus"),
+        "history_reason": latest.get("history_reason"),
+        "offset_applied": latest.get("offset_applied"),
+        "offset_applied_seconds": latest.get("offset_applied_seconds"),
+        "offset_outcome": latest.get("offset_outcome"),
+        "fingerprint_category": latest.get("fingerprint_category"),
+        "fingerprint_confidence": latest.get("fingerprint_confidence"),
+        "fingerprint_offset": latest.get("fingerprint_offset"),
+        "offset_strategy": latest.get("offset_strategy"),
     }
 
     poster_url = _extract_image_url(movie, "poster")

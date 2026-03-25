@@ -177,6 +177,10 @@ def diagnose_sync(file_4k: Path, file_1080p: Path, runtime_oficial: float | None
         "runtime_oficial": runtime_oficial,
         "offset_estimate": None,
         "offset_confidence": 0.0,
+        "auto_offset_eligible": False,
+        "auto_offset_reason": "not-evaluated",
+        "fingerprint_recommended": False,
+        "fingerprint_reason": "not-evaluated",
     }
 
     if duration_4k == 0.0 or duration_1080p == 0.0:
@@ -195,6 +199,8 @@ def diagnose_sync(file_4k: Path, file_1080p: Path, runtime_oficial: float | None
     if diff <= max_diff:
         diagnosis["sync_ok"] = True
         diagnosis["category"] = "SYNC_OK"
+        diagnosis["auto_offset_reason"] = "sync-ok"
+        diagnosis["fingerprint_reason"] = "sync-ok"
         return diagnosis
 
     if runtime_oficial is not None and getattr(config.diagnostics, "enable_runtime_heuristics", True):
@@ -207,6 +213,8 @@ def diagnose_sync(file_4k: Path, file_1080p: Path, runtime_oficial: float | None
                 f"Erro de sincronia: candidato 1080p diverge do runtime oficial em "
                 f"{diff_1080p_official:.3f}s."
             )
+            diagnosis["auto_offset_reason"] = "runtime-shows-cut-mismatch"
+            diagnosis["fingerprint_reason"] = "runtime-cut-mismatch"
             return diagnosis
 
         if diff_4k_official > max_diff and diff_1080p_official <= max_diff:
@@ -215,10 +223,28 @@ def diagnose_sync(file_4k: Path, file_1080p: Path, runtime_oficial: float | None
                 f"Runtime 4K diverge do runtime oficial em {diff_4k_official:.3f}s; "
                 "heurística marcou incompatibilidade estrutural."
             )
+            diagnosis["auto_offset_reason"] = "runtime-incompatible"
+            diagnosis["fingerprint_reason"] = "runtime-incompatible"
             return diagnosis
 
     if getattr(config.diagnostics, "enable_offset_diagnostics", True) and diff <= offset_threshold:
         diagnosis["category"] = "OFFSET_SUSPECTED"
+        if getattr(config.fingerprint, "enabled", False):
+            diagnosis["fingerprint_recommended"] = True
+            diagnosis["fingerprint_reason"] = "offset-suspected"
+        max_auto_offset = getattr(config.diagnostics, "auto_offset_max_seconds", offset_threshold)
+        min_confidence = getattr(config.diagnostics, "auto_offset_min_confidence", 0.85)
+        if not getattr(config.diagnostics, "enable_auto_offset", False):
+            diagnosis["auto_offset_reason"] = "auto-offset-disabled"
+        elif diagnosis["offset_estimate"] is None:
+            diagnosis["auto_offset_reason"] = "missing-offset"
+        elif abs(float(diagnosis["offset_estimate"])) > max_auto_offset:
+            diagnosis["auto_offset_reason"] = "offset-too-large"
+        elif float(diagnosis["offset_confidence"]) < float(min_confidence):
+            diagnosis["auto_offset_reason"] = "low-confidence"
+        else:
+            diagnosis["auto_offset_eligible"] = True
+            diagnosis["auto_offset_reason"] = "eligible"
         warning(
             f"Possível offset detectado: diferença de {diff:.3f}s dentro da janela "
             f"diagnóstica de {offset_threshold}s."
@@ -226,6 +252,8 @@ def diagnose_sync(file_4k: Path, file_1080p: Path, runtime_oficial: float | None
         return diagnosis
 
     diagnosis["category"] = "CUT_MISMATCH"
+    diagnosis["auto_offset_reason"] = "diff-too-large"
+    diagnosis["fingerprint_reason"] = "diff-too-large"
     warning(f"Erro de sincronia: diferença de {diff:.3f}s excede o limite estipulado de {max_diff}s.")
     return diagnosis
 

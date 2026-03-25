@@ -63,6 +63,10 @@ _STATUS_VISUALS = {
     "SYNC_MISMATCH": {"icon": "⏱️", "label": "Sync incompatível"},
     "RUNTIME_INCOMPATIBLE": {"icon": "📏", "label": "Runtime incompatível"},
     "OFFSET_SUSPECTED": {"icon": "🎚️", "label": "Offset suspeito"},
+    "OFFSET_SUSPECTED_FAILED": {"icon": "🧪", "label": "Offset falhou"},
+    "FINGERPRINT_LOW_CONFIDENCE": {"icon": "🫥", "label": "Fingerprint inconclusivo"},
+    "FINGERPRINT_CUT_MISMATCH": {"icon": "🧱", "label": "Fingerprint: corte diferente"},
+    "FINGERPRINT_DRIFT_SUSPECTED": {"icon": "📼", "label": "Fingerprint: drift suspeito"},
     "DUPLICATE_CALL": {"icon": "🌀", "label": "Execução duplicada"},
     "ABANDONED": {"icon": "🛑", "label": "Fluxo abandonado"},
     "ERROR": {"icon": "💥", "label": "Falha no pipeline"},
@@ -110,6 +114,10 @@ def _status_label(status: str) -> str:
         "SYNC_MISMATCH": "Sync incompatível",
         "RUNTIME_INCOMPATIBLE": "Runtime incompatível",
         "OFFSET_SUSPECTED": "Offset suspeito",
+        "OFFSET_SUSPECTED_FAILED": "Offset falhou",
+        "FINGERPRINT_LOW_CONFIDENCE": "Fingerprint inconclusivo",
+        "FINGERPRINT_CUT_MISMATCH": "Fingerprint: corte diferente",
+        "FINGERPRINT_DRIFT_SUSPECTED": "Fingerprint: drift suspeito",
         "DUPLICATE_CALL": "Execução duplicada",
         "ABANDONED": "Abandonado",
         "ERROR": "Erro",
@@ -139,6 +147,16 @@ def _diagnostic_summary(context: dict) -> str:
         parts.append(f"offset {float(context['offset_estimate']):.3f}s")
     if context.get("validation_reason"):
         parts.append(f"validação {context['validation_reason']}")
+    if context.get("source_4k") or context.get("source_1080p"):
+        parts.append(f"{context.get('source_4k', 'unknown')}→{context.get('source_1080p', 'unknown')}")
+    if context.get("offset_applied"):
+        parts.append(f"offset aplicado {float(context.get('offset_applied_seconds', 0.0)):.3f}s")
+    if context.get("offset_outcome"):
+        parts.append(f"offset {context['offset_outcome']}")
+    if context.get("fingerprint_category"):
+        parts.append(str(context["fingerprint_category"]))
+    if context.get("fingerprint_confidence") is not None:
+        parts.append(f"fp {float(context['fingerprint_confidence']):.3f}")
     return " • ".join(parts) if parts else "Sem anomalias detectadas até aqui"
 
 
@@ -150,7 +168,18 @@ def notify_status(status: str, context: dict) -> None:
 
     if status in ("SUCCESS", "SKIPPED_HAS_PTBR", "DUPLICATE_CALL"):
         info(message)
-    elif status in ("NOT_FOUND", "NOT_FOUND_STREAM", "SYNC_MISMATCH", "RUNTIME_INCOMPATIBLE", "OFFSET_SUSPECTED", "ABANDONED"):
+    elif status in (
+        "NOT_FOUND",
+        "NOT_FOUND_STREAM",
+        "SYNC_MISMATCH",
+        "RUNTIME_INCOMPATIBLE",
+        "OFFSET_SUSPECTED",
+        "OFFSET_SUSPECTED_FAILED",
+        "FINGERPRINT_LOW_CONFIDENCE",
+        "FINGERPRINT_CUT_MISMATCH",
+        "FINGERPRINT_DRIFT_SUSPECTED",
+        "ABANDONED",
+    ):
         warning(message)
     elif status == "ERROR":
         error(message)
@@ -184,6 +213,15 @@ def _build_message(status: str, context: dict) -> str:
     if status == "OFFSET_SUSPECTED":
         diff = context.get("diff", "Desconhecida")
         return f"OFFSET_SUSPECTED: desvio temporal detectado ({diff}s) para {movie_name}, mas sem correção automática nesta fase."
+    if status == "OFFSET_SUSPECTED_FAILED":
+        err_msg = context.get("error", "Falha não especificada")
+        return f"OFFSET_SUSPECTED_FAILED: tentativa conservadora de offset falhou para {movie_name} - {err_msg}"
+    if status == "FINGERPRINT_LOW_CONFIDENCE":
+        return f"FINGERPRINT_LOW_CONFIDENCE: a medição de áudio não foi confiável o suficiente para {movie_name}."
+    if status == "FINGERPRINT_CUT_MISMATCH":
+        return f"FINGERPRINT_CUT_MISMATCH: o fingerprint confirmou corte incompatível para {movie_name}."
+    if status == "FINGERPRINT_DRIFT_SUSPECTED":
+        return f"FINGERPRINT_DRIFT_SUSPECTED: o fingerprint detectou drift inconsistente para {movie_name}."
     if status == "DUPLICATE_CALL":
         return f"DUPLICATE_CALL: Trigger abortado; processo já estava em andamento para {movie_name}."
     if status == "ABANDONED":
@@ -204,6 +242,10 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         "SYNC_MISMATCH": 0xF97316,
         "RUNTIME_INCOMPATIBLE": 0xF97316,
         "OFFSET_SUSPECTED": 0xF97316,
+        "OFFSET_SUSPECTED_FAILED": 0xF97316,
+        "FINGERPRINT_LOW_CONFIDENCE": 0xF59E0B,
+        "FINGERPRINT_CUT_MISMATCH": 0xEF4444,
+        "FINGERPRINT_DRIFT_SUSPECTED": 0xEF4444,
         "ABANDONED": 0xEF4444,
         "ERROR": 0xDC2626,
         "PROGRESS": 0x2563EB,
@@ -235,14 +277,38 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         fields.append({"name": "Release", "value": str(context["release_title"])[:1024], "inline": False})
     if context.get("indexer"):
         fields.append({"name": "Indexer", "value": str(context["indexer"]), "inline": True})
+    if context.get("group"):
+        fields.append({"name": "Group", "value": str(context["group"]), "inline": True})
     if context.get("candidate_index") is not None:
         fields.append({"name": "Candidato", "value": str(context["candidate_index"]), "inline": True})
     if context.get("score") is not None:
         fields.append({"name": "Score", "value": str(context["score"]), "inline": True})
+    if context.get("history_bonus") is not None:
+        fields.append({"name": "History bonus", "value": str(context["history_bonus"]), "inline": True})
+    if context.get("history_reason"):
+        fields.append({"name": "Histórico", "value": str(context["history_reason"])[:1024], "inline": False})
+    if context.get("source_4k") or context.get("source_1080p"):
+        fields.append(
+            {
+                "name": "Sources",
+                "value": f"{context.get('source_4k', 'unknown')} -> {context.get('source_1080p', 'unknown')}",
+                "inline": False,
+            }
+        )
     if context.get("diff") is not None:
         fields.append({"name": "Sync diff", "value": f"{float(context['diff']):.3f}s", "inline": True})
     if context.get("offset_estimate") is not None:
         fields.append({"name": "Offset estimado", "value": f"{float(context['offset_estimate']):.3f}s", "inline": True})
+    if context.get("offset_applied"):
+        fields.append({"name": "Offset aplicado", "value": f"{float(context.get('offset_applied_seconds', 0.0)):.3f}s", "inline": True})
+    if context.get("fingerprint_category"):
+        fields.append({"name": "Fingerprint", "value": str(context["fingerprint_category"]), "inline": True})
+    if context.get("fingerprint_confidence") is not None:
+        fields.append({"name": "FP confidence", "value": f"{float(context['fingerprint_confidence']):.3f}", "inline": True})
+    if context.get("fingerprint_offset") is not None:
+        fields.append({"name": "FP offset", "value": f"{float(context['fingerprint_offset']):.3f}s", "inline": True})
+    if context.get("offset_strategy"):
+        fields.append({"name": "Estratégia", "value": str(context["offset_strategy"]), "inline": True})
 
     embed = {
         "author": {"name": f"{visual['icon']} {visual['label']}"},

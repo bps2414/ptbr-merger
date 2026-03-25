@@ -8,8 +8,14 @@ import requests
 
 from src.config import get_config
 from src.notifier import debug, error, info
+from src.sync_intelligence import GroupHistoryManager, parse_release_metadata
 
 config = get_config()
+BASE_DIR = Path(__file__).resolve().parent.parent
+group_history_manager = GroupHistoryManager(
+    BASE_DIR / config.logging.group_history_file,
+    max_entries=getattr(config.logging, "group_history_max_entries", 1000),
+)
 
 
 class MergerState(Enum):
@@ -193,13 +199,105 @@ def _keyword_present(title_lower: str, keyword: str) -> bool:
     import re
 
     keyword_lower = keyword.lower()
+    normalized_title = re.sub(r"[^a-z0-9]+", " ", title_lower).strip()
+    normalized_keyword = re.sub(r"[^a-z0-9]+", " ", keyword_lower).strip()
+
+    if keyword_lower in title_lower:
+        return True
+    if normalized_keyword and normalized_keyword in normalized_title:
+        return True
     if len(keyword_lower) <= 3:
-        return bool(re.search(rf"\b{re.escape(keyword_lower)}\b", title_lower))
-    return keyword_lower in title_lower
+        if bool(re.search(rf"\b{re.escape(keyword_lower)}\b", title_lower)):
+            return True
+        if normalized_keyword and bool(re.search(rf"\b{re.escape(normalized_keyword)}\b", normalized_title)):
+            return True
+    return False
 
 
 def _keyword_group_matches(title_lower: str, keywords: List[str]) -> list[str]:
     return [keyword for keyword in keywords if _keyword_present(title_lower, keyword)]
+
+
+def _ptbr_keyword_groups() -> tuple[list[str], list[str], list[str]]:
+    all_keywords = list(getattr(config.ptbr_keywords, "high_priority", [])) + list(getattr(config.ptbr_keywords, "medium_priority", []))
+    dubbed_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dublado", "dublagem", "nacional"))]
+    dual_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dual", "multi"))]
+    ptbr_keywords = [
+        keyword
+        for keyword in getattr(config.ptbr_keywords, "high_priority", [])
+        if keyword not in dubbed_keywords and keyword not in dual_keywords
+    ]
+    return dubbed_keywords, dual_keywords, ptbr_keywords
+
+
+def _matched_br_indexer(indexer_name: str) -> str | None:
+    for br_indexer in getattr(config.ptbr_keywords, "indexer_names_br", []):
+        if br_indexer.lower() in indexer_name.lower():
+            return br_indexer
+    return None
+
+
+def _has_minimum_ptbr_evidence(release: dict) -> tuple[bool, str]:
+    title_lower = str(release.get("title", "") or "").lower()
+    indexer_name = str(release.get("indexer", "") or "")
+    dubbed_keywords, dual_keywords, ptbr_keywords = _ptbr_keyword_groups()
+
+    if _keyword_group_matches(title_lower, dubbed_keywords):
+        return True, "dubbed"
+    if _keyword_group_matches(title_lower, ptbr_keywords):
+        return True, "explicit-ptbr"
+
+    br_indexer = _matched_br_indexer(indexer_name)
+    if br_indexer and _keyword_group_matches(title_lower, dual_keywords):
+        return True, f"dual-on-br-indexer:{br_indexer}"
+
+    return False, "missing-ptbr-evidence"
+
+
+def _has_relaxed_ptbr_evidence(release: dict) -> tuple[bool, str]:
+    title_lower = str(release.get("title", "") or "").lower()
+    indexer_name = str(release.get("indexer", "") or "")
+    dubbed_keywords, dual_keywords, ptbr_keywords = _ptbr_keyword_groups()
+
+    if _keyword_group_matches(title_lower, dual_keywords) and _keyword_group_matches(title_lower, ptbr_keywords):
+        return True, "dual-with-localized-title"
+
+    br_indexer = _matched_br_indexer(indexer_name)
+    if br_indexer and _keyword_group_matches(title_lower, dual_keywords):
+        return True, f"dual-soft-on-br-indexer:{br_indexer}"
+
+    return False, "missing-soft-ptbr-evidence"
+
+
+def _has_exploratory_ptbr_evidence(release: dict) -> tuple[bool, str]:
+    title_lower = str(release.get("title", "") or "").lower()
+    _dubbed_keywords, dual_keywords, _ptbr_keywords = _ptbr_keyword_groups()
+
+    if not _keyword_group_matches(title_lower, dual_keywords):
+        return False, "missing-exploratory-dual"
+
+    foreign_markers = [
+        "latino",
+        "dual-lat",
+        " la película",
+        "vfq",
+        "ita-eng",
+        " ita ",
+        ".ita.",
+        " iта",
+        "italian",
+        "spanish",
+        "castellano",
+        " lektor ",
+        "polish",
+        "ukr",
+        "russian",
+        " hindi ",
+    ]
+    if any(marker in title_lower for marker in foreign_markers):
+        return False, "explicit-foreign-audio"
+
+    return True, "dual-exploratory"
 
 
 def _extract_availability_metric(release: dict, *field_names: str) -> int | None:
@@ -240,14 +338,7 @@ def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tu
     score = 0
     matched_keywords = []
 
-    all_keywords = list(getattr(config.ptbr_keywords, "high_priority", [])) + list(getattr(config.ptbr_keywords, "medium_priority", []))
-    dubbed_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dublado", "dublagem", "nacional"))]
-    dual_keywords = [keyword for keyword in all_keywords if any(token in keyword.lower() for token in ("dual", "multi"))]
-    ptbr_keywords = [
-        keyword
-        for keyword in getattr(config.ptbr_keywords, "high_priority", [])
-        if keyword not in dubbed_keywords and keyword not in dual_keywords
-    ]
+    dubbed_keywords, dual_keywords, ptbr_keywords = _ptbr_keyword_groups()
 
     if _keyword_group_matches(title_lower, dubbed_keywords):
         score += 9
@@ -261,11 +352,10 @@ def _calculate_tiebreaker(release: dict, original_cut_keywords: List[str]) -> Tu
         score += 10
         matched_keywords.append("[DUAL]multi")
 
-    for br_indexer in getattr(config.ptbr_keywords, "indexer_names_br", []):
-        if br_indexer.lower() in indexer_name.lower():
-            score += 4
-            matched_keywords.append(f"[SRC]indexer:{br_indexer}")
-            break
+    br_indexer = _matched_br_indexer(indexer_name)
+    if br_indexer:
+        score += 4
+        matched_keywords.append(f"[SRC]indexer:{br_indexer}")
 
     if "WEBDL" in quality_name.upper() or "WEB-DL" in quality_name.upper():
         score += 1
@@ -300,9 +390,13 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         "tmdbId": str(tmdb_id),
         "total_releases": 0,
         "eligible_count": 0,
+        "soft_candidate_count": 0,
+        "exploratory_candidate_count": 0,
         "skipped_no_seeds": [],
+        "skipped_no_ptbr_evidence": [],
         "reason": "NO_MATCHES",
     }
+    max_candidates = getattr(config.radarr, "ptbrmerger_max_candidates", 10)
 
     movie = get_movie_by_tmdbid(tmdb_id)
     if not movie:
@@ -331,6 +425,7 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         info(f"Cortes detectados no arquivo 4K original: {original_cut_keywords}")
     else:
         debug("Nenhum corte especial (REPACK, EXTENDED, etc) detectado no arquivo original.")
+    source_4k = parse_release_metadata(Path(file_4k_name).name if file_4k_name else "")["source"]
 
     movie_id = movie["id"]
     info(f"Buscando releases para o filme ID {movie_id} no Radarr (pode demorar até 60s)...")
@@ -359,6 +454,7 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         seeders = _seeders_for_release(release)
         peers = _peers_for_release(release)
         protocol = _protocol_for_release(release)
+        release_metadata = parse_release_metadata(title)
 
         if cf_score < min_score or not url:
             continue
@@ -385,8 +481,25 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
                 }
             )
             continue
+        has_ptbr_evidence, evidence_reason = _has_minimum_ptbr_evidence(release)
+        if not has_ptbr_evidence:
+            info(f"Release ignorada por falta de evidência PT-BR: {title} [indexer={release.get('indexer', '')}]")
+            summary["skipped_no_ptbr_evidence"].append(
+                {
+                    "title": title,
+                    "indexer": release.get("indexer", ""),
+                    "reason": evidence_reason,
+                }
+            )
+            continue
 
         tiebreaker_score, justificativa = _calculate_tiebreaker(release, original_cut_keywords)
+        history_bonus, history_reason = group_history_manager.score_candidate(
+            source_4k=source_4k,
+            source_1080p=release_metadata["source"],
+            group=release_metadata["group"],
+        )
+        effective_score = tiebreaker_score + history_bonus
         info(f"Release detectada [Score {cf_score}][{quality_name}]: {title} | Tiebreaker: {tiebreaker_score}")
 
         candidates.append(
@@ -405,6 +518,13 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
                 "peers": peers,
                 "protocol": protocol,
                 "rejection_reason": None,
+                "group": release_metadata["group"],
+                "source_1080p": release_metadata["source"],
+                "source_4k": source_4k,
+                "history_bonus": history_bonus,
+                "history_reason": history_reason,
+                "effective_score": effective_score,
+                "history_metadata": release_metadata,
             }
         )
 
@@ -417,7 +537,7 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
 
     candidates.sort(
         key=lambda candidate: (
-            candidate["tiebreaker_score"],
+            candidate["effective_score"],
             candidate["seeders"] if candidate.get("seeders") is not None else -1,
             1 if "WEBDL" in candidate["quality"].upper() or "WEB-DL" in candidate["quality"].upper() else 0,
             -candidate["size"],
@@ -425,16 +545,182 @@ def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = N
         reverse=True,
     )
 
-    for index, candidate in enumerate(candidates[:5], 1):
+    for index, candidate in enumerate(candidates[:max_candidates], 1):
         info(
-            f"Candidato #{index} [Tiebreaker {candidate['tiebreaker_score']}][{candidate['quality']}]: "
-            f"{candidate['title']} ({candidate['justificativa']})"
+            f"Candidato #{index} [Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][{candidate['quality']}]: "
+            f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']})"
         )
 
-    summary["eligible_count"] = len(candidates[:5])
+    summary["eligible_count"] = len(candidates[:max_candidates])
     summary["reason"] = "OK"
     _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
-    return candidates[:5]
+    return candidates[:max_candidates]
+
+
+_find_best_ptbr_release_strict = find_best_ptbr_release
+
+
+def _candidate_sort_key(candidate: dict) -> tuple:
+    bank_rank = {"strict": 3, "soft": 2, "exploratory": 1}.get(candidate.get("evidence_level", "strict"), 0)
+    return (
+        bank_rank,
+        candidate["effective_score"],
+        candidate["seeders"] if candidate.get("seeders") is not None else -1,
+        1 if "WEBDL" in candidate["quality"].upper() or "WEB-DL" in candidate["quality"].upper() else 0,
+        -candidate["size"],
+    )
+
+
+def _build_release_candidate(
+    release: dict,
+    original_cut_keywords: list[str],
+    source_4k: str,
+    evidence_level: str,
+    evidence_reason: str,
+) -> dict:
+    title = release.get("title", "")
+    quality_name = release.get("quality", {}).get("quality", {}).get("name", "")
+    seeders = _seeders_for_release(release)
+    peers = _peers_for_release(release)
+    protocol = _protocol_for_release(release)
+    release_metadata = parse_release_metadata(title)
+    tiebreaker_score, justificativa = _calculate_tiebreaker(release, original_cut_keywords)
+    history_bonus, history_reason = group_history_manager.score_candidate(
+        source_4k=source_4k,
+        source_1080p=release_metadata["source"],
+        group=release_metadata["group"],
+    )
+    effective_score = tiebreaker_score + history_bonus
+    if evidence_level == "soft":
+        effective_score -= 6
+        justificativa = f"{justificativa} | soft-evidence:{evidence_reason}"
+    elif evidence_level == "exploratory":
+        effective_score -= 10
+        justificativa = f"{justificativa} | exploratory-evidence:{evidence_reason}"
+
+    return {
+        "title": title,
+        "url": release.get("downloadUrl") or release.get("magnetUrl"),
+        "cf_score": release.get("customFormatScore", 0),
+        "tiebreaker_score": tiebreaker_score,
+        "justificativa": justificativa,
+        "quality": quality_name,
+        "size": release.get("size", 0),
+        "indexer": release.get("indexer", ""),
+        "downloadUrl": release.get("downloadUrl"),
+        "magnetUrl": release.get("magnetUrl"),
+        "seeders": seeders,
+        "peers": peers,
+        "protocol": protocol,
+        "rejection_reason": None,
+        "group": release_metadata["group"],
+        "source_1080p": release_metadata["source"],
+        "source_4k": source_4k,
+        "history_bonus": history_bonus,
+        "history_reason": history_reason,
+        "effective_score": effective_score,
+        "history_metadata": release_metadata,
+        "evidence_level": evidence_level,
+        "evidence_reason": evidence_reason,
+    }
+
+
+def find_best_ptbr_release(tmdb_id: str, exclude_titles: Optional[List[str]] = None) -> List[dict]:
+    exclude_titles = exclude_titles or []
+    max_candidates = getattr(config.radarr, "ptbrmerger_max_candidates", 10)
+    strict_candidates = _find_best_ptbr_release_strict(tmdb_id, exclude_titles=exclude_titles)
+    for candidate in strict_candidates:
+        candidate.setdefault("evidence_level", "strict")
+        candidate.setdefault("evidence_reason", "minimum-ptbr-evidence")
+    if len(strict_candidates) >= max_candidates:
+        return strict_candidates[:max_candidates]
+
+    movie = get_movie_by_tmdbid(tmdb_id)
+    if not movie:
+        return strict_candidates
+
+    file_4k_name = ""
+    if "movieFile" in movie and movie["movieFile"]:
+        file_4k_name = movie["movieFile"].get("path", "")
+    elif "path" in movie:
+        folder = Path(movie["path"])
+        if folder.exists() and folder.is_dir():
+            mkv_files = list(folder.rglob("*.mkv"))
+            if mkv_files:
+                file_4k_name = max(mkv_files, key=lambda path: path.stat().st_size).name
+
+    cut_keywords_list = ["REPACK", "EXTENDED", "THEATRICAL", "IMAX", "DIRECTORS.CUT", "UNRATED"]
+    original_cut_keywords = []
+    if file_4k_name:
+        file_4k_name_upper = Path(file_4k_name).name.upper()
+        for keyword in cut_keywords_list:
+            if keyword in file_4k_name_upper:
+                original_cut_keywords.append(keyword)
+    source_4k = parse_release_metadata(Path(file_4k_name).name if file_4k_name else "")["source"]
+
+    try:
+        releases = _request("GET", f"/api/v3/release?movieId={movie['id']}", timeout=120)
+    except Exception:
+        return strict_candidates
+
+    strict_titles = {candidate["title"] for candidate in strict_candidates}
+    soft_candidates = []
+    exploratory_candidates = []
+    for release in releases or []:
+        title = release.get("title", "")
+        quality_name = release.get("quality", {}).get("quality", {}).get("name", "")
+        url = release.get("downloadUrl") or release.get("magnetUrl")
+        cf_score = release.get("customFormatScore", 0)
+        seeders = _seeders_for_release(release)
+
+        if cf_score < getattr(config.radarr, "ptbrmerger_min_score", 10000) or not url:
+            continue
+        if title in exclude_titles or title in strict_titles:
+            continue
+        if _is_blacklisted(title) or _is_blocked_quality(quality_name):
+            continue
+        if seeders is not None and seeders <= 0:
+            continue
+        strict_ok, _ = _has_minimum_ptbr_evidence(release)
+        if strict_ok:
+            continue
+        soft_ok, soft_reason = _has_relaxed_ptbr_evidence(release)
+        if soft_ok:
+            candidate = _build_release_candidate(release, original_cut_keywords, source_4k, "soft", soft_reason)
+            soft_candidates.append(candidate)
+            info(
+                f"Release mantida como fallback permissivo: {title} "
+                f"[indexer={release.get('indexer', '')}] | motivo={soft_reason}"
+            )
+            continue
+
+        exploratory_ok, exploratory_reason = _has_exploratory_ptbr_evidence(release)
+        if not exploratory_ok:
+            continue
+        candidate = _build_release_candidate(release, original_cut_keywords, source_4k, "exploratory", exploratory_reason)
+        exploratory_candidates.append(candidate)
+        info(
+            f"Release mantida como fallback exploratório: {title} "
+            f"[indexer={release.get('indexer', '')}] | motivo={exploratory_reason}"
+        )
+
+    merged = strict_candidates + soft_candidates + exploratory_candidates
+    merged.sort(key=_candidate_sort_key, reverse=True)
+
+    summary = get_last_release_search_summary(tmdb_id)
+    if summary:
+        summary["eligible_count"] = len([c for c in merged[:max_candidates] if c.get("evidence_level", "strict") == "strict"])
+        summary["soft_candidate_count"] = len([c for c in merged[:max_candidates] if c.get("evidence_level") == "soft"])
+        summary["exploratory_candidate_count"] = len([c for c in merged[:max_candidates] if c.get("evidence_level") == "exploratory"])
+        _LAST_SEARCH_SUMMARY[str(tmdb_id)] = summary
+
+    if soft_candidates or exploratory_candidates:
+        for index, candidate in enumerate(merged[:max_candidates], 1):
+            info(
+                f"Candidato #{index} [{candidate.get('evidence_level', 'strict')}][Tiebreaker {candidate['tiebreaker_score']}][History {candidate['history_bonus']}][{candidate['quality']}]: "
+                f"{candidate['title']} ({candidate['justificativa']} | {candidate['history_reason']})"
+            )
+    return merged[:max_candidates]
 
 
 def add_movie_ptbrmerger(tmdb_id: str, title: str, year: str) -> Tuple[int, MergerState]:

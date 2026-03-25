@@ -47,6 +47,25 @@ def test_mux_audio_dynamic_mapping(mock_get_allowed, mock_popen):
     assert "-max_interleave_delta" in cmd
     assert "0" in cmd[cmd.index("-max_interleave_delta") + 1]
 
+
+@patch('src.merger.subprocess.Popen')
+@patch('src.merger.get_allowed_streams')
+def test_mux_audio_applies_itsoffset_only_to_audio_input(mock_get_allowed, mock_popen):
+    mock_get_allowed.return_value = [2, 4]
+
+    mock_process = MagicMock()
+    mock_process.stdout = []
+    mock_process.returncode = 0
+    mock_popen.return_value = mock_process
+
+    mux_audio(Path("movie_4k.mkv"), Path("audio_ptbr.ac3"), Path("output.mkv"), audio_offset_seconds=2.5)
+
+    cmd = mock_popen.call_args.args[0]
+    assert "-itsoffset" in cmd
+    offset_index = cmd.index("-itsoffset")
+    assert cmd[offset_index + 1] == "2.500"
+    assert cmd[offset_index + 2] == "-i"
+
 @patch('src.merger.subprocess.Popen')
 @patch('src.merger.get_allowed_streams')
 def test_mux_audio_optimize_only(mock_get_allowed, mock_popen):
@@ -87,6 +106,28 @@ def test_mux_audio_optimize_only(mock_get_allowed, mock_popen):
     
     # Verify no metadata for injected audio
     assert "language=por" not in cmd
+
+
+@patch("src.merger.time.sleep", return_value=None)
+@patch('src.merger.subprocess.Popen')
+@patch('src.merger.get_allowed_streams')
+def test_mux_audio_retries_transient_failure(mock_get_allowed, mock_popen, _mock_sleep, tmp_path: Path):
+    mock_get_allowed.return_value = [1, 3]
+
+    first_process = MagicMock()
+    first_process.stdout = []
+    first_process.returncode = 4294967283
+
+    second_process = MagicMock()
+    second_process.stdout = []
+    second_process.returncode = 0
+
+    mock_popen.side_effect = [first_process, second_process]
+
+    output_tmp = tmp_path / "output.mkv"
+    mux_audio(Path("movie_4k.mkv"), None, output_tmp)
+
+    assert mock_popen.call_count == 2
 
 
 @patch("src.merger.replace_original")

@@ -1,8 +1,16 @@
 import argparse
+import sys
 import time
 from pathlib import Path
 
 from src.config import get_config
+
+for stream in (sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
 
 
 def read_last_lines(log_file: Path, lines: int = 50) -> list[str]:

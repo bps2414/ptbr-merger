@@ -1,6 +1,6 @@
 import yaml
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 @dataclass
@@ -11,6 +11,7 @@ class RadarrConfig:
     ptbrmerger_root_folder: str
     ptbrmerger_tag_name: str
     ptbrmerger_min_score: int = 10000
+    ptbrmerger_max_candidates: int = 10
     timeout: int = 10
     success_tag_label: str = "ptbr-merged"
 
@@ -40,6 +41,8 @@ class LoggingConfig:
     file: str
     history_file: str = "history.json"
     history_max_entries: int = 500
+    group_history_file: str = "group_history.json"
+    group_history_max_entries: int = 1000
 
 @dataclass
 class ProcessingConfig:
@@ -52,6 +55,28 @@ class DiagnosticsConfig:
     enable_runtime_heuristics: bool = True
     enable_offset_diagnostics: bool = True
     offset_suspected_threshold_seconds: int = 180
+    enable_auto_offset: bool = False
+    auto_offset_max_seconds: int = 90
+    auto_offset_min_confidence: float = 0.85
+
+@dataclass
+class ScoringConfig:
+    history_bonus_success: int = 8
+    history_penalty_cut_mismatch: int = 18
+    history_penalty_runtime_incompatible: int = 14
+    history_min_group_samples: int = 2
+    history_min_source_samples: int = 2
+
+@dataclass
+class FingerprintConfig:
+    enabled: bool = False
+    sample_rate: int = 2000
+    window_seconds: int = 12
+    max_offset_seconds: int = 90
+    min_confidence: float = 0.7
+    consistency_tolerance_seconds: float = 0.75
+    positions: list[str] = field(default_factory=lambda: ["head", "mid", "tail"])
+    allow_borderline_cut_retry: bool = False
 
 @dataclass
 class PtbrKeywordsConfig:
@@ -71,6 +96,8 @@ class AppConfig:
     ptbr_keywords: PtbrKeywordsConfig
     processing: ProcessingConfig
     diagnostics: DiagnosticsConfig
+    scoring: ScoringConfig
+    fingerprint: FingerprintConfig
 
 _config_instance: Optional[AppConfig] = None
 
@@ -95,6 +122,8 @@ def load_config(config_path: Path) -> AppConfig:
         ptbr_keywords=PtbrKeywordsConfig(**data.get("ptbr_keywords", {})),
         processing=ProcessingConfig(**data.get("processing", {})),
         diagnostics=DiagnosticsConfig(**data.get("diagnostics", {})),
+        scoring=ScoringConfig(**data.get("scoring", {})),
+        fingerprint=FingerprintConfig(**data.get("fingerprint", {})),
     )
 
 def get_config() -> AppConfig:

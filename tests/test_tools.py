@@ -23,6 +23,7 @@ def test_read_last_lines_returns_requested_number_of_lines(tmp_path: Path):
 def test_build_status_snapshot_reads_queue_and_history(tmp_path: Path):
     queue_file = tmp_path / "queue.json"
     history_file = tmp_path / "history.json"
+    group_history_file = tmp_path / "group_history.json"
     queue_file.write_text(
         json.dumps({"680493": {"status": "FAILED", "attempts": 1}}, indent=2),
         encoding="utf-8",
@@ -31,12 +32,22 @@ def test_build_status_snapshot_reads_queue_and_history(tmp_path: Path):
         json.dumps([{"tmdbId": "680493", "status": "FALLBACK"}], indent=2),
         encoding="utf-8",
     )
+    group_history_file.write_text(
+        json.dumps([{"group": "sf", "source_4k": "AMZN.WEBDL", "source_1080p": "AMZN.WEBDL", "result": "SUCCESS"}], indent=2),
+        encoding="utf-8",
+    )
 
-    snapshot = build_status_snapshot(queue_file=queue_file, history_file=history_file, torrent_rows=[])
+    snapshot = build_status_snapshot(
+        queue_file=queue_file,
+        history_file=history_file,
+        torrent_rows=[],
+        group_history_file=group_history_file,
+    )
 
     assert snapshot["queue"]["680493"]["status"] == "FAILED"
     assert snapshot["history"][-1]["status"] == "FALLBACK"
     assert snapshot["torrents"] == []
+    assert snapshot["compatibility"]["top_groups"][0]["group"] == "sf"
 
 
 def test_reset_queue_entry_removes_specific_tmdb_id(tmp_path: Path):
@@ -82,6 +93,8 @@ def test_build_refresh_payload_uses_queue_history_and_torrent_state():
                 "indexer": "Catálogo Betor",
                 "sync_diff": 0.0,
                 "offset_estimate": 0.0,
+                "fingerprint_category": "FINGERPRINT_OFFSET_OK",
+                "fingerprint_confidence": 0.91,
             }
         ],
         torrent={
@@ -100,3 +113,4 @@ def test_build_refresh_payload_uses_queue_history_and_torrent_state():
     assert context["eta_seconds"] == 394
     assert context["qbit_state"] == "downloading"
     assert context["num_seeds"] == 4
+    assert context["fingerprint_category"] == "FINGERPRINT_OFFSET_OK"

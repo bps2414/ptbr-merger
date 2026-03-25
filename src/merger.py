@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from collections import deque
 from pathlib import Path
 from typing import Optional
 
@@ -9,6 +10,7 @@ from src.config import get_config
 from src.notifier import debug, error, info, warning
 
 config = get_config()
+_TRANSIENT_MUX_RETURNCODES = {13, -13, 4294967283}
 
 
 def extract_audio(file_1080p: Path, stream_idx: int, output_audio: Path) -> Path:
@@ -38,7 +40,12 @@ def extract_audio(file_1080p: Path, stream_idx: int, output_audio: Path) -> Path
         raise
 
 
-def mux_audio(file_4k: Path, audio_ptbr: Optional[Path], output_tmp: Path) -> Path:
+def mux_audio(
+    file_4k: Path,
+    audio_ptbr: Optional[Path],
+    output_tmp: Path,
+    audio_offset_seconds: float | None = None,
+) -> Path:
     """
     Injeta o áudio PT-BR como a primeira faixa no arquivo 4K, preservando o restante,
     ou apenas otimiza o 4K se audio_ptbr for None.
@@ -49,6 +56,8 @@ def mux_audio(file_4k: Path, audio_ptbr: Optional[Path], output_tmp: Path) -> Pa
     cmd = [str(ffmpeg_path), "-y", "-i", str(file_4k)]
 
     if audio_ptbr:
+        if audio_offset_seconds not in (None, 0, 0.0):
+            cmd.extend(["-itsoffset", f"{float(audio_offset_seconds):.3f}"])
         cmd.extend(["-i", str(audio_ptbr)])
 
     cmd.extend(["-map", "0:v"])
@@ -81,39 +90,63 @@ def mux_audio(file_4k: Path, audio_ptbr: Optional[Path], output_tmp: Path) -> Pa
         )
 
     cmd.append(str(output_tmp))
+    output_tmp.parent.mkdir(parents=True, exist_ok=True)
+    output_tmp.unlink(missing_ok=True)
 
-    try:
-        debug(f"Processando FFmpeg Mux: {' '.join(cmd)}")
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-            universal_newlines=True,
-        )
+    max_attempts = 3
+    for attempt in range(1, max_attempts + 1):
+        try:
+            debug(f"Processando FFmpeg Mux: {' '.join(cmd)}")
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                universal_newlines=True,
+            )
 
-        last_log_time = time.time()
-        for line in process.stdout:
-            if "time=" in line and "bitrate=" in line:
-                current_time = time.time()
-                if current_time - last_log_time >= 10.0:
-                    partes = line.strip().split("time=")
-                    if len(partes) > 1:
-                        progresso = partes[1].split(" ")[0]
-                        info(f"Progresso de Fusão (Mux): Vídeo gerado até {progresso}")
-                    last_log_time = current_time
+            recent_output: deque[str] = deque(maxlen=40)
+            last_log_time = time.time()
+            stdout_iter = process.stdout or []
+            for line in stdout_iter:
+                recent_output.append(line.rstrip())
+                if "time=" in line and "bitrate=" in line:
+                    current_time = time.time()
+                    if current_time - last_log_time >= 10.0:
+                        partes = line.strip().split("time=")
+                        if len(partes) > 1:
+                            progresso = partes[1].split(" ")[0]
+                            info(f"Progresso de Fusão (Mux): Vídeo gerado até {progresso}")
+                        last_log_time = current_time
 
-        process.wait()
-        if process.returncode != 0:
-            error(f"Erro no FFmpeg durante processo de muxing. Código falha {process.returncode}")
-            raise subprocess.CalledProcessError(process.returncode, cmd)
+            process.wait()
+            if process.returncode != 0:
+                stderr_excerpt = "\n".join(recent_output)
+                error(
+                    f"Erro no FFmpeg durante processo de muxing. Código falha {process.returncode}"
+                    + (f" | Trecho final:\n{stderr_excerpt}" if stderr_excerpt else "")
+                )
+                raise subprocess.CalledProcessError(process.returncode, cmd, output=stderr_excerpt)
 
-        info(f"Mux concluído com sucesso: {output_tmp.name}")
-        return output_tmp
-    except Exception as exc:
-        error(f"Falha catastrófica no FFmpeg muxing logger: {exc}")
-        raise
+            info(f"Mux concluído com sucesso: {output_tmp.name}")
+            return output_tmp
+        except subprocess.CalledProcessError as exc:
+            if exc.returncode in _TRANSIENT_MUX_RETURNCODES and attempt < max_attempts:
+                warning(
+                    f"FFmpeg falhou de forma transitória no mux (código {exc.returncode}). "
+                    f"Retry {attempt}/{max_attempts - 1} em 3s."
+                )
+                output_tmp.unlink(missing_ok=True)
+                time.sleep(3)
+                continue
+            error(f"Falha catastrófica no FFmpeg muxing logger: {exc}")
+            raise
+        except Exception as exc:
+            error(f"Falha catastrófica no FFmpeg muxing logger: {exc}")
+            raise
+
+    raise RuntimeError("FFmpeg mux retry loop exited unexpectedly.")
 
 
 def replace_original(output_tmp: Path, file_4k: Path) -> None:
