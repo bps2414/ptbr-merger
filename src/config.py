@@ -1,7 +1,10 @@
-import yaml
-from pathlib import Path
+import os
 from dataclasses import dataclass, field
-from typing import Optional
+from pathlib import Path
+from typing import Any, Optional
+
+import yaml
+
 
 @dataclass
 class RadarrConfig:
@@ -15,25 +18,30 @@ class RadarrConfig:
     timeout: int = 10
     success_tag_label: str = "ptbr-merged"
 
+
 @dataclass
 class QBittorrentConfig:
     url: str
     username: str
     password: str
 
+
 @dataclass
 class FFMpegConfig:
     ffmpeg_path: str
     ffprobe_path: str
 
+
 @dataclass
 class SyncConfig:
     max_duration_diff_seconds: int
+
 
 @dataclass
 class NotificationsConfig:
     discord_webhook_url: str
     username: str = "PTBRMerger Bot"
+
 
 @dataclass
 class LoggingConfig:
@@ -44,11 +52,13 @@ class LoggingConfig:
     group_history_file: str = "group_history.json"
     group_history_max_entries: int = 1000
 
+
 @dataclass
 class ProcessingConfig:
     queue_file: str = "queue.json"
     max_attempts: int = 3
     preserve_failed_artifacts: bool = True
+
 
 @dataclass
 class DiagnosticsConfig:
@@ -59,6 +69,7 @@ class DiagnosticsConfig:
     auto_offset_max_seconds: int = 90
     auto_offset_min_confidence: float = 0.85
 
+
 @dataclass
 class ScoringConfig:
     history_bonus_success: int = 8
@@ -66,6 +77,7 @@ class ScoringConfig:
     history_penalty_runtime_incompatible: int = 14
     history_min_group_samples: int = 2
     history_min_source_samples: int = 2
+
 
 @dataclass
 class FingerprintConfig:
@@ -78,12 +90,14 @@ class FingerprintConfig:
     positions: list[str] = field(default_factory=lambda: ["head", "mid", "tail"])
     allow_borderline_cut_retry: bool = False
 
+
 @dataclass
 class PtbrKeywordsConfig:
     high_priority: list[str]
     medium_priority: list[str]
     indexer_names_br: list[str]
     blacklist: list[str]
+
 
 @dataclass
 class AppConfig:
@@ -99,18 +113,55 @@ class AppConfig:
     scoring: ScoringConfig
     fingerprint: FingerprintConfig
 
+
 _config_instance: Optional[AppConfig] = None
 
+ENV_OVERRIDES: dict[tuple[str, str], str] = {
+    ("radarr", "url"): "RADARR_URL",
+    ("radarr", "api_key"): "RADARR_API_KEY",
+    ("qbittorrent", "url"): "QBITTORRENT_URL",
+    ("qbittorrent", "username"): "QBITTORRENT_USERNAME",
+    ("qbittorrent", "password"): "QBITTORRENT_PASSWORD",
+    ("notifications", "discord_webhook_url"): "DISCORD_WEBHOOK_URL",
+}
+
+
+def _apply_env_overrides(data: dict[str, Any]) -> dict[str, Any]:
+    for (section, key), env_name in ENV_OVERRIDES.items():
+        value = os.getenv(env_name)
+        if value is None or value == "":
+            continue
+        data.setdefault(section, {})
+        data[section][key] = value
+    return data
+
+
+def _resolve_config_path(root_dir: Path) -> Path:
+    explicit_path = os.getenv("PTBRMERGER_CONFIG")
+    if explicit_path:
+        return Path(explicit_path).expanduser()
+
+    config_file = root_dir / "config.yml"
+    if config_file.exists():
+        return config_file
+
+    example_file = root_dir / "config.example.yml"
+    if example_file.exists():
+        return example_file
+
+    return config_file
+
+
 def load_config(config_path: Path) -> AppConfig:
-    """
-    Lê o arquivo YAML de forma segura e o converte estritamente
-    para o objeto AppConfig baseado em DataClasses.
-    """
     if not config_path.exists():
-        raise FileNotFoundError(f"Arquivo de configuração não encontrado: {config_path.absolute()}")
-        
+        raise FileNotFoundError(
+            f"Arquivo de configuracao nao encontrado: {config_path.absolute()}"
+        )
+
     with open(config_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f) or {}
+
+    data = _apply_env_overrides(data)
 
     return AppConfig(
         radarr=RadarrConfig(**data.get("radarr", {})),
@@ -126,15 +177,11 @@ def load_config(config_path: Path) -> AppConfig:
         fingerprint=FingerprintConfig(**data.get("fingerprint", {})),
     )
 
+
 def get_config() -> AppConfig:
-    """
-    Garante o carregamento lazy e em Singleton das configurações de App.
-    Permitindo acesso em qualquer lugar do script sem multiplos reads IO.
-    """
     global _config_instance
     if _config_instance is None:
-        # Resolve 'root_dir' sendo a pasta acima de 'src/'
         root_dir = Path(__file__).resolve().parent.parent
-        config_file = root_dir / "config.yml"
+        config_file = _resolve_config_path(root_dir)
         _config_instance = load_config(config_file)
     return _config_instance

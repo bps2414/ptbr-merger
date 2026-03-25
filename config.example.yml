@@ -1,0 +1,94 @@
+radarr:
+  url: http://localhost:7878
+  api_key: CHANGE_ME
+  ptbrmerger_min_score: 10000
+  ptbrmerger_profile_name: PTBRMerger
+  ptbrmerger_root_folder: D:\data\temp\ptbrmerger
+  ptbrmerger_tag_name: ptbrmerger
+
+qbittorrent:
+  url: http://localhost:8080
+  username: CHANGE_ME
+  password: CHANGE_ME
+
+ffmpeg:
+  ffmpeg_path: C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe
+  ffprobe_path: C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffprobe.exe
+
+sync:
+  max_duration_diff_seconds: 30
+
+notifications:
+  discord_webhook_url: https://discord.invalid/webhook
+  username: PTBRMerger Bot
+
+logging:
+  level: INFO
+  file: D:\ptbr-merger\ptbrmerger.log
+
+ptbr_keywords:
+  high_priority:
+    - "ja,portuguese"
+    - "pt-br"
+    - "ptbr"
+    - "pt.br"
+    - "dublado"
+    - "dublagem"
+    - "dub.pt"
+    - "audio.pt"
+    - "portugues"
+    - "portuguese"
+    - "nacional"
+    - "O.Filme"
+    - "O.Filme."
+    - "[PT-BR]"
+    - "(PT-BR)"
+    - "Dual.PT"
+    - "Audio-PT"
+    - "PTBR"
+
+  medium_priority:
+    - "dual"
+    - "DUAL"
+    - "Dual.Audio"
+    - "Dual-Audio"
+    - "DualAudio"
+    - "multi"
+    - "MULTI"
+    - "Multi.Audio"
+    - "multi-audio"
+    - "Multi-Language"
+    - "[ja,pt]"
+    - "BR"
+
+  indexer_names_br:
+    - "Catalogo Betor"
+    - "HDRTorrent"
+    - "Rede Torrent"
+    - "Apache"
+
+  blacklist:
+    - "TELECINE"
+    - "HDCAM"
+    - "CAM"
+    - "-TS-"
+    - ".TS."
+    - "TELESYNC"
+    - "HC.HDRip"
+    - "HCRip"
+    - "Lat"
+    - "Latino"
+    - "Castellano"
+    - "Espanol"
+    - "hindi"
+    - "ita"
+    - "italian"
+    - "french"
+    - "deutsch"
+    - "german"
+    - "russian"
+    - "arabic"
+    - "turkish"
+    - "korean"
+    - "chinese"
+    - "mandarin"

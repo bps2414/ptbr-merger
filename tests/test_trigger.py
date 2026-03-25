@@ -38,9 +38,11 @@ def isolate_trigger_state(tmp_path):
 @patch("src.trigger._get_largest_mkv")
 @patch("src.trigger.qbit_client.add_torrent")
 @patch("src.trigger.radarr_client.find_best_ptbr_release")
+@patch("src.trigger.radarr_client.get_movie_by_tmdbid", return_value=None)
 @patch("src.trigger.analyzer.has_ptbr_audio", return_value=False)
 def test_run_analyzer_processes_completed_duplicate_immediately(
     _mock_has_ptbr_audio,
+    _mock_get_movie_by_tmdbid,
     mock_find_best_release,
     mock_add_torrent,
     mock_get_largest_mkv,
@@ -687,9 +689,11 @@ def test_resolve_manual_context_uses_radarr_match_when_tmdb_is_missing(mock_get_
 @patch("src.trigger.notify_status")
 @patch("src.trigger.send_progress_update", return_value="discord-progress")
 @patch("src.trigger._optimize_in_place")
+@patch("src.trigger.radarr_client.get_movie_by_tmdbid", return_value=None)
 @patch("src.trigger.analyzer.has_ptbr_audio", return_value=True)
 def test_run_analyzer_persists_terminal_skipped_has_ptbr_state(
     _mock_has_ptbr_audio,
+    _mock_get_movie_by_tmdbid,
     mock_optimize_in_place,
     _mock_send_progress,
     mock_notify_status,

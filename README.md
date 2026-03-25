@@ -154,14 +154,24 @@ loguru>=0.7.0
 
 ## Configuration
 
-Create `config.yml` at the repository root.
+Use `config.example.yml` as the tracked template and keep your real `config.yml` local only.
+Sensitive values can be injected by environment variables and will override the YAML values when present:
+
+- `RADARR_URL`
+- `RADARR_API_KEY`
+- `QBITTORRENT_URL`
+- `QBITTORRENT_USERNAME`
+- `QBITTORRENT_PASSWORD`
+- `DISCORD_WEBHOOK_URL`
+
+Example local `config.yml`:
 
 Example:
 
 ```yaml
 radarr:
   url: http://localhost:7878
-  api_key: YOUR_RADARR_API_KEY
+  api_key: ""
   ptbrmerger_profile_name: PTBRMerger
   ptbrmerger_root_folder: D:\data\temp\ptbrmerger
   ptbrmerger_tag_name: ptbrmerger
@@ -172,8 +182,8 @@ radarr:
 
 qbittorrent:
   url: http://localhost:8080
-  username: admin
-  password: adminadmin
+  username: ""
+  password: ""
 
 ffmpeg:
   ffmpeg_path: ffmpeg
