@@ -25,20 +25,20 @@ Goal: keep rare PT-BR candidates alive long enough to attempt safe recovery when
 
 ### Assisted / Manual Recovery
 
-- [ ] **MAN-01**: User can explicitly request assisted/manual sync recovery for a chosen candidate instead of letting the pipeline discard it immediately.
-- [ ] **MAN-02**: User can supply or reuse manual recovery parameters such as forced candidate selection, offset hints, or retry mode without editing code.
-- [ ] **MAN-03**: User can inspect persisted recovery artifacts or metadata that make manual follow-up reproducible across retries.
+- [x] **MAN-01**: User can explicitly request assisted/manual sync recovery for a chosen candidate instead of letting the pipeline discard it immediately.
+- [x] **MAN-02**: User can supply or reuse manual recovery parameters such as forced candidate selection, offset hints, or retry mode without editing code.
+- [x] **MAN-03**: User can inspect persisted recovery artifacts or metadata that make manual follow-up reproducible across retries.
 
 ### Observability and Safety
 
-- [ ] **OBS-01**: User can see recovery decisions, attempts and final outcomes in notifications, queue/history data, and fallback reasons.
-- [ ] **OBS-02**: User can distinguish a genuinely incompatible candidate from one that merely failed the current recovery attempt.
+- [x] **OBS-01**: User can see recovery decisions, attempts and final outcomes in notifications, queue/history data, and fallback reasons.
+- [x] **OBS-02**: User can distinguish a genuinely incompatible candidate from one that merely failed the current recovery attempt.
 - [x] **SAFE-01**: User can rely on final-file validation to reject recovered outputs that still fail PT-BR stream or runtime integrity checks.
 
 ### Validation Coverage
 
 - [x] **TEST-01**: User can rely on automated tests covering large-diff candidates that become valid after recovery.
-- [ ] **TEST-02**: User can rely on automated tests covering large-diff candidates that must still be rejected after diagnosis or failed recovery.
+- [x] **TEST-02**: User can rely on automated tests covering large-diff candidates that must still be rejected after diagnosis or failed recovery.
 
 ## Future Requirements
 
