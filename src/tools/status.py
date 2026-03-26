@@ -16,6 +16,64 @@ def _safe_load_json(path: Path, default):
         return default
 
 
+def _build_manual_recovery_snapshot(queue_payload: dict, history_payload: list[dict]) -> list[dict]:
+    manual_entries: list[dict] = []
+    seen_tmdb_ids: set[str] = set()
+
+    for tmdb_id, entry in (queue_payload or {}).items():
+        if not isinstance(entry, dict):
+            continue
+        if not (
+            entry.get("manual_recovery")
+            or entry.get("manual_request_id")
+            or str(entry.get("phase") or "") == "manual-recovery"
+            or str(entry.get("status") or "").startswith("MANUAL_RECOVERY")
+        ):
+            continue
+        manual_entries.append(
+            {
+                "tmdbId": str(entry.get("tmdbId") or tmdb_id),
+                "status": entry.get("status"),
+                "phase": entry.get("phase"),
+                "manual_request_id": entry.get("manual_request_id"),
+                "manual_candidate_index": entry.get("manual_candidate_index"),
+                "manual_force_offset_seconds": entry.get("manual_force_offset_seconds"),
+                "manual_trim_start_seconds": entry.get("manual_trim_start_seconds"),
+                "manual_trim_end_seconds": entry.get("manual_trim_end_seconds"),
+                "manual_reuse_last_recovery": entry.get("manual_reuse_last_recovery"),
+                "manual_preserve_artifacts": entry.get("manual_preserve_artifacts"),
+                "manual_source_path": entry.get("manual_source_path"),
+            }
+        )
+        seen_tmdb_ids.add(str(entry.get("tmdbId") or tmdb_id))
+
+    for event in history_payload or []:
+        if not isinstance(event, dict):
+            continue
+        tmdb_id = str(event.get("tmdbId") or "")
+        if tmdb_id in seen_tmdb_ids:
+            continue
+        if not (event.get("manual_recovery") or str(event.get("status") or "").startswith("MANUAL_RECOVERY")):
+            continue
+        manual_entries.append(
+            {
+                "tmdbId": tmdb_id,
+                "status": event.get("status"),
+                "phase": event.get("phase"),
+                "manual_request_id": event.get("manual_request_id"),
+                "manual_candidate_index": event.get("manual_candidate_index"),
+                "manual_force_offset_seconds": event.get("manual_force_offset_seconds"),
+                "manual_trim_start_seconds": event.get("manual_trim_start_seconds"),
+                "manual_trim_end_seconds": event.get("manual_trim_end_seconds"),
+                "manual_reuse_last_recovery": event.get("manual_reuse_last_recovery"),
+                "manual_preserve_artifacts": event.get("manual_preserve_artifacts"),
+                "manual_source_path": event.get("manual_source_path"),
+            }
+        )
+
+    return manual_entries
+
+
 def build_status_snapshot(
     queue_file: Path,
     history_file: Path,
@@ -29,12 +87,17 @@ def build_status_snapshot(
     compatibility_summary = {}
     if group_history_file is not None:
         compatibility_summary = GroupHistoryManager(Path(group_history_file)).summarize()
+    manual_recoveries = _build_manual_recovery_snapshot(
+        queue_payload if isinstance(queue_payload, dict) else {},
+        history_payload if isinstance(history_payload, list) else [],
+    )
     return {
         "queue": queue_payload if isinstance(queue_payload, dict) else {},
         "retry_queue": retry_payload if isinstance(retry_payload, dict) else {},
         "history": history_payload if isinstance(history_payload, list) else [],
         "torrents": list(torrent_rows or []),
         "compatibility": compatibility_summary,
+        "manual_recoveries": manual_recoveries,
     }
 
 
@@ -72,6 +135,9 @@ def main() -> None:
     print()
     print("Compatibility:")
     print(json.dumps(snapshot["compatibility"], ensure_ascii=False, indent=2))
+    print()
+    print("Manual Recoveries:")
+    print(json.dumps(snapshot["manual_recoveries"], ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

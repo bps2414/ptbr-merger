@@ -54,9 +54,11 @@ _MEDIUM_PATTERNS = [
     ("WEBRIP", ("WEBRIP",)),
     ("HDTV", ("HDTV",)),
 ]
-_SUCCESS_RESULTS = {"SUCCESS", "FINGERPRINT_SYNC_OK", "FINGERPRINT_OFFSET_OK"}
-_CUT_FAILURE_RESULTS = {"CUT_MISMATCH", "OFFSET_SUSPECTED_FAILED", "FINGERPRINT_CUT_MISMATCH", "FINGERPRINT_DRIFT_SUSPECTED"}
+_SUCCESS_RESULTS = {"SUCCESS", "MANUAL_RECOVERY_SUCCESS", "FINGERPRINT_SYNC_OK", "FINGERPRINT_OFFSET_OK"}
+_CUT_FAILURE_RESULTS = {"CUT_MISMATCH", "FINGERPRINT_CUT_MISMATCH", "FINGERPRINT_DRIFT_SUSPECTED"}
 _RUNTIME_FAILURE_RESULTS = {"RUNTIME_INCOMPATIBLE"}
+_RECOVERABLE_RESULTS = {"INTRO_OUTRO_DIVERGENCE", "AMBIGUOUS_RECOVERABLE", "OFFSET_SUSPECTED", "FINGERPRINT_LOW_CONFIDENCE"}
+_RECOVERY_FAILED_RESULTS = {"OFFSET_SUSPECTED_FAILED", "AUTO_RECOVERY_FAILED", "MANUAL_RECOVERY_FAILED"}
 
 
 def _utc_now() -> str:
@@ -172,6 +174,8 @@ class GroupHistoryManager:
         combo_success = sum(combo_results[result] for result in _SUCCESS_RESULTS)
         combo_cut_failures = sum(combo_results[result] for result in _CUT_FAILURE_RESULTS)
         combo_runtime_failures = sum(combo_results[result] for result in _RUNTIME_FAILURE_RESULTS)
+        combo_recoverable = sum(combo_results[result] for result in _RECOVERABLE_RESULTS)
+        combo_recovery_failed = sum(combo_results[result] for result in _RECOVERY_FAILED_RESULTS)
 
         if combo_success and not generic_combo:
             delta = bonus_success * min(combo_success, 2)
@@ -185,6 +189,10 @@ class GroupHistoryManager:
             delta = penalty_runtime * min(combo_runtime_failures, 2)
             score -= delta
             reasons.append(f"combo-runtime:-{delta}")
+        if combo_recoverable and not generic_combo:
+            reasons.append(f"combo-recoverable:{combo_recoverable}")
+        if combo_recovery_failed and not generic_combo:
+            reasons.append(f"combo-recovery-failed:{combo_recovery_failed}")
 
         if group and group != "unknown":
             group_events = self._matching_events(group=group)

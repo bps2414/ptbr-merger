@@ -80,6 +80,70 @@ def test_fingerprint_detects_offset_in_real_fixture(media_corpus: dict) -> None:
     assert abs(float(result["best_offset_seconds"])) > 0.5
 
 
+def test_edge_recoverable_fixture_succeeds_after_conservative_trim(media_corpus: dict, tmp_path: Path) -> None:
+    original = media_corpus["dual_edge_recoverable"]["files"]["original"]
+    candidate = media_corpus["dual_edge_recoverable"]["files"]["candidate"]
+
+    diagnosis = analyzer.diagnose_sync(original, candidate, runtime_oficial=analyzer.get_duration(original))
+    assert diagnosis["category"] == "INTRO_OUTRO_DIVERGENCE"
+
+    stream_index = analyzer.get_ptbr_stream_index(candidate)
+    assert stream_index is not None
+
+    extracted_audio = tmp_path / "ptbr-edge.aac"
+    recovered_audio = tmp_path / "ptbr-edge-trimmed.aac"
+    output_file = tmp_path / "merged-edge-trim.mkv"
+
+    merger.extract_audio(candidate, stream_index, extracted_audio)
+    merger.trim_audio_edges(extracted_audio, recovered_audio, trim_end_seconds=float(diagnosis["diff"]))
+    merger.mux_audio(original, recovered_audio, output_file)
+
+    recovery_validation = analyzer.validate_recovery_attempt(
+        output_file,
+        original,
+        diagnosis=diagnosis,
+        strategy="edge-trim",
+        source_audio_file=extracted_audio,
+        recovered_audio_file=recovered_audio,
+        trim_end_seconds=float(diagnosis["diff"]),
+    )
+
+    assert recovery_validation["valid"] is True
+    assert recovery_validation["reason"] == "RECOVERY_EDGE_TRIM_OK"
+
+
+def test_manual_recovery_fixture_succeeds_with_explicit_trim_recipe(media_corpus: dict, tmp_path: Path) -> None:
+    original = media_corpus["dual_edge_recoverable"]["files"]["original"]
+    candidate = media_corpus["dual_edge_recoverable"]["files"]["candidate"]
+
+    diagnosis = analyzer.diagnose_sync(original, candidate, runtime_oficial=analyzer.get_duration(original))
+    assert diagnosis["category"] == "INTRO_OUTRO_DIVERGENCE"
+
+    stream_index = analyzer.get_ptbr_stream_index(candidate)
+    assert stream_index is not None
+
+    extracted_audio = tmp_path / "ptbr-manual-edge.aac"
+    recovered_audio = tmp_path / "ptbr-manual-edge-trimmed.aac"
+    output_file = tmp_path / "manual-edge-trim-success.mkv"
+
+    merger.extract_audio(candidate, stream_index, extracted_audio)
+    merger.trim_audio_edges(extracted_audio, recovered_audio, trim_end_seconds=float(diagnosis["diff"]))
+    merger.mux_audio(original, recovered_audio, output_file)
+
+    recovery_validation = analyzer.validate_recovery_attempt(
+        output_file,
+        original,
+        diagnosis=diagnosis,
+        strategy="edge-trim",
+        source_audio_file=extracted_audio,
+        recovered_audio_file=recovered_audio,
+        trim_end_seconds=float(diagnosis["diff"]),
+    )
+
+    assert recovery_validation["valid"] is True
+    assert recovery_validation["reason"] == "RECOVERY_EDGE_TRIM_OK"
+
+
 def test_fingerprint_rejects_structural_mismatch_fixture(media_corpus: dict) -> None:
     original = media_corpus["dual_cut_mismatch"]["files"]["original"]
     candidate = media_corpus["dual_cut_mismatch"]["files"]["candidate"]
@@ -91,6 +155,56 @@ def test_fingerprint_rejects_structural_mismatch_fixture(media_corpus: dict) -> 
     )
 
     assert result["category"] in {"FINGERPRINT_DRIFT_SUSPECTED", "FINGERPRINT_CUT_MISMATCH"}
+
+
+def test_structural_mismatch_fixture_requires_terminal_fingerprint_evidence(media_corpus: dict) -> None:
+    original = media_corpus["dual_cut_mismatch"]["files"]["original"]
+    candidate = media_corpus["dual_cut_mismatch"]["files"]["candidate"]
+
+    diagnosis = analyzer.diagnose_sync(original, candidate, runtime_oficial=analyzer.get_duration(original))
+    fingerprint = audio_fingerprint.fingerprint_sync(
+        file_4k=original,
+        file_1080p=candidate,
+        duration_4k=analyzer.get_duration(original),
+    )
+
+    assert diagnosis["category"] == "SYNC_OK"
+    assert fingerprint["category"] in {"FINGERPRINT_DRIFT_SUSPECTED", "FINGERPRINT_CUT_MISMATCH"}
+
+
+def test_manual_recovery_fixture_rejects_structural_mismatch_with_forced_trim(media_corpus: dict, tmp_path: Path) -> None:
+    original = media_corpus["dual_cut_mismatch"]["files"]["original"]
+    candidate = media_corpus["dual_cut_mismatch"]["files"]["candidate"]
+
+    diagnosis = {
+        "category": "CUT_MISMATCH",
+        "diff": 6.0,
+        "auto_offset_eligible": False,
+    }
+
+    stream_index = analyzer.get_ptbr_stream_index(candidate)
+    assert stream_index is not None
+
+    extracted_audio = tmp_path / "ptbr-manual-cut.aac"
+    recovered_audio = tmp_path / "ptbr-manual-cut-trimmed.aac"
+    output_file = tmp_path / "manual-cut-trim-failed.mkv"
+
+    merger.extract_audio(candidate, stream_index, extracted_audio)
+    merger.trim_audio_edges(extracted_audio, recovered_audio, trim_end_seconds=6.0)
+    merger.mux_audio(original, recovered_audio, output_file)
+
+    recovery_validation = analyzer.validate_recovery_attempt(
+        output_file,
+        original,
+        diagnosis=diagnosis,
+        strategy="edge-trim",
+        source_audio_file=extracted_audio,
+        recovered_audio_file=recovered_audio,
+        trim_end_seconds=6.0,
+    )
+
+    assert recovery_validation["valid"] is False
+    assert recovery_validation["reason"] in {"RECOVERY_FINAL_DIFF_TOO_LARGE", "RECOVERY_TRIM_RUNTIME_MISMATCH"}
 
 
 def test_optimize_only_preserves_chapters_and_subtitles(media_corpus: dict, tmp_path: Path) -> None:

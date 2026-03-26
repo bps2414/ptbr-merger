@@ -222,11 +222,14 @@ def generate_media_corpus(output_dir: Path) -> dict:
     offset_samples = _prepend_silence(base_samples, 1.5)
     cut_samples = _cut_mismatch_pattern(base_samples)
     alt_samples = _alternate_pattern(18.0)
+    edge_outro_samples = _alternate_pattern(4.0)
+    edge_samples = np.concatenate([base_samples, edge_outro_samples])
 
     wav_dir = output_dir / "wav"
     wav_dir.mkdir(exist_ok=True)
     base_wav = _write_wave(wav_dir / "base.wav", base_samples)
     offset_wav = _write_wave(wav_dir / "offset.wav", offset_samples)
+    edge_wav = _write_wave(wav_dir / "edge.wav", edge_samples)
     cut_wav = _write_wave(wav_dir / "cut.wav", cut_samples)
     alt_wav = _write_wave(wav_dir / "alt.wav", alt_samples)
 
@@ -288,6 +291,21 @@ def generate_media_corpus(output_dir: Path) -> dict:
     fixtures["dual_offset_ok"] = {
         "manifest": manifest["fixtures"]["dual_offset_ok"],
         "files": {"original": offset_original, "candidate": offset_candidate},
+    }
+
+    edge_original = _build_container(
+        output_path=output_dir / "dual_edge_recoverable_4k.mkv",
+        duration_seconds=18.0,
+        audio_tracks=[{"path": base_wav, "language": "eng", "title": "English", "default": True}],
+    )
+    edge_candidate = _build_container(
+        output_path=output_dir / "dual_edge_recoverable_1080p.mkv",
+        duration_seconds=22.0,
+        audio_tracks=[{"path": edge_wav, "language": "por", "title": "Português (Brasil)", "default": True}],
+    )
+    fixtures["dual_edge_recoverable"] = {
+        "manifest": manifest["fixtures"]["dual_edge_recoverable"],
+        "files": {"original": edge_original, "candidate": edge_candidate},
     }
 
     cut_original = _build_container(

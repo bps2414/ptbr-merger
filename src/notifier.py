@@ -55,6 +55,10 @@ _PHASE_META = {
 }
 
 _STATUS_VISUALS = {
+    "MANUAL_RECOVERY_PENDING": {"icon": "[manual-pending]", "label": "Aguardando recovery manual"},
+    "MANUAL_RECOVERY_RUNNING": {"icon": "[manual-running]", "label": "Recovery manual em andamento"},
+    "MANUAL_RECOVERY_FAILED": {"icon": "[manual-failed]", "label": "Recovery manual falhou"},
+    "MANUAL_RECOVERY_SUCCESS": {"icon": "[manual-success]", "label": "Recovery manual concluido"},
     "PROGRESS": {"icon": "🎬", "label": "Sessão em andamento"},
     "SUCCESS": {"icon": "✅", "label": "Merge concluído"},
     "SKIPPED_HAS_PTBR": {"icon": "🎞️", "label": "Otimização direta"},
@@ -62,9 +66,13 @@ _STATUS_VISUALS = {
     "NO_AVAILABLE_SEEDS": {"icon": "🌱", "label": "Sem seeds úteis"},
     "NOT_FOUND_STREAM": {"icon": "🎧", "label": "Faixa PT-BR ausente"},
     "SYNC_MISMATCH": {"icon": "⏱️", "label": "Sync incompatível"},
+    "CUT_MISMATCH": {"icon": "🧱", "label": "Corte incompatível"},
     "RUNTIME_INCOMPATIBLE": {"icon": "📏", "label": "Runtime incompatível"},
+    "INTRO_OUTRO_DIVERGENCE": {"icon": "🪄", "label": "Intro/outro diferente"},
+    "AMBIGUOUS_RECOVERABLE": {"icon": "🧭", "label": "Mismatch recuperável"},
     "OFFSET_SUSPECTED": {"icon": "🎚️", "label": "Offset suspeito"},
     "OFFSET_SUSPECTED_FAILED": {"icon": "🧪", "label": "Offset falhou"},
+    "AUTO_RECOVERY_FAILED": {"icon": "🪫", "label": "Recovery automático falhou"},
     "FINGERPRINT_LOW_CONFIDENCE": {"icon": "🫥", "label": "Fingerprint inconclusivo"},
     "FINGERPRINT_CUT_MISMATCH": {"icon": "🧱", "label": "Fingerprint: corte diferente"},
     "FINGERPRINT_DRIFT_SUSPECTED": {"icon": "📼", "label": "Fingerprint: drift suspeito"},
@@ -107,6 +115,10 @@ def _progress_bar(percent: int) -> str:
 
 def _status_label(status: str) -> str:
     labels = {
+        "MANUAL_RECOVERY_PENDING": "Aguardando recovery manual",
+        "MANUAL_RECOVERY_RUNNING": "Recovery manual em andamento",
+        "MANUAL_RECOVERY_FAILED": "Recovery manual falhou",
+        "MANUAL_RECOVERY_SUCCESS": "Recovery manual concluido",
         "PROGRESS": "Em andamento",
         "SUCCESS": "Concluído",
         "SKIPPED_HAS_PTBR": "Otimização local",
@@ -114,9 +126,13 @@ def _status_label(status: str) -> str:
         "NO_AVAILABLE_SEEDS": "Sem seeds úteis",
         "NOT_FOUND_STREAM": "Faixa PT-BR ausente",
         "SYNC_MISMATCH": "Sync incompatível",
+        "CUT_MISMATCH": "Corte incompatível",
         "RUNTIME_INCOMPATIBLE": "Runtime incompatível",
+        "INTRO_OUTRO_DIVERGENCE": "Intro/outro diferente",
+        "AMBIGUOUS_RECOVERABLE": "Mismatch recuperável",
         "OFFSET_SUSPECTED": "Offset suspeito",
         "OFFSET_SUSPECTED_FAILED": "Offset falhou",
+        "AUTO_RECOVERY_FAILED": "Recovery automático falhou",
         "FINGERPRINT_LOW_CONFIDENCE": "Fingerprint inconclusivo",
         "FINGERPRINT_CUT_MISMATCH": "Fingerprint: corte diferente",
         "FINGERPRINT_DRIFT_SUSPECTED": "Fingerprint: drift suspeito",
@@ -155,6 +171,28 @@ def _diagnostic_summary(context: dict) -> str:
         parts.append(f"offset aplicado {float(context.get('offset_applied_seconds', 0.0)):.3f}s")
     if context.get("offset_outcome"):
         parts.append(f"offset {context['offset_outcome']}")
+    if context.get("recovery_strategy"):
+        parts.append(f"recovery {context['recovery_strategy']}")
+    if context.get("recovery_outcome"):
+        parts.append(f"recovery {context['recovery_outcome']}")
+    if context.get("recovery_trim_start_seconds"):
+        parts.append(f"trim início {float(context['recovery_trim_start_seconds']):.3f}s")
+    if context.get("recovery_trim_end_seconds"):
+        parts.append(f"trim fim {float(context['recovery_trim_end_seconds']):.3f}s")
+    if context.get("recoverability"):
+        parts.append(f"recoverability {context['recoverability']}")
+    if context.get("recovery_reason"):
+        parts.append(f"motivo {context['recovery_reason']}")
+    if context.get("recovery_validation_reason"):
+        parts.append(f"postcheck {context['recovery_validation_reason']}")
+    if context.get("manual_request_id"):
+        parts.append(f"manual {context['manual_request_id']}")
+    if context.get("manual_force_offset_seconds") is not None:
+        parts.append(f"manual offset {float(context['manual_force_offset_seconds']):.3f}s")
+    if context.get("manual_trim_start_seconds"):
+        parts.append(f"manual trim inicio {float(context['manual_trim_start_seconds']):.3f}s")
+    if context.get("manual_trim_end_seconds"):
+        parts.append(f"manual trim fim {float(context['manual_trim_end_seconds']):.3f}s")
     if context.get("fingerprint_category"):
         parts.append(str(context["fingerprint_category"]))
     if context.get("fingerprint_confidence") is not None:
@@ -174,16 +212,22 @@ def notify_status(status: str, context: dict) -> None:
     """
     message = _build_message(status, context)
 
-    if status in ("SUCCESS", "SKIPPED_HAS_PTBR", "DUPLICATE_CALL"):
+    if status in ("SUCCESS", "MANUAL_RECOVERY_RUNNING", "MANUAL_RECOVERY_SUCCESS", "SKIPPED_HAS_PTBR", "DUPLICATE_CALL"):
         info(message)
     elif status in (
+        "MANUAL_RECOVERY_PENDING",
+        "MANUAL_RECOVERY_FAILED",
         "NOT_FOUND",
         "NO_AVAILABLE_SEEDS",
         "NOT_FOUND_STREAM",
         "SYNC_MISMATCH",
+        "CUT_MISMATCH",
         "RUNTIME_INCOMPATIBLE",
+        "INTRO_OUTRO_DIVERGENCE",
+        "AMBIGUOUS_RECOVERABLE",
         "OFFSET_SUSPECTED",
         "OFFSET_SUSPECTED_FAILED",
+        "AUTO_RECOVERY_FAILED",
         "FINGERPRINT_LOW_CONFIDENCE",
         "FINGERPRINT_CUT_MISMATCH",
         "FINGERPRINT_DRIFT_SUSPECTED",
@@ -207,7 +251,27 @@ def _build_message(status: str, context: dict) -> str:
         return f"PROGRESS: Processando {movie_name}."
 
     if status == "SUCCESS":
+        if context.get("recovery_outcome") == "success" and context.get("recovery_strategy"):
+            return (
+                f"SUCCESS: Áudio PT-BR injetado com sucesso no filme {movie_name} "
+                f"após recovery automático ({context.get('recovery_strategy')})."
+            )
         return f"SUCCESS: Áudio PT-BR injetado com sucesso no filme {movie_name}"
+    if status == "MANUAL_RECOVERY_PENDING":
+        return (
+            f"MANUAL_RECOVERY_PENDING: {movie_name} foi preservado aguardando tentativa manual com "
+            "parametros explicitos ou reuso de evidencia."
+        )
+    if status == "MANUAL_RECOVERY_RUNNING":
+        strategy = context.get("recovery_strategy") or "manual"
+        return f"MANUAL_RECOVERY_RUNNING: tentativa manual via {strategy} iniciada para {movie_name}."
+    if status == "MANUAL_RECOVERY_FAILED":
+        err_msg = context.get("error") or context.get("validation_reason") or "Falha nao especificada"
+        strategy = context.get("recovery_strategy", "manual")
+        return f"MANUAL_RECOVERY_FAILED: tentativa manual via {strategy} falhou para {movie_name} - {err_msg}"
+    if status == "MANUAL_RECOVERY_SUCCESS":
+        strategy = context.get("recovery_strategy", "manual")
+        return f"MANUAL_RECOVERY_SUCCESS: tentativa manual via {strategy} validou com sucesso para {movie_name}."
     if status == "SKIPPED_HAS_PTBR":
         return f"SKIPPED: O filme {movie_name} já possui faixa de áudio PT-BR."
     if status == "NOT_FOUND":
@@ -219,15 +283,28 @@ def _build_message(status: str, context: dict) -> str:
     if status == "SYNC_MISMATCH":
         diff = context.get("diff", "Desconhecida")
         return f"SYNC_MISMATCH: Diferença de duração muito grande ({diff}s) detectada para {movie_name}."
+    if status == "CUT_MISMATCH":
+        diff = context.get("diff", "Desconhecida")
+        return f"CUT_MISMATCH: o candidato tem corte incompatível ({diff}s) e foi encerrado para {movie_name}."
     if status == "RUNTIME_INCOMPATIBLE":
         diff = context.get("diff", "Desconhecida")
         return f"RUNTIME_INCOMPATIBLE: o candidato diverge estruturalmente do runtime esperado ({diff}s) para {movie_name}."
+    if status == "INTRO_OUTRO_DIVERGENCE":
+        diff = context.get("diff", "Desconhecida")
+        return f"INTRO_OUTRO_DIVERGENCE: diferença concentrada em intro/outro ({diff}s) para {movie_name}; candidato preservado para recovery futuro."
+    if status == "AMBIGUOUS_RECOVERABLE":
+        diff = context.get("diff", "Desconhecida")
+        return f"AMBIGUOUS_RECOVERABLE: mismatch grande porém plausivelmente recuperável ({diff}s) para {movie_name}; candidato preservado."
     if status == "OFFSET_SUSPECTED":
         diff = context.get("diff", "Desconhecida")
-        return f"OFFSET_SUSPECTED: desvio temporal detectado ({diff}s) para {movie_name}, mas sem correção automática nesta fase."
+        return f"OFFSET_SUSPECTED: desvio temporal detectado ({diff}s) para {movie_name}; candidato preservado aguardando evidência suficiente para recovery."
     if status == "OFFSET_SUSPECTED_FAILED":
         err_msg = context.get("error", "Falha não especificada")
         return f"OFFSET_SUSPECTED_FAILED: tentativa conservadora de offset falhou para {movie_name} - {err_msg}"
+    if status == "AUTO_RECOVERY_FAILED":
+        err_msg = context.get("error") or context.get("validation_reason") or "Falha não especificada"
+        strategy = context.get("recovery_strategy", "recovery")
+        return f"AUTO_RECOVERY_FAILED: tentativa automática via {strategy} falhou para {movie_name} - {err_msg}"
     if status == "FINGERPRINT_LOW_CONFIDENCE":
         return f"FINGERPRINT_LOW_CONFIDENCE: a medição de áudio não foi confiável o suficiente para {movie_name}."
     if status == "FINGERPRINT_CUT_MISMATCH":
@@ -247,15 +324,23 @@ def _build_message(status: str, context: dict) -> str:
 def _build_embed_payload(status: str, context: dict, phase: str | None = None) -> dict:
     colors = {
         "SUCCESS": 0x22C55E,
+        "MANUAL_RECOVERY_PENDING": 0xF59E0B,
+        "MANUAL_RECOVERY_RUNNING": 0x2563EB,
+        "MANUAL_RECOVERY_FAILED": 0xF97316,
+        "MANUAL_RECOVERY_SUCCESS": 0x22C55E,
         "SKIPPED_HAS_PTBR": 0x64748B,
         "DUPLICATE_CALL": 0x64748B,
         "NOT_FOUND": 0xF59E0B,
         "NO_AVAILABLE_SEEDS": 0xF59E0B,
         "NOT_FOUND_STREAM": 0xF59E0B,
         "SYNC_MISMATCH": 0xF97316,
+        "CUT_MISMATCH": 0xEF4444,
         "RUNTIME_INCOMPATIBLE": 0xF97316,
+        "INTRO_OUTRO_DIVERGENCE": 0xF59E0B,
+        "AMBIGUOUS_RECOVERABLE": 0xF59E0B,
         "OFFSET_SUSPECTED": 0xF97316,
         "OFFSET_SUSPECTED_FAILED": 0xF97316,
+        "AUTO_RECOVERY_FAILED": 0xF97316,
         "FINGERPRINT_LOW_CONFIDENCE": 0xF59E0B,
         "FINGERPRINT_CUT_MISMATCH": 0xEF4444,
         "FINGERPRINT_DRIFT_SUSPECTED": 0xEF4444,
@@ -332,6 +417,11 @@ def _build_embed_payload(status: str, context: dict, phase: str | None = None) -
         fields.append({"name": "FP offset", "value": f"{float(context['fingerprint_offset']):.3f}s", "inline": True})
     if context.get("offset_strategy"):
         fields.append({"name": "Estratégia", "value": str(context["offset_strategy"]), "inline": True})
+
+    if context.get("manual_request_id"):
+        fields.append({"name": "Manual request", "value": str(context["manual_request_id"]), "inline": False})
+    if context.get("manual_source_path"):
+        fields.append({"name": "Manual source", "value": str(context["manual_source_path"])[:1024], "inline": False})
 
     embed = {
         "author": {"name": f"{visual['icon']} {visual['label']}"},

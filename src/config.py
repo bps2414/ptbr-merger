@@ -77,6 +77,8 @@ class DiagnosticsConfig:
     enable_runtime_heuristics: bool = True
     enable_offset_diagnostics: bool = True
     offset_suspected_threshold_seconds: int = 180
+    recoverable_edge_diff_seconds: int = 180
+    ambiguous_recoverable_diff_seconds: int = 240
     enable_auto_offset: bool = False
     auto_offset_max_seconds: int = 90
     auto_offset_min_confidence: float = 0.85
@@ -104,6 +106,18 @@ class FingerprintConfig:
 
 
 @dataclass
+class RecoveryConfig:
+    enabled: bool = True
+    allow_ambiguous: bool = False
+    ambiguous_min_confidence: float = 0.6
+    max_offset_seconds: int = 90
+    min_trim_seconds: float = 3.0
+    max_trim_seconds: float = 180.0
+    post_validation_max_diff_seconds: float = 3.0
+    trim_tolerance_seconds: float = 1.5
+
+
+@dataclass
 class PtbrKeywordsConfig:
     high_priority: list[str]
     medium_priority: list[str]
@@ -126,6 +140,7 @@ class AppConfig:
     diagnostics: DiagnosticsConfig
     scoring: ScoringConfig
     fingerprint: FingerprintConfig
+    recovery: RecoveryConfig
 
 
 _config_instance: Optional[AppConfig] = None
@@ -191,6 +206,7 @@ def load_config(config_path: Path) -> AppConfig:
         diagnostics=DiagnosticsConfig(**data.get("diagnostics", {})),
         scoring=ScoringConfig(**data.get("scoring", {})),
         fingerprint=FingerprintConfig(**data.get("fingerprint", {})),
+        recovery=RecoveryConfig(**data.get("recovery", {})),
     )
 
 

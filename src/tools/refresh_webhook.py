@@ -29,6 +29,11 @@ def _phase_for_queue_entry(entry: dict, torrent: dict | None) -> str:
     phase = str(entry.get("phase", "") or "")
     if phase == "await-download":
         return "download-await"
+    if phase == "manual-recovery":
+        status = str(entry.get("status") or "")
+        if status in {"PENDING", "RUNNING", "MANUAL_RECOVERY_PENDING", "MANUAL_RECOVERY_RUNNING"}:
+            return "merge-start"
+        return "finalize"
     if phase in {"merge", "extract", "mux", "validate", "finalize", "search", "inject", "download-await", "merge-start"}:
         return phase
     if torrent and float(torrent.get("progress", 0) or 0) < 100.0:
@@ -76,10 +81,24 @@ def build_refresh_payload(entry: dict, movie: dict | None, events: list[dict], t
         "offset_applied": latest.get("offset_applied"),
         "offset_applied_seconds": latest.get("offset_applied_seconds"),
         "offset_outcome": latest.get("offset_outcome"),
+        "recovery_strategy": latest.get("recovery_strategy"),
+        "recovery_outcome": latest.get("recovery_outcome"),
+        "recovery_validation_reason": latest.get("recovery_validation_reason"),
+        "recovery_trim_start_seconds": latest.get("recovery_trim_start_seconds"),
+        "recovery_trim_end_seconds": latest.get("recovery_trim_end_seconds"),
         "fingerprint_category": latest.get("fingerprint_category"),
         "fingerprint_confidence": latest.get("fingerprint_confidence"),
         "fingerprint_offset": latest.get("fingerprint_offset"),
         "offset_strategy": latest.get("offset_strategy"),
+        "manual_recovery": entry.get("manual_recovery", latest.get("manual_recovery")),
+        "manual_request_id": entry.get("manual_request_id", latest.get("manual_request_id")),
+        "manual_candidate_index": entry.get("manual_candidate_index", latest.get("manual_candidate_index")),
+        "manual_force_offset_seconds": entry.get("manual_force_offset_seconds", latest.get("manual_force_offset_seconds")),
+        "manual_trim_start_seconds": entry.get("manual_trim_start_seconds", latest.get("manual_trim_start_seconds")),
+        "manual_trim_end_seconds": entry.get("manual_trim_end_seconds", latest.get("manual_trim_end_seconds")),
+        "manual_reuse_last_recovery": entry.get("manual_reuse_last_recovery", latest.get("manual_reuse_last_recovery")),
+        "manual_preserve_artifacts": entry.get("manual_preserve_artifacts", latest.get("manual_preserve_artifacts")),
+        "manual_source_path": entry.get("manual_source_path", latest.get("manual_source_path")),
         "retry_reason": latest.get("retry_reason"),
         "retry_scheduled_at": latest.get("retry_scheduled_at"),
         "bazarr_status": latest.get("bazarr_status"),
@@ -149,10 +168,24 @@ def _context_from_history_only(tmdb_id: str, movie: dict | None, events: list[di
         "offset_applied": latest.get("offset_applied"),
         "offset_applied_seconds": latest.get("offset_applied_seconds"),
         "offset_outcome": latest.get("offset_outcome"),
+        "recovery_strategy": latest.get("recovery_strategy"),
+        "recovery_outcome": latest.get("recovery_outcome"),
+        "recovery_validation_reason": latest.get("recovery_validation_reason"),
+        "recovery_trim_start_seconds": latest.get("recovery_trim_start_seconds"),
+        "recovery_trim_end_seconds": latest.get("recovery_trim_end_seconds"),
         "fingerprint_category": latest.get("fingerprint_category"),
         "fingerprint_confidence": latest.get("fingerprint_confidence"),
         "fingerprint_offset": latest.get("fingerprint_offset"),
         "offset_strategy": latest.get("offset_strategy"),
+        "manual_recovery": latest.get("manual_recovery"),
+        "manual_request_id": latest.get("manual_request_id"),
+        "manual_candidate_index": latest.get("manual_candidate_index"),
+        "manual_force_offset_seconds": latest.get("manual_force_offset_seconds"),
+        "manual_trim_start_seconds": latest.get("manual_trim_start_seconds"),
+        "manual_trim_end_seconds": latest.get("manual_trim_end_seconds"),
+        "manual_reuse_last_recovery": latest.get("manual_reuse_last_recovery"),
+        "manual_preserve_artifacts": latest.get("manual_preserve_artifacts"),
+        "manual_source_path": latest.get("manual_source_path"),
         "retry_reason": latest.get("retry_reason"),
         "retry_scheduled_at": latest.get("retry_scheduled_at"),
         "bazarr_status": latest.get("bazarr_status"),
@@ -213,12 +246,12 @@ def refresh_webhooks(tmdb_id: str | None = None) -> int:
             notify_status(status, context)
             message_id = context.get("discord_message_id")
             if message_id:
-                status_phase = "analyzer" if status == "SKIPPED_HAS_PTBR" else "refresh"
+                status_phase = "analyzer" if status == "SKIPPED_HAS_PTBR" else "manual-recovery" if status.startswith("MANUAL_RECOVERY") else "refresh"
                 existing_entry = queue_manager.get_entry(current_tmdb)
                 if existing_entry:
                     queue_manager.attach_metadata(current_tmdb, discord_message_id=message_id)
                 else:
-                    if status in {"SUCCESS", "SKIPPED_HAS_PTBR"}:
+                    if status in {"SUCCESS", "SKIPPED_HAS_PTBR", "MANUAL_RECOVERY_SUCCESS"}:
                         queue_manager.record_success(current_tmdb, status_phase, candidate_index=0)
                     elif status == "ABANDONED":
                         queue_manager.record_failure(current_tmdb, status_phase, "refresh_terminal_status", candidate_index=0)

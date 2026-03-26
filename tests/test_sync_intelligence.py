@@ -67,6 +67,42 @@ def test_group_history_manager_penalizes_known_cut_mismatch(tmp_path: Path):
     assert "combo-cut" in reason
 
 
+def test_group_history_manager_keeps_recoverable_mismatch_neutral(tmp_path: Path):
+    manager = GroupHistoryManager(tmp_path / "group_history.json")
+    manager.append_attempt(
+        {
+            "group": "edgegrp",
+            "source_4k": "AMZN.WEBDL",
+            "source_1080p": "WEBRIP",
+            "result": "INTRO_OUTRO_DIVERGENCE",
+        }
+    )
+
+    bonus, reason = manager.score_candidate(source_4k="AMZN.WEBDL", source_1080p="WEBRIP", group="edgegrp")
+
+    assert bonus == 0
+    assert "combo-recoverable:1" in reason
+    assert "combo-cut" not in reason
+
+
+def test_group_history_manager_keeps_auto_recovery_failure_separate_from_cut_penalty(tmp_path: Path):
+    manager = GroupHistoryManager(tmp_path / "group_history.json")
+    manager.append_attempt(
+        {
+            "group": "edgegrp",
+            "source_4k": "AMZN.WEBDL",
+            "source_1080p": "WEBRIP",
+            "result": "AUTO_RECOVERY_FAILED",
+        }
+    )
+
+    bonus, reason = manager.score_candidate(source_4k="AMZN.WEBDL", source_1080p="WEBRIP", group="edgegrp")
+
+    assert bonus == 0
+    assert "combo-recovery-failed:1" in reason
+    assert "combo-cut" not in reason
+
+
 def test_group_history_manager_ignores_generic_source_combo_penalties(tmp_path: Path):
     manager = GroupHistoryManager(tmp_path / "group_history.json")
     manager.append_attempt(

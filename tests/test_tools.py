@@ -318,3 +318,124 @@ def test_refresh_webhooks_can_create_terminal_message_from_history_without_queue
     queue_payload = json.loads((tmp_path / "queue.json").read_text(encoding="utf-8"))
     assert queue_payload["1084242"]["status"] == "SUCCESS"
     assert queue_payload["1084242"]["discord_message_id"] == "discord-created"
+
+
+def test_build_status_snapshot_collects_manual_recovery_entries(tmp_path: Path):
+    queue_file = tmp_path / "queue.json"
+    history_file = tmp_path / "history.json"
+    retry_queue_file = tmp_path / "retry_queue.json"
+    queue_file.write_text(
+        json.dumps(
+            {
+                "939243": {
+                    "tmdbId": "939243",
+                    "status": "PENDING",
+                    "phase": "manual-recovery",
+                    "manual_recovery": True,
+                    "manual_request_id": "manual-939243-1",
+                    "manual_force_offset_seconds": -8.4,
+                    "manual_source_path": r"D:\downloads\Sonic.3.1080p\movie.mkv",
+                }
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    history_file.write_text("[]", encoding="utf-8")
+    retry_queue_file.write_text("{}", encoding="utf-8")
+
+    snapshot = build_status_snapshot(
+        queue_file=queue_file,
+        history_file=history_file,
+        torrent_rows=[],
+        retry_queue_file=retry_queue_file,
+    )
+
+    assert snapshot["manual_recoveries"][0]["tmdbId"] == "939243"
+    assert snapshot["manual_recoveries"][0]["manual_request_id"] == "manual-939243-1"
+    assert snapshot["manual_recoveries"][0]["manual_force_offset_seconds"] == -8.4
+
+
+def test_build_refresh_payload_includes_manual_recovery_context():
+    phase, context = build_refresh_payload(
+        entry={
+            "tmdbId": "939243",
+            "phase": "manual-recovery",
+            "status": "PENDING",
+            "manual_recovery": True,
+            "manual_request_id": "manual-939243-1",
+            "manual_source_path": r"D:\downloads\Sonic.3.1080p\movie.mkv",
+            "manual_force_offset_seconds": -8.4,
+        },
+        movie={"title": "Sonic the Hedgehog 3", "year": 2024, "images": []},
+        events=[
+            {
+                "tmdbId": "939243",
+                "status": "MANUAL_RECOVERY_PENDING",
+                "manual_recovery": True,
+                "manual_request_id": "manual-939243-1",
+                "manual_trim_end_seconds": 24.0,
+                "recovery_strategy": "edge-trim",
+                "recovery_validation_reason": "RECOVERY_EDGE_TRIM_OK",
+            }
+        ],
+        torrent=None,
+    )
+
+    assert phase == "merge-start"
+    assert context["manual_request_id"] == "manual-939243-1"
+    assert context["manual_force_offset_seconds"] == -8.4
+    assert context["manual_trim_end_seconds"] == 24.0
+    assert context["recovery_strategy"] == "edge-trim"
+
+
+@patch("src.tools.refresh_webhook.notify_status")
+@patch("src.tools.refresh_webhook.radarr_client.get_movie_by_tmdbid")
+@patch("src.tools.refresh_webhook.qbit_client.list_ptbr_torrents")
+def test_refresh_webhooks_recreates_manual_terminal_state_from_history(
+    mock_list_ptbr_torrents,
+    mock_get_movie,
+    mock_notify_status,
+    tmp_path: Path,
+):
+    import src.tools.refresh_webhook as refresh_webhook
+
+    history_file = tmp_path / "history.json"
+    history_file.write_text(
+        json.dumps(
+            [
+                {
+                    "tmdbId": "939243",
+                    "title": "Sonic the Hedgehog 3",
+                    "year": "2024",
+                    "status": "MANUAL_RECOVERY_SUCCESS",
+                    "phase": "manual-recovery",
+                    "manual_recovery": True,
+                    "manual_request_id": "manual-939243-1",
+                    "manual_source_path": r"D:\downloads\Sonic.3.1080p\movie.mkv",
+                }
+            ],
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    mock_get_movie.return_value = {"title": "Sonic the Hedgehog 3", "year": 2024, "images": []}
+    mock_list_ptbr_torrents.return_value = []
+
+    def _notify(status, context):
+        context["discord_message_id"] = "discord-manual"
+
+    mock_notify_status.side_effect = _notify
+
+    original_base_dir = refresh_webhook.BASE_DIR
+    refresh_webhook.BASE_DIR = tmp_path
+    try:
+        updated = refresh_webhook.refresh_webhooks(tmdb_id="939243")
+    finally:
+        refresh_webhook.BASE_DIR = original_base_dir
+
+    assert updated == 1
+    assert mock_notify_status.call_args.args[0] == "MANUAL_RECOVERY_SUCCESS"
+    queue_payload = json.loads((tmp_path / "queue.json").read_text(encoding="utf-8"))
+    assert queue_payload["939243"]["status"] == "SUCCESS"
+    assert queue_payload["939243"]["phase"] == "manual-recovery"

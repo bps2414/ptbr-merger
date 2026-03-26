@@ -19,6 +19,13 @@
         "fingerprint_category": "FINGERPRINT_OFFSET_OK"
       }
     },
+    "dual_edge_recoverable": {
+      "description": "Par com padding no fim para validar recovery automatico conservador via edge trim.",
+      "expected": {
+        "sync_category": "INTRO_OUTRO_DIVERGENCE",
+        "recovery_strategy": "edge-trim"
+      }
+    },
     "dual_cut_mismatch": {
       "description": "Par estruturalmente diferente para validar rejeicao por drift/cut mismatch.",
       "expected": {
