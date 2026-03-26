@@ -31,15 +31,13 @@ When a 4K movie lacks PT-BR audio, the pipeline must recover a compatible PT-BR 
 
 ### Active
 
-- **ORCH-01**: Split orchestration responsibilities currently concentrated in `src/trigger.py`
-- **ORCH-02**: Preserve trigger behavior while refactoring orchestration boundaries
-- **ORCH-03**: Keep trigger-focused automated coverage intact during refactor
-- **RANK-01**: Extract Radarr candidate ranking and fallback rules into dedicated modules
-- **RANK-02**: Preserve strict/soft/exploratory ranking behavior with focused tests
-- **RANK-03**: Reduce ranking-change blast radius on API-client behavior
-- **QUAL-01**: Define a single validation entrypoint for test and compile checks
-- **QUAL-02**: Make validation repeatable in the local workflow
-- **QUAL-03**: Keep contributor docs aligned with the current validation path
+- **OPS-01**: Let non-technical operators use the pipeline through guided local flows instead of memorizing raw commands
+- **OPS-02**: Expose a single operator command center for status, doctor checks, manual recovery, and safe maintenance actions
+- **DOC-01**: Detect common local environment problems before a risky operation starts
+- **DOC-02**: Explain failures and fixes in plain operator language instead of only technical logs
+- **REC-UX-01**: Turn manual recovery into a guided experience with prompts and validation instead of a flag-heavy CLI
+- **SAFE-OPS-01**: Keep dangerous runtime actions behind explicit confirmations and preflight checks
+- **GUIDE-01**: Provide human-facing docs and scripts that match the guided operator workflow
 
 ### Out of Scope
 
@@ -93,11 +91,26 @@ The repository now has both a cleaner operational boundary and a materially stro
 - ranking/fallback logic is still concentrated in places that are harder to evolve safely
 - validation commands and contributor workflow still need a cleaner single entrypoint
 
+The next milestone deliberately avoids a full dashboard for now. The bigger pain is not missing product power; it is that the current power is hidden behind commands and operator knowledge that a non-dev user does not naturally have.
+
 ## Next Milestone Goals
 
-- Extract orchestration boundaries out of `src/trigger.py` without regressing shipped sync recovery behavior
-- Isolate ranking and fallback logic so changes stop splashing into unrelated code paths
-- Consolidate validation workflow into a repeatable developer path tied to docs and tests
+## Current Milestone: v0.4.5 Guided Operations
+
+**Goal:** make the existing local pipeline operable by a non-technical user through guided commands, doctor checks, and safer manual flows without jumping straight to a dashboard rewrite.
+
+**Target features:**
+- interactive operator command center for common actions
+- local doctor/preflight flow with plain-language diagnostics
+- guided manual recovery flow instead of raw flag memorization
+- operator-facing scripts and docs in Portuguese for real-world local use
+
+## Next Milestone Goals
+
+- Replace raw operator memorization with a guided local operations flow
+- Catch common environment/config/runtime blockers before risky actions start
+- Make manual recovery usable without needing to understand every trigger flag
+- Improve usability first, while keeping refactoring narrow and safety-focused
 
 ## Evolution
 
@@ -117,4 +130,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after completing v0.4.0 Sync Recovery*
+*Last updated: 2026-03-26 after starting v0.4.5 Guided Operations*
