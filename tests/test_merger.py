@@ -6,7 +6,7 @@ import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.merger import mux_audio, validate_and_replace
+from src.merger import mux_audio, trim_audio_edges, validate_and_replace
 
 @patch('src.merger.subprocess.Popen')
 @patch('src.merger.get_allowed_streams')
@@ -150,4 +150,34 @@ def test_validate_and_replace_replaces_original_when_validation_passes(mock_vali
 
     assert result["valid"] is True
     mock_replace_original.assert_called_once_with(Path("output.mkv"), Path("movie_4k.mkv"))
+
+
+@patch("src.merger.subprocess.run")
+@patch("src.merger.get_duration", return_value=120.0)
+def test_trim_audio_edges_builds_expected_ffmpeg_command(_mock_duration, mock_run):
+    trim_audio_edges(
+        Path("audio_ptbr.ac3"),
+        Path("audio_trimmed.ac3"),
+        trim_start_seconds=4.0,
+        trim_end_seconds=6.5,
+    )
+
+    cmd = mock_run.call_args.args[0]
+    assert "-ss" in cmd
+    assert cmd[cmd.index("-ss") + 1] == "4.000"
+    assert "-t" in cmd
+    assert cmd[cmd.index("-t") + 1] == "109.500"
+    assert cmd[-2] == "copy"
+    assert cmd[-1] == "audio_trimmed.ac3"
+
+
+@patch("src.merger.get_duration", return_value=8.0)
+def test_trim_audio_edges_rejects_invalid_duration(_mock_duration):
+    with pytest.raises(ValueError):
+        trim_audio_edges(
+            Path("audio_ptbr.ac3"),
+            Path("audio_trimmed.ac3"),
+            trim_start_seconds=5.0,
+            trim_end_seconds=4.0,
+        )
 

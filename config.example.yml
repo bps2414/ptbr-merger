@@ -26,6 +26,30 @@ logging:
   level: INFO
   file: D:\ptbr-merger\ptbrmerger.log
 
+processing:
+  queue_file: queue.json
+  max_attempts: 3
+  preserve_failed_artifacts: true
+
+retry:
+  queue_file: retry_queue.json
+  enabled: true
+  delay_hours:
+    - 1
+    - 6
+    - 24
+  max_attempts: 3
+
+recovery:
+  enabled: true
+  allow_ambiguous: false
+  ambiguous_min_confidence: 0.6
+  max_offset_seconds: 90
+  min_trim_seconds: 3.0
+  max_trim_seconds: 180.0
+  post_validation_max_diff_seconds: 3.0
+  trim_tolerance_seconds: 1.5
+
 ptbr_keywords:
   high_priority:
     - "ja,portuguese"

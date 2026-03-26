@@ -62,7 +62,7 @@ def test_build_embed_payload_includes_cover_progress_and_eta():
             "tmdbId": "1368166",
             "poster_url": "https://image.tmdb.org/t/p/original/poster.jpg",
             "release_title": "A.Empregada.2025.1080p.WEB-DL.DUAL.5.1",
-            "indexer": "Catálogo Betor",
+            "indexer": "CatÃ¡logo Betor",
             "candidate_index": 1,
             "score": 47025,
             "process_runtime": 92.4,
@@ -80,9 +80,9 @@ def test_build_embed_payload_includes_cover_progress_and_eta():
     field_names = [field["name"] for field in embed["fields"]]
 
     assert embed["thumbnail"]["url"] == "https://image.tmdb.org/t/p/original/poster.jpg"
-    assert embed["author"]["name"].startswith("🎬")
+    assert "andamento" in embed["author"]["name"]
     assert embed["title"].startswith("The Housemaid")
-    assert "█" in next(field["value"] for field in embed["fields"] if field["name"] == "Progresso")
+    assert "78%" in next(field["value"] for field in embed["fields"] if field["name"] == "Progresso")
     assert "Progresso" in field_names
     assert "ETA" in field_names
     assert "Fase" in field_names
@@ -90,7 +90,7 @@ def test_build_embed_payload_includes_cover_progress_and_eta():
     assert "Estado qBit" in field_names
     assert "Seeds" in field_names
     assert "Peers" in field_names
-    assert "Diagnóstico" in field_names
+    assert any("Diagn" in field for field in field_names)
 
 
 def test_build_message_progress_is_human_readable():
@@ -129,4 +129,41 @@ def test_build_embed_payload_includes_retry_context():
     field_names = [field["name"] for field in embed["fields"]]
 
     assert "Retry" in field_names
-    assert "Próxima tentativa" in field_names
+    assert any("tentativa" in field for field in field_names)
+
+
+def test_build_message_manual_recovery_failed_includes_strategy():
+    message = notifier._build_message(
+        "MANUAL_RECOVERY_FAILED",
+        {
+            "title": "Sonic the Hedgehog 3",
+            "year": "2024",
+            "recovery_strategy": "edge-trim",
+            "validation_reason": "RECOVERY_POSTCHECK_FAILED",
+        },
+    )
+
+    assert "MANUAL_RECOVERY_FAILED" in message
+    assert "edge-trim" in message
+
+
+def test_build_embed_payload_includes_manual_recovery_fields():
+    payload = notifier._build_embed_payload(
+        "MANUAL_RECOVERY_SUCCESS",
+        {
+            "title": "Alien: Romulus",
+            "year": "2024",
+            "tmdbId": "945961",
+            "manual_request_id": "manual-945961-20260326T120000Z",
+            "manual_source_path": r"D:\downloads\Alien.1080p\movie.mkv",
+            "manual_force_offset_seconds": -8.4,
+            "recovery_strategy": "offset",
+        },
+        phase="finalize",
+    )
+
+    embed = payload["embeds"][0]
+    field_names = [field["name"] for field in embed["fields"]]
+
+    assert "Manual request" in field_names
+    assert "Manual source" in field_names

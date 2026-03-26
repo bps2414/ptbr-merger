@@ -5,7 +5,7 @@ from collections import deque
 from pathlib import Path
 from typing import Optional
 
-from src.analyzer import get_allowed_streams, validate_final_file
+from src.analyzer import get_allowed_streams, get_duration, validate_final_file
 from src.config import get_config
 from src.notifier import debug, error, info, warning
 
@@ -147,6 +147,55 @@ def mux_audio(
             raise
 
     raise RuntimeError("FFmpeg mux retry loop exited unexpectedly.")
+
+
+def trim_audio_edges(
+    input_audio: Path,
+    output_audio: Path,
+    *,
+    trim_start_seconds: float = 0.0,
+    trim_end_seconds: float = 0.0,
+) -> Path:
+    """
+    Recorta bordas do audio extraido para casos conservadores de intro/outro divergente.
+    """
+    trim_start = max(0.0, float(trim_start_seconds or 0.0))
+    trim_end = max(0.0, float(trim_end_seconds or 0.0))
+    if trim_start == 0.0 and trim_end == 0.0:
+        return input_audio
+
+    input_duration = float(get_duration(input_audio) or 0.0)
+    output_duration = input_duration - trim_start - trim_end
+    if output_duration <= 0.0:
+        raise ValueError("TRIM_RECOVERY_INVALID_DURATION")
+
+    ffmpeg_path = config.ffmpeg.ffmpeg_path
+    cmd = [
+        str(ffmpeg_path),
+        "-y",
+    ]
+    if trim_start > 0.0:
+        cmd.extend(["-ss", f"{trim_start:.3f}"])
+    cmd.extend(
+        [
+            "-i",
+            str(input_audio),
+            "-t",
+            f"{output_duration:.3f}",
+            "-c:a",
+            "copy",
+            str(output_audio),
+        ]
+    )
+
+    try:
+        debug(f"Processando FFmpeg Trim: {' '.join(cmd)}")
+        subprocess.run(cmd, capture_output=True, text=True, check=True)
+        info(f"Audio recortado com sucesso para recovery: {output_audio.name}")
+        return output_audio
+    except subprocess.CalledProcessError as exc:
+        error(f"Erro ao recortar audio com ffmpeg. Codigo: {exc.returncode} | Output:\n{exc.stderr}")
+        raise
 
 
 def replace_original(output_tmp: Path, file_4k: Path) -> None:

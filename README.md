@@ -10,7 +10,7 @@ PTBRMerger is a Python pipeline that sits between Radarr, qBittorrent and FFmpeg
 - extract the PT-BR track and mux it into the original 4K file
 - validate the final MKV before replacing the original
 
-Phase 2 hardening is already implemented in this repository. The current pipeline includes:
+As of March 26, 2026, the hardened pipeline in this repository already includes:
 
 - direct qBittorrent bypass mode with duplicate detection by infohash
 - PT-BR ranking with explicit weighting for `dublado`, `dual` and BR signals
@@ -31,6 +31,7 @@ Phase 2 hardening is already implemented in this repository. The current pipelin
 - optional Bazarr subtitle fallback lookup for `NOT_FOUND` / `NO_AVAILABLE_SEEDS`
 - operational preflight to check environment blockers before a real movie run
 - runtime hygiene tooling to archive and reset queue/history/group history safely
+- assisted manual recovery with persisted offset/trim parameters and replayable evidence
 
 ## Stack
 
@@ -333,6 +334,16 @@ fingerprint:
     - tail
   allow_borderline_cut_retry: false
 
+recovery:
+  enabled: true
+  allow_ambiguous: false
+  ambiguous_min_confidence: 0.6
+  max_offset_seconds: 90
+  min_trim_seconds: 3.0
+  max_trim_seconds: 180.0
+  post_validation_max_diff_seconds: 3.0
+  trim_tolerance_seconds: 1.5
+
 ptbr_keywords:
   high_priority:
     - "pt-br"
@@ -394,6 +405,29 @@ $env:PTBRMERGER_DRY_RUN="true"
 ```
 
 In dry-run mode the project logs the intended FFmpeg and API actions without mutating files or deleting torrents.
+
+## Assisted Manual Recovery
+
+When a candidate was preserved as recoverable or you want to force a conservative retry with explicit evidence, use `--manual-recovery`.
+
+Examples:
+
+```bash
+python src/trigger.py --manual-recovery --tmdb-id 939243 --qbit-path "D:\downloads\Sonic.3.1080p" --candidate-index 2
+python src/trigger.py --manual-recovery --tmdb-id 939243 --qbit-path "D:\downloads\Sonic.3.1080p" --force-offset-seconds -8.4
+python src/trigger.py --manual-recovery --tmdb-id 939243 --qbit-path "D:\downloads\Sonic.3.1080p" --trim-end-seconds 24 --preserve-recovery-artifacts
+python src/trigger.py --manual-recovery --tmdb-id 939243 --qbit-path "D:\downloads\Sonic.3.1080p" --reuse-last-recovery
+```
+
+What these flags do:
+
+- `--candidate-index`: picks a specific Radarr-ranked candidate using 1-based indexing.
+- `--force-offset-seconds`: forces a manual mux offset instead of waiting for automatic evidence.
+- `--trim-start-seconds` and `--trim-end-seconds`: apply explicit edge trimming before mux.
+- `--reuse-last-recovery`: reuses the latest persisted manual offset/trim values for the same TMDB.
+- `--preserve-recovery-artifacts`: keeps temporary recovery outputs even if the global processing config would clean them.
+
+Manual attempts are persisted into `queue.json`, `history.json`, `group_history.json`, `python -m src.tools.status`, and `python -m src.tools.refresh_webhook`, so you can replay, inspect, and rebuild the Discord terminal status without guesswork.
 
 ## Operational Commands
 

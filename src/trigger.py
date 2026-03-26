@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -46,6 +47,18 @@ def parse_args():
     parser.add_argument("--qbit-tags", type=str, help="Tags delimitadas por vírgula repassadas via %%G.")
     parser.add_argument("--qbit-hash", type=str, help="Info hash do qBittorrent via %%I.")
     parser.add_argument("--retry-pending", action="store_true", help="Processa itens de retry_queue.json já vencidos.")
+    parser.add_argument("--manual-recovery", action="store_true", help="Executa tentativa manual/assistida de recovery.")
+    parser.add_argument("--tmdb-id", type=str, help="TMDB ID explicito para recovery manual.")
+    parser.add_argument("--candidate-index", type=int, help="Indice 1-based do candidato forcado na lista do Radarr.")
+    parser.add_argument("--force-offset-seconds", type=float, help="Offset manual em segundos para recovery assistido.")
+    parser.add_argument("--trim-start-seconds", type=float, default=0.0, help="Trim manual no inicio do audio PT-BR.")
+    parser.add_argument("--trim-end-seconds", type=float, default=0.0, help="Trim manual no fim do audio PT-BR.")
+    parser.add_argument("--reuse-last-recovery", action="store_true", help="Reaproveita os ultimos parametros de recovery persistidos.")
+    parser.add_argument(
+        "--preserve-recovery-artifacts",
+        action="store_true",
+        help="Preserva artefatos temporarios desta tentativa manual mesmo quando a config global limparia.",
+    )
     return parser.parse_known_args()[0]
 
 
@@ -151,6 +164,81 @@ def _resolve_manual_context(file_path: Path, tmdb_id: str, title: str, year: str
     return resolved_tmdb, resolved_title, resolved_year
 
 
+def _latest_tmdb_event(tmdb_id: str) -> dict:
+    for event in reversed(history_manager._read()):
+        if str(event.get("tmdbId") or "") == str(tmdb_id):
+            return event
+    return {}
+
+
+def _resolve_candidate_index(candidates: list | None, requested_index: int | None, source_path: Path | None) -> int:
+    if requested_index is not None and requested_index > 0:
+        return requested_index - 1
+
+    if candidates and source_path:
+        source_name = source_path.name
+        source_parent = source_path.parent.name
+        for index, candidate in enumerate(candidates):
+            title = str(candidate.get("title") or "")
+            if title and (title in source_name or title in source_parent):
+                return index
+
+    return 0
+
+
+def _build_manual_request(args: argparse.Namespace, tmdb_id: str, source_path: Path, current_index: int) -> dict:
+    queue_entry = queue_manager.get_entry(tmdb_id) or {}
+    latest_event = _latest_tmdb_event(tmdb_id)
+    request = {
+        "enabled": True,
+        "manual_recovery": True,
+        "manual_request_id": f"manual-{tmdb_id}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}",
+        "manual_candidate_index": current_index + 1,
+        "manual_force_offset_seconds": args.force_offset_seconds,
+        "manual_trim_start_seconds": float(args.trim_start_seconds or 0.0),
+        "manual_trim_end_seconds": float(args.trim_end_seconds or 0.0),
+        "manual_reuse_last_recovery": bool(args.reuse_last_recovery),
+        "manual_preserve_artifacts": bool(
+            args.preserve_recovery_artifacts or getattr(config.processing, "preserve_failed_artifacts", True)
+        ),
+        "manual_source_path": str(source_path),
+    }
+
+    if args.reuse_last_recovery:
+        request["manual_force_offset_seconds"] = (
+            request.get("manual_force_offset_seconds")
+            if request.get("manual_force_offset_seconds") is not None
+            else queue_entry.get("manual_force_offset_seconds")
+            if queue_entry.get("manual_force_offset_seconds") is not None
+            else latest_event.get("manual_force_offset_seconds")
+            if latest_event.get("manual_force_offset_seconds") is not None
+            else latest_event.get("offset_applied_seconds")
+        )
+        request["manual_trim_start_seconds"] = float(
+            request.get("manual_trim_start_seconds")
+            or queue_entry.get("manual_trim_start_seconds")
+            or latest_event.get("manual_trim_start_seconds")
+            or latest_event.get("recovery_trim_start_seconds")
+            or 0.0
+        )
+        request["manual_trim_end_seconds"] = float(
+            request.get("manual_trim_end_seconds")
+            or queue_entry.get("manual_trim_end_seconds")
+            or latest_event.get("manual_trim_end_seconds")
+            or latest_event.get("recovery_trim_end_seconds")
+            or 0.0
+        )
+
+        if (
+            request.get("manual_force_offset_seconds") is None
+            and request.get("manual_trim_start_seconds", 0.0) <= 0.0
+            and request.get("manual_trim_end_seconds", 0.0) <= 0.0
+        ):
+            raise ValueError("Nenhuma tentativa anterior com parametros reaproveitaveis foi encontrada para este TMDB.")
+
+    return request
+
+
 def _hydrate_context_from_qbit_result(context: dict, add_result: qbit_client.QbitAddResult) -> None:
     if add_result.progress is not None:
         context["progress_percent"] = int(round(float(add_result.progress)))
@@ -196,6 +284,15 @@ def _record_history(context: dict, status: str, phase: str, **extra) -> None:
         "fingerprint_offset": context.get("fingerprint_offset"),
         "fingerprint_positions_used": context.get("fingerprint_positions_used"),
         "offset_strategy": context.get("offset_strategy"),
+        "manual_recovery": context.get("manual_recovery"),
+        "manual_request_id": context.get("manual_request_id"),
+        "manual_candidate_index": context.get("manual_candidate_index"),
+        "manual_force_offset_seconds": context.get("manual_force_offset_seconds"),
+        "manual_trim_start_seconds": context.get("manual_trim_start_seconds"),
+        "manual_trim_end_seconds": context.get("manual_trim_end_seconds"),
+        "manual_reuse_last_recovery": context.get("manual_reuse_last_recovery"),
+        "manual_preserve_artifacts": context.get("manual_preserve_artifacts"),
+        "manual_source_path": context.get("manual_source_path"),
         "retry_reason": context.get("retry_reason"),
         "retry_scheduled_at": context.get("retry_scheduled_at"),
         "bazarr_status": context.get("bazarr_status"),
@@ -253,6 +350,9 @@ def _record_group_history(context: dict, result: str, diagnosis_category: str | 
             "fingerprint_category": context.get("fingerprint_category"),
             "fingerprint_confidence": context.get("fingerprint_confidence"),
             "fingerprint_offset": context.get("fingerprint_offset"),
+            "recovery_strategy": context.get("recovery_strategy"),
+            "recovery_outcome": context.get("recovery_outcome"),
+            "recovery_validation_reason": context.get("recovery_validation_reason"),
             "result": result,
         }
     )
@@ -268,6 +368,190 @@ def _should_run_fingerprint(diagnosis: dict) -> bool:
         and diagnosis.get("category") == "CUT_MISMATCH"
         and float(diagnosis.get("diff") or 0.0) <= float(getattr(config.fingerprint, "max_offset_seconds", 90))
     )
+
+
+def _update_sync_context(context: dict, diagnosis: dict) -> None:
+    context.update(
+        {
+            "runtime_4k": diagnosis.get("runtime_4k"),
+            "runtime_1080p": diagnosis.get("runtime_1080p"),
+            "runtime_oficial": diagnosis.get("runtime_oficial"),
+            "diff": diagnosis.get("diff"),
+            "offset_estimate": diagnosis.get("offset_estimate"),
+            "diagnosis_category": diagnosis.get("category"),
+            "recoverability": diagnosis.get("recoverability"),
+            "diagnosis_terminal": diagnosis.get("terminal"),
+            "preserve_candidate": diagnosis.get("preserve_candidate"),
+            "recovery_reason": diagnosis.get("recovery_reason"),
+            "auto_offset_eligible": diagnosis.get("auto_offset_eligible"),
+            "auto_offset_reason": diagnosis.get("auto_offset_reason"),
+            "fingerprint_reason": diagnosis.get("fingerprint_reason"),
+        }
+    )
+
+
+def _apply_fingerprint_result(diagnosis: dict, fingerprint_result: dict) -> dict:
+    category = fingerprint_result.get("category")
+    if category == "FINGERPRINT_SYNC_OK":
+        diagnosis.update(
+            {
+                "sync_ok": True,
+                "category": "SYNC_OK",
+                "recoverability": "not-needed",
+                "terminal": False,
+                "preserve_candidate": False,
+                "recovery_reason": "fingerprint-sync-ok",
+                "offset_estimate": 0.0,
+                "auto_offset_eligible": False,
+                "auto_offset_reason": "fingerprint-sync-ok",
+                "fingerprint_reason": "fingerprint-sync-ok",
+            }
+        )
+        return diagnosis
+
+    if category == "FINGERPRINT_OFFSET_OK":
+        diagnosis.update(
+            {
+                "sync_ok": False,
+                "category": "OFFSET_SUSPECTED",
+                "recoverability": "recoverable",
+                "terminal": False,
+                "preserve_candidate": True,
+                "recovery_reason": "fingerprint-offset-confirmed",
+                "auto_offset_eligible": True,
+                "auto_offset_reason": "fingerprint-eligible",
+                "fingerprint_reason": "fingerprint-offset-confirmed",
+                "offset_estimate": fingerprint_result.get("best_offset_seconds"),
+            }
+        )
+        return diagnosis
+
+    if category == "FINGERPRINT_LOW_CONFIDENCE":
+        if diagnosis.get("category") == "INTRO_OUTRO_DIVERGENCE":
+            diagnosis.update(
+                {
+                    "sync_ok": False,
+                    "category": "INTRO_OUTRO_DIVERGENCE",
+                    "recoverability": "recoverable",
+                    "terminal": False,
+                    "preserve_candidate": True,
+                    "recovery_reason": "edge-divergence-fingerprint-inconclusive",
+                    "auto_offset_eligible": False,
+                    "auto_offset_reason": "fingerprint-inconclusive",
+                    "fingerprint_reason": "fingerprint-inconclusive-edge",
+                }
+            )
+            return diagnosis
+        diagnosis.update(
+            {
+                "sync_ok": False,
+                "category": "AMBIGUOUS_RECOVERABLE",
+                "recoverability": "ambiguous",
+                "terminal": False,
+                "preserve_candidate": True,
+                "recovery_reason": "fingerprint-inconclusive",
+                "auto_offset_eligible": False,
+                "auto_offset_reason": "fingerprint-inconclusive",
+                "fingerprint_reason": "fingerprint-inconclusive",
+            }
+        )
+        return diagnosis
+
+    if category in {"FINGERPRINT_DRIFT_SUSPECTED", "FINGERPRINT_CUT_MISMATCH"}:
+        diagnosis.update(
+            {
+                "sync_ok": False,
+                "category": category,
+                "recoverability": "terminal",
+                "terminal": True,
+                "preserve_candidate": False,
+                "recovery_reason": "fingerprint-terminal",
+                "auto_offset_eligible": False,
+                "auto_offset_reason": "fingerprint-blocked",
+                "fingerprint_reason": "fingerprint-terminal",
+            }
+        )
+        return diagnosis
+
+    return diagnosis
+
+
+def _should_preserve_diagnosis(diagnosis: dict, auto_offset_active: bool) -> bool:
+    return bool(
+        not diagnosis.get("sync_ok")
+        and not auto_offset_active
+        and diagnosis.get("preserve_candidate")
+        and not diagnosis.get("terminal")
+    )
+
+
+def _build_recovery_plan(diagnosis: dict, context: dict) -> dict | None:
+    recovery_cfg = getattr(config, "recovery", None)
+    if recovery_cfg is None or not getattr(recovery_cfg, "enabled", False):
+        return None
+    if diagnosis.get("terminal") or diagnosis.get("sync_ok"):
+        return None
+
+    category = diagnosis.get("category")
+    diff = abs(float(diagnosis.get("diff") or 0.0))
+    offset_estimate = diagnosis.get("offset_estimate")
+    fingerprint_confidence = context.get("fingerprint_confidence")
+
+    if category == "OFFSET_SUSPECTED" and diagnosis.get("auto_offset_eligible") and offset_estimate is not None:
+        if abs(float(offset_estimate)) <= float(getattr(recovery_cfg, "max_offset_seconds", 90)):
+            return {
+                "strategy": "offset",
+                "audio_offset_seconds": float(offset_estimate),
+                "recoverability": diagnosis.get("recoverability"),
+            }
+
+    if category == "INTRO_OUTRO_DIVERGENCE":
+        if float(getattr(recovery_cfg, "min_trim_seconds", 3.0)) <= diff <= float(getattr(recovery_cfg, "max_trim_seconds", 180.0)):
+            return {
+                "strategy": "edge-trim",
+                "trim_start_seconds": 0.0,
+                "trim_end_seconds": diff,
+                "recoverability": diagnosis.get("recoverability"),
+            }
+
+    if category == "AMBIGUOUS_RECOVERABLE" and getattr(recovery_cfg, "allow_ambiguous", False):
+        if fingerprint_confidence is None or float(fingerprint_confidence) < float(getattr(recovery_cfg, "ambiguous_min_confidence", 0.6)):
+            return None
+        if float(getattr(recovery_cfg, "min_trim_seconds", 3.0)) <= diff <= float(getattr(recovery_cfg, "max_trim_seconds", 180.0)):
+            return {
+                "strategy": "edge-trim",
+                "trim_start_seconds": 0.0,
+                "trim_end_seconds": diff,
+                "recoverability": diagnosis.get("recoverability"),
+            }
+
+    return None
+
+
+def _build_manual_recovery_plan(manual_request: dict | None, automatic_plan: dict | None) -> dict | None:
+    if not manual_request or not manual_request.get("enabled"):
+        return automatic_plan
+
+    force_offset = manual_request.get("manual_force_offset_seconds")
+    trim_start = float(manual_request.get("manual_trim_start_seconds") or 0.0)
+    trim_end = float(manual_request.get("manual_trim_end_seconds") or 0.0)
+
+    if force_offset is not None:
+        return {
+            "strategy": "offset",
+            "audio_offset_seconds": float(force_offset),
+            "recoverability": "manual",
+        }
+
+    if trim_start > 0.0 or trim_end > 0.0:
+        return {
+            "strategy": "edge-trim",
+            "trim_start_seconds": trim_start,
+            "trim_end_seconds": trim_end,
+            "recoverability": "manual",
+        }
+
+    return automatic_plan
 
 
 def _normalize_infohash(torrent_hash: str | None) -> str | None:
@@ -423,6 +707,7 @@ def run_merger(
     radarr_download_id: str,
     candidates: list = None,
     current_index: int = 0,
+    manual_request: dict | None = None,
 ) -> None:
     del ptbrmerger_movie_id
     file_1080p = file_path
@@ -449,8 +734,24 @@ def run_merger(
                 "precheck_reason": candidate.get("precheck_reason"),
             }
         )
+    if manual_request:
+        context.update(
+            {
+                "manual_recovery": True,
+                "manual_request_id": manual_request.get("manual_request_id"),
+                "manual_candidate_index": manual_request.get("manual_candidate_index"),
+                "manual_force_offset_seconds": manual_request.get("manual_force_offset_seconds"),
+                "manual_trim_start_seconds": manual_request.get("manual_trim_start_seconds"),
+                "manual_trim_end_seconds": manual_request.get("manual_trim_end_seconds"),
+                "manual_reuse_last_recovery": manual_request.get("manual_reuse_last_recovery"),
+                "manual_preserve_artifacts": manual_request.get("manual_preserve_artifacts"),
+                "manual_source_path": manual_request.get("manual_source_path"),
+            }
+        )
 
     can_process, reason = queue_manager.can_process(tmdb_id)
+    if manual_request and reason == "ABANDONED":
+        can_process = True
     if not can_process:
         if reason == "PROCESSING":
             notify_status("DUPLICATE_CALL", context)
@@ -459,16 +760,36 @@ def run_merger(
         _record_history(context, reason or "BLOCKED", "guard")
         return
 
-    queue_manager.begin(tmdb_id, "merge", candidate_index=current_index)
+    queue_manager.begin(tmdb_id, "manual-recovery" if manual_request else "merge", candidate_index=current_index)
+    if manual_request:
+        queue_manager.attach_metadata(
+            tmdb_id,
+            manual_recovery=True,
+            manual_request_id=context.get("manual_request_id"),
+            manual_candidate_index=context.get("manual_candidate_index"),
+            manual_force_offset_seconds=context.get("manual_force_offset_seconds"),
+            manual_trim_start_seconds=context.get("manual_trim_start_seconds"),
+            manual_trim_end_seconds=context.get("manual_trim_end_seconds"),
+            manual_reuse_last_recovery=context.get("manual_reuse_last_recovery"),
+            manual_preserve_artifacts=context.get("manual_preserve_artifacts"),
+            manual_source_path=context.get("manual_source_path"),
+        )
+        notify_status("MANUAL_RECOVERY_RUNNING", context)
+        _record_history(context, "MANUAL_RECOVERY_RUNNING", "manual-recovery")
     _update_progress(context, "merge-start")
 
     output_tmp = Path("")
     audio_ptbr = Path("")
+    recovery_audio = Path("")
     stage_timings: dict[str, float] = {}
     started_at = time.perf_counter()
     should_cleanup_qbit = False
     success = False
-    preserve_failed = getattr(config.processing, "preserve_failed_artifacts", True)
+    preserve_failed = (
+        bool(manual_request.get("manual_preserve_artifacts"))
+        if manual_request
+        else getattr(config.processing, "preserve_failed_artifacts", True)
+    )
     failed_candidate_removed = False
 
     def mark_stage(stage_name: str, stage_start: float) -> None:
@@ -579,19 +900,7 @@ def run_merger(
         sync_start = time.perf_counter()
         diagnosis = analyzer.diagnose_sync(file_4k, file_1080p, runtime_oficial=runtime_oficial)
         mark_stage("sync", sync_start)
-        context.update(
-            {
-                "runtime_4k": diagnosis.get("runtime_4k"),
-                "runtime_1080p": diagnosis.get("runtime_1080p"),
-                "runtime_oficial": diagnosis.get("runtime_oficial"),
-                "diff": diagnosis.get("diff"),
-                "offset_estimate": diagnosis.get("offset_estimate"),
-                "diagnosis_category": diagnosis.get("category"),
-                "auto_offset_eligible": diagnosis.get("auto_offset_eligible"),
-                "auto_offset_reason": diagnosis.get("auto_offset_reason"),
-                "fingerprint_reason": diagnosis.get("fingerprint_reason"),
-            }
-        )
+        _update_sync_context(context, diagnosis)
 
         fingerprint_result = None
         if _should_run_fingerprint(diagnosis):
@@ -611,25 +920,84 @@ def run_merger(
                 }
             )
 
-            if fingerprint_result.get("category") == "FINGERPRINT_SYNC_OK":
-                diagnosis["sync_ok"] = True
-                diagnosis["category"] = "SYNC_OK"
-                diagnosis["offset_estimate"] = 0.0
-            elif fingerprint_result.get("category") == "FINGERPRINT_OFFSET_OK":
-                diagnosis["category"] = "OFFSET_SUSPECTED"
-                diagnosis["auto_offset_eligible"] = True
-                diagnosis["auto_offset_reason"] = "fingerprint-eligible"
-                diagnosis["offset_estimate"] = fingerprint_result.get("best_offset_seconds")
-            elif fingerprint_result.get("category") in {"FINGERPRINT_DRIFT_SUSPECTED", "FINGERPRINT_CUT_MISMATCH", "FINGERPRINT_LOW_CONFIDENCE"}:
-                diagnosis["sync_ok"] = False
-                diagnosis["category"] = fingerprint_result.get("category")
-                diagnosis["auto_offset_eligible"] = False
-                diagnosis["auto_offset_reason"] = "fingerprint-blocked"
-                context["diagnosis_category"] = diagnosis["category"]
+            diagnosis = _apply_fingerprint_result(diagnosis, fingerprint_result)
+            _update_sync_context(context, diagnosis)
 
-        auto_offset_active = bool(diagnosis.get("category") == "OFFSET_SUSPECTED" and diagnosis.get("auto_offset_eligible"))
+        automatic_recovery_plan = _build_recovery_plan(diagnosis, context)
+        recovery_plan = _build_manual_recovery_plan(manual_request, automatic_recovery_plan)
+        auto_offset_active = bool(recovery_plan and recovery_plan.get("strategy") == "offset")
+        recovery_active = bool(recovery_plan)
+        if recovery_plan:
+            context["recovery_strategy"] = recovery_plan.get("strategy")
+            context["recovery_recoverability"] = recovery_plan.get("recoverability")
+            context["recovery_trim_start_seconds"] = recovery_plan.get("trim_start_seconds")
+            context["recovery_trim_end_seconds"] = recovery_plan.get("trim_end_seconds")
 
-        if not diagnosis.get("sync_ok") and not auto_offset_active:
+        if manual_request and not diagnosis.get("sync_ok") and not recovery_active:
+            queue_entry = queue_manager.record_pending(tmdb_id, "manual-recovery", candidate_index=current_index)
+            queue_manager.attach_metadata(
+                tmdb_id,
+                diagnosis_category=diagnosis.get("category"),
+                recoverability=diagnosis.get("recoverability"),
+                recovery_reason=diagnosis.get("recovery_reason"),
+                manual_recovery=True,
+                manual_request_id=context.get("manual_request_id"),
+                manual_candidate_index=context.get("manual_candidate_index"),
+                manual_force_offset_seconds=context.get("manual_force_offset_seconds"),
+                manual_trim_start_seconds=context.get("manual_trim_start_seconds"),
+                manual_trim_end_seconds=context.get("manual_trim_end_seconds"),
+                manual_reuse_last_recovery=context.get("manual_reuse_last_recovery"),
+                manual_preserve_artifacts=context.get("manual_preserve_artifacts"),
+                manual_source_path=context.get("manual_source_path"),
+                fingerprint_category=context.get("fingerprint_category"),
+                fingerprint_confidence=context.get("fingerprint_confidence"),
+                fingerprint_offset=context.get("fingerprint_offset"),
+            )
+            context["process_runtime"] = time.perf_counter() - started_at
+            context["manual_status"] = "MANUAL_RECOVERY_PENDING"
+            notify_status("MANUAL_RECOVERY_PENDING", {**context, "diff": diagnosis.get("diff")})
+            _record_history(
+                context,
+                "MANUAL_RECOVERY_PENDING",
+                "manual-recovery",
+                queue_status=queue_entry.get("status"),
+                sync_category=diagnosis.get("category"),
+                recoverability=diagnosis.get("recoverability"),
+                recovery_reason=diagnosis.get("recovery_reason"),
+            )
+            _record_group_history(context, "MANUAL_RECOVERY_PENDING", diagnosis_category=diagnosis.get("category"))
+            return
+
+        if _should_preserve_diagnosis(diagnosis, auto_offset_active) and not recovery_active:
+            queue_entry = queue_manager.record_pending(tmdb_id, "recoverability", candidate_index=current_index)
+            queue_manager.attach_metadata(
+                tmdb_id,
+                diagnosis_category=diagnosis.get("category"),
+                recoverability=diagnosis.get("recoverability"),
+                recovery_reason=diagnosis.get("recovery_reason"),
+                fingerprint_category=context.get("fingerprint_category"),
+                fingerprint_confidence=context.get("fingerprint_confidence"),
+                fingerprint_offset=context.get("fingerprint_offset"),
+            )
+            context["process_runtime"] = time.perf_counter() - started_at
+            status = diagnosis.get("category") or "AMBIGUOUS_RECOVERABLE"
+            notify_status(status, {**context, "diff": diagnosis.get("diff")})
+            _record_history(
+                context,
+                status,
+                "sync",
+                queue_status=queue_entry.get("status"),
+                sync_category=diagnosis.get("category"),
+                recoverability=diagnosis.get("recoverability"),
+                recovery_reason=diagnosis.get("recovery_reason"),
+                preserved_candidate=True,
+                fingerprint_category=context.get("fingerprint_category"),
+                fingerprint_confidence=context.get("fingerprint_confidence"),
+            )
+            _record_group_history(context, status, diagnosis_category=diagnosis.get("category"))
+            return
+
+        if not diagnosis.get("sync_ok") and not auto_offset_active and not recovery_active:
             queue_entry = queue_manager.record_failure(
                 tmdb_id,
                 diagnosis.get("category", "sync"),
@@ -637,18 +1005,7 @@ def run_merger(
                 candidate_index=current_index,
             )
             context["process_runtime"] = time.perf_counter() - started_at
-            base_status = (
-                diagnosis.get("category")
-                if diagnosis.get("category") in {
-                    "SYNC_MISMATCH",
-                    "RUNTIME_INCOMPATIBLE",
-                    "OFFSET_SUSPECTED",
-                    "FINGERPRINT_DRIFT_SUSPECTED",
-                    "FINGERPRINT_CUT_MISMATCH",
-                    "FINGERPRINT_LOW_CONFIDENCE",
-                }
-                else "SYNC_MISMATCH"
-            )
+            base_status = diagnosis.get("category") or "SYNC_MISMATCH"
             status = _status_for_failure(queue_entry, base_status)
             _schedule_retry_if_eligible(status, context)
             notify_status(status, {**context, "diff": diagnosis.get("diff")})
@@ -656,7 +1013,10 @@ def run_merger(
                 context,
                 status,
                 "sync",
+                queue_status=queue_entry.get("status"),
                 sync_category=diagnosis.get("category"),
+                recoverability=diagnosis.get("recoverability"),
+                recovery_reason=diagnosis.get("recovery_reason"),
                 fingerprint_category=context.get("fingerprint_category"),
                 fingerprint_confidence=context.get("fingerprint_confidence"),
             )
@@ -671,15 +1031,20 @@ def run_merger(
         stream_idx = analyzer.get_ptbr_stream_index(file_1080p)
         mark_stage("stream-check", stream_start)
         if stream_idx is None:
-            queue_entry = queue_manager.record_failure(tmdb_id, "stream-check", "ptbr_stream_missing", candidate_index=current_index)
+            queue_entry = queue_manager.record_failure(
+                tmdb_id,
+                "manual-recovery" if manual_request else "stream-check",
+                "ptbr_stream_missing",
+                candidate_index=current_index,
+            )
             context["process_runtime"] = time.perf_counter() - started_at
-            status = _status_for_failure(queue_entry, "NOT_FOUND_STREAM")
+            status = _status_for_failure(queue_entry, "MANUAL_RECOVERY_FAILED" if manual_request else "NOT_FOUND_STREAM")
             notify_status(status, context)
-            _record_history(context, status, "stream-check")
-            _record_group_history(context, "NOT_FOUND_STREAM", diagnosis_category=diagnosis.get("category"))
-            if status != "ABANDONED":
+            _record_history(context, status, "manual-recovery" if manual_request else "stream-check")
+            _record_group_history(context, status if manual_request else "NOT_FOUND_STREAM", diagnosis_category=diagnosis.get("category"))
+            if status != "ABANDONED" and not manual_request:
                 trigger_fallback("NOT_FOUND_STREAM")
-            else:
+            elif status == "ABANDONED":
                 remove_failed_candidate()
             return
 
@@ -695,57 +1060,89 @@ def run_merger(
 
         mux_start = time.perf_counter()
         offset_seconds = None
+        recovery_audio = audio_ptbr
+        if recovery_active:
+            context["recovery_outcome"] = "attempting"
         if auto_offset_active:
-            offset_seconds = float(diagnosis.get("offset_estimate") or 0.0)
+            offset_seconds = float(recovery_plan.get("audio_offset_seconds") or 0.0)
             context["offset_applied"] = True
             context["offset_applied_seconds"] = offset_seconds
             context["offset_outcome"] = "attempting"
-            context["offset_strategy"] = "fingerprint" if context.get("fingerprint_category") == "FINGERPRINT_OFFSET_OK" else "heuristic"
+            if manual_request:
+                context["offset_strategy"] = "manual"
+            else:
+                context["offset_strategy"] = "fingerprint" if context.get("fingerprint_category") == "FINGERPRINT_OFFSET_OK" else "heuristic"
         else:
             context["offset_applied"] = False
             context["offset_strategy"] = "none"
+
+        if recovery_active and recovery_plan.get("strategy") == "edge-trim":
+            recovery_audio = file_1080p.parent / "audio_ptbr_recovery.eac3"
+            context["recovery_trim_start_seconds"] = float(recovery_plan.get("trim_start_seconds") or 0.0)
+            context["recovery_trim_end_seconds"] = float(recovery_plan.get("trim_end_seconds") or 0.0)
+            if is_dry_run:
+                info(
+                    f"   R -> {config.ffmpeg.ffmpeg_path} -y -i {audio_ptbr.name} "
+                    f"-trim-start {context['recovery_trim_start_seconds']:.3f} "
+                    f"-trim-end {context['recovery_trim_end_seconds']:.3f} "
+                    f"{recovery_audio.name}"
+                )
+            else:
+                merger.trim_audio_edges(
+                    audio_ptbr,
+                    recovery_audio,
+                    trim_start_seconds=context["recovery_trim_start_seconds"],
+                    trim_end_seconds=context["recovery_trim_end_seconds"],
+                )
         if is_dry_run:
             allowed_indices = analyzer.get_allowed_streams(file_4k)
             map_args = " ".join([f"-map 0:{idx}" for idx in allowed_indices])
             ffmpeg_cmd_mux = (
-                f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {audio_ptbr.name} "
+                f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -i {recovery_audio.name} "
                 f"-map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 {output_tmp.name}"
             )
             if offset_seconds not in (None, 0.0):
                 ffmpeg_cmd_mux = (
-                    f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -itsoffset {offset_seconds:.3f} -i {audio_ptbr.name} "
+                    f"{config.ffmpeg.ffmpeg_path} -y -i {file_4k.name} -itsoffset {offset_seconds:.3f} -i {recovery_audio.name} "
                     f"-map 0:v -map 1:a {map_args} -map_chapters 0 -c copy -max_interleave_delta 0 {output_tmp.name}"
                 )
             info(f"   M -> {ffmpeg_cmd_mux}")
         else:
             _update_progress(context, "mux")
             try:
-                merger.mux_audio(file_4k, audio_ptbr, output_tmp, audio_offset_seconds=offset_seconds)
+                merger.mux_audio(file_4k, recovery_audio, output_tmp, audio_offset_seconds=offset_seconds)
             except Exception as offset_err:
-                if auto_offset_active:
+                if recovery_active:
                     queue_entry = queue_manager.record_failure(
                         tmdb_id,
-                        "offset-auto",
-                        f"offset_failed:{offset_err}",
+                        "manual-recovery" if manual_request else "recovery-auto",
+                        f"recovery_failed:{offset_err}",
                         candidate_index=current_index,
                     )
                     context["process_runtime"] = time.perf_counter() - started_at
-                    context["offset_outcome"] = "failed"
-                    status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    context["recovery_outcome"] = "failed"
+                    if auto_offset_active:
+                        context["offset_outcome"] = "failed"
+                    if manual_request:
+                        base_status = "MANUAL_RECOVERY_FAILED"
+                    else:
+                        base_status = "OFFSET_SUSPECTED_FAILED" if auto_offset_active else "AUTO_RECOVERY_FAILED"
+                    status = _status_for_failure(queue_entry, base_status)
                     _schedule_retry_if_eligible(status, context, error=str(offset_err))
                     notify_status(status, {**context, "error": str(offset_err)})
                     _record_history(
                         context,
                         status,
-                        "offset-mux",
+                        "recovery-mux",
                         error=str(offset_err),
                         auto_offset_reason=diagnosis.get("auto_offset_reason"),
                         offset_strategy=context.get("offset_strategy"),
+                        recovery_strategy=context.get("recovery_strategy"),
                     )
-                    _record_group_history(context, "OFFSET_SUSPECTED_FAILED", diagnosis_category=diagnosis.get("category"))
-                    if status != "ABANDONED":
-                        trigger_fallback("OFFSET_SUSPECTED_FAILED")
-                    else:
+                    _record_group_history(context, status, diagnosis_category=diagnosis.get("category"))
+                    if status != "ABANDONED" and not manual_request:
+                        trigger_fallback(status)
+                    elif status == "ABANDONED":
                         remove_failed_candidate()
                     return
                 raise
@@ -758,32 +1155,59 @@ def run_merger(
         else:
             _update_progress(context, "validate")
             try:
+                if recovery_active:
+                    recovery_validation = analyzer.validate_recovery_attempt(
+                        output_tmp,
+                        file_4k,
+                        diagnosis=diagnosis,
+                        strategy=context.get("recovery_strategy"),
+                        source_audio_file=audio_ptbr if str(audio_ptbr) else None,
+                        recovered_audio_file=recovery_audio if str(recovery_audio) else None,
+                        audio_offset_seconds=offset_seconds,
+                        fingerprint_category=context.get("fingerprint_category"),
+                        trim_start_seconds=float(context.get("recovery_trim_start_seconds") or 0.0),
+                        trim_end_seconds=float(context.get("recovery_trim_end_seconds") or 0.0),
+                    )
+                    context["recovery_validation_reason"] = recovery_validation.get("reason")
+                    context["recovery_postcheck_reason"] = recovery_validation.get("postcheck_reason")
+                    context["validation_reason"] = recovery_validation.get("reason")
+                    if not recovery_validation.get("valid"):
+                        raise ValueError(f"RECOVERY_POSTCHECK_FAILED:{recovery_validation.get('reason')}")
                 validation = merger.validate_and_replace(output_tmp, file_4k)
             except Exception as validation_err:
-                if auto_offset_active:
+                if recovery_active:
                     queue_entry = queue_manager.record_failure(
                         tmdb_id,
-                        "offset-validate",
-                        f"offset_validation_failed:{validation_err}",
+                        "manual-recovery" if manual_request else "recovery-validate",
+                        f"recovery_validation_failed:{validation_err}",
                         candidate_index=current_index,
                     )
                     context["process_runtime"] = time.perf_counter() - started_at
-                    context["offset_outcome"] = "failed"
-                    status = _status_for_failure(queue_entry, "OFFSET_SUSPECTED_FAILED")
+                    context["recovery_outcome"] = "failed"
+                    if auto_offset_active:
+                        context["offset_outcome"] = "failed"
+                    if not context.get("validation_reason"):
+                        context["validation_reason"] = str(validation_err)
+                    if manual_request:
+                        base_status = "MANUAL_RECOVERY_FAILED"
+                    else:
+                        base_status = "OFFSET_SUSPECTED_FAILED" if auto_offset_active else "AUTO_RECOVERY_FAILED"
+                    status = _status_for_failure(queue_entry, base_status)
                     _schedule_retry_if_eligible(status, context, error=str(validation_err))
                     notify_status(status, {**context, "error": str(validation_err)})
                     _record_history(
                         context,
                         status,
-                        "offset-validate",
+                        "recovery-validate",
                         error=str(validation_err),
                         auto_offset_reason=diagnosis.get("auto_offset_reason"),
                         offset_strategy=context.get("offset_strategy"),
+                        recovery_strategy=context.get("recovery_strategy"),
                     )
-                    _record_group_history(context, "OFFSET_SUSPECTED_FAILED", diagnosis_category=diagnosis.get("category"))
-                    if status != "ABANDONED":
-                        trigger_fallback("OFFSET_SUSPECTED_FAILED")
-                    else:
+                    _record_group_history(context, status, diagnosis_category=diagnosis.get("category"))
+                    if status != "ABANDONED" and not manual_request:
+                        trigger_fallback(status)
+                    elif status == "ABANDONED":
                         remove_failed_candidate()
                     return
                 raise
@@ -801,21 +1225,40 @@ def run_merger(
             mark_stage("rescan_tag", rescan_start)
 
         success = True
+        if recovery_active:
+            context["recovery_outcome"] = "success"
         if auto_offset_active:
             context["offset_outcome"] = "success"
-        queue_manager.record_success(tmdb_id, "merge", candidate_index=current_index)
+        success_phase = "manual-recovery" if manual_request else "merge"
+        queue_manager.record_success(tmdb_id, success_phase, candidate_index=current_index)
         context["process_runtime"] = time.perf_counter() - started_at
         context["validation_reason"] = validation.get("reason")
         info(f"Tempos por etapa: {stage_timings}")
-        notify_status("SUCCESS", context)
-        if context.get("fingerprint_category") == "FINGERPRINT_SYNC_OK":
-            success_status = "FINGERPRINT_SYNC_OK"
-        elif context.get("offset_strategy") == "fingerprint":
-            success_status = "FINGERPRINT_OFFSET_OK"
+        if manual_request:
+            success_status = "MANUAL_RECOVERY_SUCCESS"
+            history_status = "MANUAL_RECOVERY_SUCCESS"
+            group_result = "MANUAL_RECOVERY_SUCCESS"
         else:
             success_status = "SUCCESS"
-        _record_history(context, "SUCCESS", "merge", stage_timings=stage_timings, offset_strategy=context.get("offset_strategy"))
-        _record_group_history(context, success_status, diagnosis_category=diagnosis.get("category"))
+            if context.get("fingerprint_category") == "FINGERPRINT_SYNC_OK":
+                history_status = "FINGERPRINT_SYNC_OK"
+                group_result = "FINGERPRINT_SYNC_OK"
+            elif context.get("offset_strategy") == "fingerprint":
+                history_status = "FINGERPRINT_OFFSET_OK"
+                group_result = "FINGERPRINT_OFFSET_OK"
+            else:
+                history_status = "SUCCESS"
+                group_result = "SUCCESS"
+        notify_status(success_status, context)
+        _record_history(
+            context,
+            history_status,
+            success_phase,
+            stage_timings=stage_timings,
+            offset_strategy=context.get("offset_strategy"),
+            recovery_strategy=context.get("recovery_strategy"),
+        )
+        _record_group_history(context, group_result, diagnosis_category=diagnosis.get("category"))
     except Exception as mux_err:
         queue_entry = queue_manager.record_failure(tmdb_id, "merge", str(mux_err), candidate_index=current_index)
         context["process_runtime"] = time.perf_counter() - started_at
@@ -832,6 +1275,8 @@ def run_merger(
             if should_remove_temp:
                 if str(audio_ptbr) and audio_ptbr.exists():
                     audio_ptbr.unlink(missing_ok=True)
+                if str(recovery_audio) and recovery_audio != audio_ptbr and recovery_audio.exists():
+                    recovery_audio.unlink(missing_ok=True)
                 if str(output_tmp) and output_tmp.exists():
                     output_tmp.unlink(missing_ok=True)
                 debug("Purgatório de arquivos temporários finalizou de forma limpa.")
@@ -897,6 +1342,49 @@ def main() -> None:
         processed = process_pending_retries()
         info(f"Retries pendentes processados: {processed}")
         return
+
+    if args.manual_recovery:
+        tmdb_id = str(args.tmdb_id or "").strip()
+        context = _base_context(tmdb_id, f"TMDB_{tmdb_id}" if tmdb_id else "Desconhecido", "")
+        try:
+            if not tmdb_id:
+                raise ValueError("--manual-recovery exige --tmdb-id.")
+            if not args.qbit_path:
+                raise ValueError("--manual-recovery exige --qbit-path apontando para o candidato 1080p.")
+
+            path_obj = _resolve_qbit_completed_file(args.qbit_hash, args.qbit_path)
+            if not path_obj:
+                raise FileNotFoundError(
+                    "Nao foi possivel localizar o arquivo do candidato manual. "
+                    f"hash={args.qbit_hash or ''} | path={args.qbit_path or ''}"
+                )
+
+            original_movie = radarr_client.get_movie_by_tmdbid(tmdb_id)
+            real_title = original_movie.get("title", f"TMDB_{tmdb_id}") if original_movie else f"TMDB_{tmdb_id}"
+            real_year = str(original_movie.get("year", "")) if original_movie else ""
+            context = _base_context(tmdb_id, real_title, real_year)
+            candidates = radarr_client.find_best_ptbr_release(tmdb_id)
+            current_index = _resolve_candidate_index(candidates, args.candidate_index, path_obj)
+            if candidates and args.candidate_index and current_index >= len(candidates):
+                raise ValueError("--candidate-index excede a quantidade de candidatos retornados pelo Radarr.")
+
+            manual_request = _build_manual_request(args, tmdb_id, path_obj, current_index)
+            run_merger(
+                path_obj,
+                0,
+                tmdb_id,
+                context,
+                is_dry_run,
+                args.qbit_hash or "",
+                candidates,
+                current_index,
+                manual_request=manual_request,
+            )
+            return
+        except Exception as exc:
+            error(f"[MANUAL RECOVERY] Falha ao iniciar tentativa manual: {exc}")
+            notify_status("ERROR", {**context, "error": str(exc)})
+            sys.exit(1)
 
     if args.qbit_category:
         if args.qbit_category.lower() == "ptbrmerger":

@@ -199,6 +199,4 @@ def fingerprint_sync(
         consistency_tolerance_seconds=float(getattr(fingerprint_cfg, "consistency_tolerance_seconds", 0.75)),
     )
 
-    if result["category"] == "FINGERPRINT_LOW_CONFIDENCE" and measurements:
-        result["category"] = "FINGERPRINT_CUT_MISMATCH"
     return result
