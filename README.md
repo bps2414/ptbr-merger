@@ -485,6 +485,12 @@ The project creates lightweight operational files in the repository root by defa
 
 These are gitignored in this repository because they are runtime state, not source code.
 
+## Repository Hygiene
+
+Track code, tests, scripts, core docs, and `.planning/` in git. Keep local operator/runtime files out of source control, including `config.yml`, `queue.json`, `retry_queue.json`, `history.json`, `group_history.json`, `ptbrmerger.log`, Python cache directories, and local tooling workspaces such as `.codex/`, `.runtime-archive/`, and `tmp/`.
+
+Use `config.example.yml` as the tracked template and keep your real machine-specific settings in `config.yml` only.
+
 ## Testing
 
 Run the current automated suite:

@@ -1,15 +1,34 @@
+# Python cache and test artifacts
 __pycache__/
-*.pyc
-history.json
-queue.json
-group_history.json
-config.yml
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local configuration
 .env
+.env.*
+!.env.example
+config.yml
+
+# Runtime state and logs
+queue.json
 retry_queue.json
+history.json
+group_history.json
 ptbrmerger.log
-debug_stdout.txt
-debug_stderr.txt
+
+# Local tooling and workspace artifacts
+.codex/
+.codex-repro-readonly/
+.codex-repro-write/
 .runtime-archive/
 tmp/
-.codex/
+get-shit-done-cc-1.28.0.tgz
+
+# Generated snapshot reports
 tests/test_data/api_snapshots/capture_report.json
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
