@@ -1,17 +1,46 @@
-# Requirements: PTBRMerger (No Active Milestone)
+# Requirements: PTBRMerger v0.4.0 Sync Recovery
 
 **Defined:** 2026-03-25
 **Core Value:** When a 4K movie lacks PT-BR audio, the pipeline must recover a compatible PT-BR source and merge it safely without corrupting or wrongly replacing the original file.
 
 ## Current Status
 
-There is no active milestone in progress right now. The most recent shipped milestone was archived as `v0.3.5 Hygiene Baseline`.
+Active milestone: `v0.4.0 Sync Recovery`
 
-Archived requirements: `.planning/milestones/v0.3.5-REQUIREMENTS.md`
+Goal: keep rare PT-BR candidates alive long enough to attempt safe recovery when runtime divergence is large, combining automatic and assisted/manual sync workflows, then close the formal verification trail needed to archive the milestone cleanly.
 
-## Deferred Candidate Requirements
+## v0.4.0 Requirements
 
-These are not committed to an active roadmap yet, but they remain likely candidates for the next milestone:
+### Sync Diagnosis
+
+- [x] **SYNC-01**: User can keep a PT-BR candidate under evaluation when runtime divergence exceeds the normal sync threshold but a recoverable path is still plausible.
+- [x] **SYNC-02**: User can see whether a large-diff sync failure looks like fixed offset, drift, alternate cut, runtime incompatibility, or unresolved ambiguity.
+- [x] **SYNC-03**: User can avoid automatic discard until diagnosis concludes the candidate is unrecoverable or recovery attempts are exhausted.
+
+### Automatic Recovery
+
+- [x] **AUTO-01**: User can have the pipeline attempt conservative automatic sync recovery for recoverable candidates before moving to fallback.
+- [x] **AUTO-02**: User can trust that automatic recovery only proceeds when confidence and validation gates indicate the muxed result is safe enough to keep.
+- [x] **AUTO-03**: User can see which automatic recovery strategy was attempted, with measurable evidence such as offsets, anchor windows, or validation reason.
+
+### Assisted / Manual Recovery
+
+- [ ] **MAN-01**: User can explicitly request assisted/manual sync recovery for a chosen candidate instead of letting the pipeline discard it immediately.
+- [ ] **MAN-02**: User can supply or reuse manual recovery parameters such as forced candidate selection, offset hints, or retry mode without editing code.
+- [ ] **MAN-03**: User can inspect persisted recovery artifacts or metadata that make manual follow-up reproducible across retries.
+
+### Observability and Safety
+
+- [ ] **OBS-01**: User can see recovery decisions, attempts and final outcomes in notifications, queue/history data, and fallback reasons.
+- [ ] **OBS-02**: User can distinguish a genuinely incompatible candidate from one that merely failed the current recovery attempt.
+- [x] **SAFE-01**: User can rely on final-file validation to reject recovered outputs that still fail PT-BR stream or runtime integrity checks.
+
+### Validation Coverage
+
+- [x] **TEST-01**: User can rely on automated tests covering large-diff candidates that become valid after recovery.
+- [ ] **TEST-02**: User can rely on automated tests covering large-diff candidates that must still be rejected after diagnosis or failed recovery.
+
+## Future Requirements
 
 - **ORCH-01**: Split orchestration responsibilities currently concentrated in `src/trigger.py`
 - **ORCH-02**: Preserve trigger behavior while refactoring orchestration boundaries
@@ -23,10 +52,31 @@ These are not committed to an active roadmap yet, but they remain likely candida
 - **QUAL-02**: Make validation repeatable in the local workflow
 - **QUAL-03**: Keep contributor docs aligned with the current validation path
 
+## Out of Scope
+
+- Full DAW-style waveform editing or hand-crafted per-movie sync UI in this milestone - the tool remains a local automation pipeline, not an editing suite
+- Aggressive audio stretching or lossy transformations without strong validation - the trust boundary around final output stays conservative
+- General refactors unrelated to sync recovery - known maintainability work remains deferred unless required to ship the recovery flow
+
 ## Traceability
 
-No active milestone traceability table yet.
+| Requirement | Planned Phase |
+|-------------|---------------|
+| SYNC-01 | Phase 2 |
+| SYNC-02 | Phase 2 |
+| SYNC-03 | Phase 2 |
+| AUTO-01 | Phase 3 |
+| AUTO-02 | Phase 3 |
+| AUTO-03 | Phase 3 |
+| MAN-01 | Phase 5 |
+| MAN-02 | Phase 5 |
+| MAN-03 | Phase 5 |
+| OBS-01 | Phase 5 |
+| OBS-02 | Phase 5 |
+| SAFE-01 | Phase 3 |
+| TEST-01 | Phase 3 |
+| TEST-02 | Phase 5 |
 
 ---
 *Requirements defined: 2026-03-25*
-*Last updated: 2026-03-25 after archiving v0.3.5 Hygiene Baseline*
+*Last updated: 2026-03-25 for milestone v0.4.0 Sync Recovery*
