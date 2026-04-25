@@ -1,3 +1,14 @@
 @echo off
-cd /d D:\ptbr-merger
-C:\Users\Administrator\AppData\Local\Programs\Python\Python311\python.exe src\trigger.py > debug_stdout.txt 2> debug_stderr.txt
+cd /d %~dp0
+if exist ".venv\Scripts\python.exe" (
+  set "PTBR_PY=.venv\Scripts\python.exe"
+) else (
+  where py >nul 2>nul
+  if %errorlevel%==0 (
+    set "PTBR_PY=py -3"
+  ) else (
+    set "PTBR_PY=python"
+  )
+)
+%PTBR_PY% src\trigger.py > debug_stdout.txt 2> debug_stderr.txt
+exit /b %errorlevel%

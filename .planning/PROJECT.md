@@ -71,6 +71,7 @@ The most recent shipped milestone is `v0.4.0 Sync Recovery`, which added recover
 | Close `v0.3.5 Hygiene Baseline` after Phase 1 and defer Phases 2-4 | The hygiene milestone was useful on its own, while the follow-up refactors were not committed for immediate execution | ✓ Good |
 | Delay product-scope expansion until orchestration and ranking logic are easier to maintain | More features on top of the current hot spots would compound risk faster than value | Pending |
 | Prioritize sync recovery over internal refactors for the next milestone | Rare PT-BR candidates are being discarded too early on large runtime mismatches, which hits the core product outcome more directly than the deferred refactors | ✓ Good |
+| Make web local the primary v0.4.5 recovery UX | The user is blocked by CLI friction after formatting the PC; a localhost screen opened by `.bat` gives value faster without jumping to desktop/cloud | âœ“ Good |
 
 ## Shipped Milestone Status
 

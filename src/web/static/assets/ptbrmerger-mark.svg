@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PTBRMerger">
+  <path fill="#157347" d="M12 11h40a5 5 0 0 1 5 5v32a5 5 0 0 1-5 5H12a5 5 0 0 1-5-5V16a5 5 0 0 1 5-5Zm6 9v24h28V20H18Zm4 5h20v14H22V25Zm-7-5h-4v5h4v-5Zm0 10h-4v5h4v-5Zm0 10h-4v5h4v-5Zm38-20h-4v5h4v-5Zm0 10h-4v5h4v-5Zm0 10h-4v5h4v-5Z"/>
+  <path fill="#d7a43b" d="M27 31h10l-3-4 10 5-10 5 3-4H27v-2Z"/>
+</svg>

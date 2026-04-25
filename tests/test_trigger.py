@@ -87,6 +87,46 @@ def test_run_analyzer_processes_completed_duplicate_immediately(
     assert mock_add_torrent.call_args.kwargs == {"known_infohash": "knownhash123"}
 
 
+@patch("src.trigger.send_progress_update", return_value=None)
+@patch("src.trigger.notify_status")
+@patch("src.trigger._optimize_in_place")
+@patch("src.trigger.bazarr_client.lookup_ptbr_subtitles", return_value={"configured": False, "available": False, "reason": "disabled"})
+@patch("src.trigger.radarr_client.get_last_release_search_summary", return_value={"reason": "NO_AVAILABLE_SEEDS"})
+@patch("src.trigger.radarr_client.find_best_ptbr_release", return_value=[])
+@patch("src.trigger.radarr_client.get_movie_by_tmdbid", side_effect=AssertionError("unexpected eager Radarr lookup"))
+@patch("src.trigger.analyzer.has_ptbr_audio", return_value=False)
+def test_run_analyzer_no_candidates_does_not_eagerly_fetch_movie(
+    _mock_has_ptbr_audio,
+    mock_get_movie_by_tmdbid,
+    _mock_find_best_release,
+    _mock_summary,
+    _mock_bazarr_lookup,
+    _mock_optimize,
+    _mock_notify_status,
+    _mock_send_progress,
+    tmp_path,
+):
+    movie_file = tmp_path / "movie4k.mkv"
+    movie_file.write_text("4k")
+
+    run_analyzer(movie_file, "1084242", "Zootopia 2", "2025", False, "")
+
+    mock_get_movie_by_tmdbid.assert_not_called()
+
+
+@patch("src.trigger.info")
+@patch("src.trigger.analyzer.get_allowed_streams", return_value=[1, 2])
+def test_optimize_in_place_dry_run_has_no_side_effect_cleanup_references(_mock_allowed_streams, _mock_info, tmp_path):
+    import src.trigger as trigger
+
+    movie_file = tmp_path / "movie4k.mkv"
+    movie_file.write_text("4k")
+
+    trigger._optimize_in_place(movie_file, {"title": "The Housemaid"}, is_dry_run=True)
+
+    assert not (tmp_path / "output_opt_tmp.mkv").exists()
+
+
 @patch("src.trigger.qbit_client.remove_torrent")
 @patch("src.trigger.radarr_client.apply_success_tag")
 @patch("src.trigger.radarr_client.rescan_movie")

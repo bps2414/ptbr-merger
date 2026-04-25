@@ -165,6 +165,47 @@ def test_run_preflight_reports_warns_and_blockers(mock_get, mock_qbit_login, tmp
     assert statuses["discord"] == "WARN"
 
 
+@patch("src.tools.preflight.qbit_login")
+@patch("src.tools.preflight.requests.get")
+def test_run_preflight_flags_placeholder_configuration(mock_get, mock_qbit_login, tmp_path: Path):
+    queue_file = tmp_path / "queue.json"
+    history_file = tmp_path / "history.json"
+    group_history_file = tmp_path / "group_history.json"
+    retry_queue_file = tmp_path / "retry_queue.json"
+    temp_root = tmp_path / "temp-root"
+    temp_root.mkdir()
+    queue_file.write_text("{}", encoding="utf-8")
+    history_file.write_text("[]", encoding="utf-8")
+    group_history_file.write_text("[]", encoding="utf-8")
+    retry_queue_file.write_text("{}", encoding="utf-8")
+
+    cfg = SimpleNamespace(
+        ffmpeg=SimpleNamespace(ffmpeg_path=sys.executable, ffprobe_path=sys.executable),
+        radarr=SimpleNamespace(
+            url="http://localhost:7878",
+            api_key="CHANGE_ME",
+            ptbrmerger_root_folder=str(temp_root),
+        ),
+        qbittorrent=SimpleNamespace(url="http://localhost:8080", username="CHANGE_ME", password="CHANGE_ME"),
+        bazarr=SimpleNamespace(url="", api_key="", language="pt-BR"),
+        notifications=SimpleNamespace(discord_webhook_url="https://discord.invalid/webhook"),
+        processing=SimpleNamespace(queue_file=queue_file.name),
+        retry=SimpleNamespace(queue_file=retry_queue_file.name),
+        logging=SimpleNamespace(history_file=history_file.name, group_history_file=group_history_file.name),
+    )
+
+    with patch("src.tools.preflight.get_config", return_value=cfg):
+        report = run_preflight(base_dir=tmp_path)
+
+    checks = {check["name"]: check for check in report["checks"]}
+    assert report["status"] == "BLOCKER"
+    assert checks["radarr"]["message"] == "placeholder-api-key"
+    assert checks["qbittorrent"]["message"] == "placeholder-credentials"
+    assert checks["discord"]["message"] == "placeholder-url"
+    mock_get.assert_not_called()
+    mock_qbit_login.assert_not_called()
+
+
 def test_build_refresh_payload_uses_queue_history_and_torrent_state():
     phase, context = build_refresh_payload(
         entry={

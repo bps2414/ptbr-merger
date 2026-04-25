@@ -583,14 +583,6 @@ def _optimize_in_place(file_path: Path, context: dict, is_dry_run: bool) -> None
             )
             info("[DRY RUN - OPTIMIZER] Otimização universal simulada:")
             info(f"   CMD -> {ffmpeg_cmd}")
-            if add_result.success:
-                remove_failed_candidate()
-            if add_result.success:
-                remove_failed_candidate()
-            if add_result.success:
-                remove_failed_candidate()
-            if add_result.success:
-                remove_failed_candidate()
             return
 
         merger.mux_audio(file_path, None, output_tmp)
@@ -606,8 +598,6 @@ def _optimize_in_place(file_path: Path, context: dict, is_dry_run: bool) -> None
 def run_analyzer(file_path: Path, tmdb_id: str, title: str, year: str, is_dry_run: bool, radarr_download_id: str) -> None:
     context = _base_context(tmdb_id, title, year)
     overall_start = time.perf_counter()
-    original_movie = radarr_client.get_movie_by_tmdbid(tmdb_id) if tmdb_id else None
-    _enrich_context_with_movie(context, original_movie)
     _update_progress(context, "search")
 
     if analyzer.has_ptbr_audio(file_path):

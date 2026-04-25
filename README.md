@@ -151,12 +151,64 @@ The current codebase is no longer a simple “extract and replace” script. It 
 - Discord status editing
   The webhook creates one message and updates it as the process advances.
 
+## Retomada pos-formatacao
+
+Se o PC foi formatado e Radarr, qBittorrent, Bazarr ou Discord ainda nao estao prontos, use o modo web local primeiro:
+
+```bat
+START_PTBRMERGER.bat
+```
+
+O launcher sobe um servidor apenas em `http://127.0.0.1:8787` e abre a tela local do PTBRMerger. Esse modo foi feito para recuperar valor rapido sem depender da automacao externa.
+
+### O que ele faz
+
+1. Cria as pastas locais `input/`, `output/`, `workdir/`, `reports/` e `recipes/`.
+2. Mostra quais dependencias estao prontas no ambiente atual.
+3. Lista arquivos `.mkv` colocados em `input/`.
+4. Inspeciona um alvo 4K e uma fonte com audio PT-BR.
+5. Monta um plano seguro antes de gerar qualquer arquivo.
+6. Gera um novo MKV em `output/`.
+7. Salva um relatorio local em `reports/` e uma receita tecnica em `recipes/`.
+
+### Garantias do modo web local
+
+- nao substitui o arquivo original;
+- nao baixa filmes;
+- nao acessa trackers;
+- nao chama Radarr nem qBittorrent para buscar releases;
+- nao envia dados para cloud;
+- nao altera o `PATH` global do Windows;
+- bloqueia arquivos que nao sejam `.mkv` no fluxo de inspecao/merge.
+
+### Fluxo recomendado
+
+```text
+input/
+  alvo-4k.mkv
+  fonte-1080p-com-ptbr.mkv
+```
+
+Depois abra a tela, clique em `Atualizar input`, selecione os dois arquivos, use `Detectar faixas`, revise o resumo e so entao clique em `Gerar MKV final`.
+
+Se o preflight mostrar Radarr ou qBittorrent como pendentes, isso nao bloqueia o modo manual. Para voltar ao fluxo automatico completo, configure `config.yml`, suba os servicos externos e rode:
+
+```bash
+python -m src.tools.preflight --json
+```
+
 ## Installation
 
 Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Install test/development dependencies:
+
+```bash
+pip install -r requirements-dev.txt
 ```
 
 Project dependencies:
@@ -166,6 +218,7 @@ requests>=2.31.0
 PyYAML>=6.0
 loguru>=0.7.0
 numpy>=1.26.0
+pytest>=9.0.0  # development/test only
 ```
 
 ## Testing Without Downloading Real 4K Movies
@@ -480,6 +533,12 @@ Or on Windows:
 ```bat
 scripts\preflight.bat
 ```
+
+On Windows, the included `.bat` helpers prefer `.venv\Scripts\python.exe` when it exists, then the Python launcher (`py -3`), and only then `python`.
+This avoids the Microsoft Store `python.exe` alias issue on machines where `python` is not a real interpreter.
+
+The preflight intentionally treats `CHANGE_ME` credentials and `discord.invalid` webhook URLs as not ready.
+Copy `config.example.yml` to `config.yml`, replace placeholders, and rerun preflight before a real movie run.
 
 Archive and reset runtime state safely before a controlled real-movie test:
 

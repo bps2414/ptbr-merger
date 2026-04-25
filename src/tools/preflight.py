@@ -8,6 +8,15 @@ import requests
 from src.config import get_config
 from src.qbit_client import login as qbit_login
 
+_PLACEHOLDER_VALUES = {"change_me", "changeme", "replace_me", "example", "example-key"}
+
+
+def _is_placeholder(value: str | None) -> bool:
+    normalized = str(value or "").strip().lower()
+    if not normalized:
+        return False
+    return normalized in _PLACEHOLDER_VALUES or "discord.invalid" in normalized
+
 
 def _check_executable(path_or_name: str, label: str) -> dict:
     candidate = str(path_or_name or "").strip()
@@ -58,6 +67,10 @@ def _check_directory_writable(path: Path, label: str) -> dict:
 
 
 def _check_radarr(cfg) -> dict:
+    if _is_placeholder(getattr(cfg.radarr, "api_key", "")):
+        return {"name": "radarr", "status": "BLOCKER", "message": "placeholder-api-key"}
+    if _is_placeholder(getattr(cfg.radarr, "url", "")):
+        return {"name": "radarr", "status": "BLOCKER", "message": "placeholder-url"}
     try:
         response = requests.get(
             cfg.radarr.url.rstrip("/") + "/api/v3/system/status",
@@ -76,7 +89,11 @@ def _check_radarr(cfg) -> dict:
         return {"name": "radarr", "status": "BLOCKER", "message": "unreachable", "details": {"error": str(exc)}}
 
 
-def _check_qbittorrent() -> dict:
+def _check_qbittorrent(cfg) -> dict:
+    username = getattr(cfg.qbittorrent, "username", "")
+    password = getattr(cfg.qbittorrent, "password", "")
+    if _is_placeholder(username) or _is_placeholder(password):
+        return {"name": "qbittorrent", "status": "BLOCKER", "message": "placeholder-credentials"}
     session = qbit_login()
     if not session:
         return {"name": "qbittorrent", "status": "BLOCKER", "message": "login-failed"}
@@ -105,6 +122,8 @@ def _check_discord(cfg) -> dict:
     webhook_url = str(getattr(cfg.notifications, "discord_webhook_url", "") or "").strip()
     if not webhook_url:
         return {"name": "discord", "status": "WARN", "message": "disabled"}
+    if _is_placeholder(webhook_url):
+        return {"name": "discord", "status": "WARN", "message": "placeholder-url"}
     return {"name": "discord", "status": "OK", "message": "configured-not-probed"}
 
 
@@ -121,7 +140,7 @@ def run_preflight(base_dir: Path | None = None) -> dict:
         _check_json_file(root / cfg.logging.history_file, list, "history.json"),
         _check_json_file(root / cfg.logging.group_history_file, list, "group_history.json"),
         _check_radarr(cfg),
-        _check_qbittorrent(),
+        _check_qbittorrent(cfg),
         _check_bazarr(cfg),
         _check_discord(cfg),
     ]

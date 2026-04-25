@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 .pytest_cache/
+.venv/
 
 # Local configuration
 .env
@@ -25,6 +26,15 @@ ptbrmerger.log
 .runtime-archive/
 tmp/
 get-shit-done-cc-1.28.0.tgz
+.codex-web-server.pid
+.omx/
+input/
+output/
+workdir/
+reports/
+recipes/
+logs/
+tools/ffmpeg/
 
 # Generated snapshot reports
 tests/test_data/api_snapshots/capture_report.json
