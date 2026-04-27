@@ -16,6 +16,7 @@ import src.analyzer as analyzer
 import src.config as config_module
 import src.merger as merger
 from src.tools.preflight import run_preflight
+from src.storage.workflow_state import WorkflowState
 import yaml
 
 
@@ -490,6 +491,51 @@ def list_input_files(workspace: LocalWorkspace) -> list[dict]:
                 }
             )
     return files
+
+
+def list_available_workflows() -> list[dict]:
+    return [
+        {
+            "id": "preferred-audio-merge",
+            "label": "Adicionar audio a uma midia",
+            "description": "Use uma midia alvo e uma fonte com o idioma desejado para gerar um novo MKV sincronizado e validado.",
+            "available": True,
+        },
+        {
+            "id": "auto-language-download",
+            "label": "Busca automatica por idioma",
+            "description": "Visao futura: procurar, baixar e preparar midia pelo idioma preferido.",
+            "available": False,
+            "status": "planned",
+        },
+    ]
+
+
+def list_language_profiles(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_language_profiles()
+
+
+def list_workflow_jobs(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_jobs()
+
+
+def list_workflow_recipes(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_recipes()
+
+
+def build_preferred_audio_plan(target_path: str, source_path: str, language_profile_id: str, workspace: LocalWorkspace) -> dict:
+    from src.workflows.preferred_audio_merge import build_preferred_audio_plan as _build_preferred_audio_plan
+
+    return _build_preferred_audio_plan(target_path, source_path, language_profile_id, workspace)
+
+
+def run_preferred_audio_plan(plan: dict, workspace: LocalWorkspace) -> dict:
+    from src.workflows.preferred_audio_merge import run_preferred_audio_plan as _run_preferred_audio_plan
+
+    return _run_preferred_audio_plan(plan, workspace)
 
 
 def _stream_summary(stream: dict) -> dict:

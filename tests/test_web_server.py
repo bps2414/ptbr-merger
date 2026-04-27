@@ -74,9 +74,28 @@ def test_build_response_rejects_unknown_route(tmp_path: Path):
     assert json.loads(body.decode("utf-8"))["error"] == "Rota não encontrada."
 
 
+def test_build_response_workflows_route(tmp_path: Path):
+    status, headers, body = build_response("GET", "/api/workflows", b"", tmp_path)
+
+    payload = json.loads(body.decode("utf-8"))
+
+    assert status == 200
+    assert headers["Content-Type"] == "application/json; charset=utf-8"
+    assert payload["workflows"][0]["id"] == "preferred-audio-merge"
+    assert payload["workflows"][0]["available"] is True
+
+
+def test_build_response_jobs_recipes_and_profiles_routes(tmp_path: Path):
+    for route in ("/api/jobs", "/api/recipes", "/api/language-profiles"):
+        status, headers, body = build_response("GET", route, b"", tmp_path)
+        assert status == 200
+        assert headers["Content-Type"] == "application/json; charset=utf-8"
+        assert json.loads(body.decode("utf-8"))
+
+
 def test_manual_plan_returns_server_side_plan_id(tmp_path: Path):
     PLAN_STORE.clear()
-    with patch("src.web.server.ops.build_manual_plan", return_value={"ready": True}):
+    with patch("src.web.server.ops.build_preferred_audio_plan", return_value={"ready": True}):
         status, headers, body = build_response("POST", "/api/manual-plan", b"{}", tmp_path)
 
     payload = json.loads(body.decode("utf-8"))
@@ -102,7 +121,7 @@ def test_manual_run_uses_cached_plan(tmp_path: Path):
     PLAN_STORE["abc"] = {"ready": True, "plan_id": "abc"}
     body = json.dumps({"plan_id": "abc"}).encode("utf-8")
 
-    with patch("src.web.server.ops.run_manual_plan", return_value={"status": "SUCCESS"}) as run:
+    with patch("src.web.server.ops.run_preferred_audio_plan", return_value={"status": "SUCCESS"}) as run:
         status, headers, response = build_response("POST", "/api/manual-run", body, tmp_path)
 
     assert status == 200
@@ -116,7 +135,7 @@ def test_manual_run_returns_json_error_when_execution_raises(tmp_path: Path):
     PLAN_STORE["abc"] = {"ready": True, "plan_id": "abc"}
     body = json.dumps({"plan_id": "abc"}).encode("utf-8")
 
-    with patch("src.web.server.ops.run_manual_plan", side_effect=RuntimeError("ffmpeg failed")):
+    with patch("src.web.server.ops.run_preferred_audio_plan", side_effect=RuntimeError("ffmpeg failed")):
         status, headers, response = build_response("POST", "/api/manual-run", body, tmp_path)
 
     assert status == 500

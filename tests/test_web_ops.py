@@ -11,6 +11,9 @@ from src.web.ops import (
     install_local_ffmpeg,
     inspect_media_file,
     list_input_files,
+    list_language_profiles,
+    list_workflow_jobs,
+    list_workflow_recipes,
     resolve_user_path,
     run_manual_plan,
     open_workspace_location,
@@ -88,6 +91,18 @@ def test_list_input_files_only_returns_mkv_files(tmp_path: Path):
     files = list_input_files(workspace)
 
     assert [item["name"] for item in files] == ["source.MKV", "target.mkv"]
+
+
+def test_web_ops_exposes_default_language_profile(tmp_path: Path):
+    profiles = list_language_profiles(tmp_path)
+
+    assert profiles[0]["id"] == "pt-BR-default"
+    assert profiles[0]["label"] == "Portugues Brasil"
+
+
+def test_web_ops_exposes_empty_jobs_and_recipes(tmp_path: Path):
+    assert list_workflow_jobs(tmp_path) == []
+    assert list_workflow_recipes(tmp_path) == []
 
 
 def test_inspect_media_file_returns_stream_summary(tmp_path: Path):
