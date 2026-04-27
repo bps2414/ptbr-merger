@@ -10,6 +10,8 @@ The active roadmap now targets operator-guided local usage. The product already 
 - ✓ **v0.4.0 Sync Recovery** - Phases 2-5 (shipped 2026-03-26)
 - 🚧 **v0.4.5 Post-Format Recovery Web Mode** - Phases 6-9 (planned)
 
+- 🚧 **v0.5 Local Media Workflow Hub** - first real hub workflow, jobs, recipes, profiles and sync review
+
 ## Archived Milestones
 
 <details>
@@ -80,6 +82,12 @@ Success criteria:
 1. README and operator docs describe the local web workflow in Portuguese.
 2. Entry scripts/shortcuts match the documented commands.
 3. Reports and recipes are saved locally without embedding media, magnets, trackers or credentials.
+
+## Next Milestone: v0.5 Local Media Workflow Hub
+
+Goal: make the web UI the primary local hub surface while shipping one real workflow: add and automatically synchronize preferred-language audio into a local MKV with safe output, recipes, reports and a simple execution history.
+
+Out of scope: indexers, trackers, automatic source search, qBittorrent-first replacement flow, folder watcher, plugin system, cloud, multi-user support, full trigger rewrite.
 
 ## Deferred Candidate Work
 

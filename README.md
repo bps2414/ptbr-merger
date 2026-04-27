@@ -1,14 +1,15 @@
 # PTBRMerger
 
-PTBRMerger is a Python pipeline that sits between Radarr, qBittorrent and FFmpeg to solve a very specific problem:
+PTBRMerger is evolving into a local media workflow hub. Today, its strongest complete workflow adds and synchronizes preferred-language audio into local MKV files and the existing Radarr/qBittorrent automation. The long-term direction is broader: local workflows for language preference, mux/remux, subtitles, metadata, organization, download-client integration and eventually automatic source discovery.
 
-- detect a newly imported 4K movie in Radarr
-- check whether the 4K file already has native PT-BR audio
-- if not, search Radarr releases for a compatible 1080p PT-BR / dual-audio source
-- inject that source directly into qBittorrent
-- wait for qBittorrent to finish
-- extract the PT-BR track and mux it into the original 4K file
-- validate the final MKV before replacing the original
+The current product stays local-first and safety-first:
+
+- local web UI bound to `127.0.0.1`;
+- no cloud account;
+- no tracker/indexer management in v0.5;
+- no original-file replacement in the local web workflow;
+- recipes and reports for every local output;
+- legacy Radarr/qBittorrent automation preserved but not expanded in this phase.
 
 As of March 26, 2026, the hardened pipeline in this repository already includes:
 
@@ -64,6 +65,18 @@ tests/
   test_data/media_fixtures/     versioned manifest for local media fixtures
   test_data/api_snapshots/      sanitized API snapshot corpus and manifest
 ```
+
+## Product Direction: Local Media Workflow Hub
+
+The app should not stay limited to one PT-BR merge use case. The local web UI is becoming the primary product surface for media workflows.
+
+The first complete hub workflow is:
+
+```text
+target MKV + source MKV -> inspect -> plan -> sync review -> mux -> validate -> recipe/report
+```
+
+Future hub areas include preferred-language download rules, qBittorrent integration, indexers, folder monitoring, subtitles, remux, rename and metadata workflows. Those are vision items, not v0.5 promises.
 
 ## Current Flow
 
