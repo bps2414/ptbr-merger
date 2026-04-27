@@ -215,6 +215,57 @@ async function loadFiles() {
   }
 }
 
+async function loadWorkflows() {
+  const payload = await api("/api/workflows");
+  const list = node("workflow-list");
+  if (!list) return;
+  list.innerHTML = "";
+  (payload.workflows || []).forEach((workflow) => {
+    const item = document.createElement("article");
+    item.className = `panel workflow-card ${workflow.available ? "" : "disabled-card"}`;
+    item.innerHTML = `
+      <h2>${escapeHtml(workflow.label)}</h2>
+      <p>${escapeHtml(workflow.description || "")}</p>
+      <span>${workflow.available ? "Disponivel agora" : "Planejado"}</span>
+    `;
+    list.appendChild(item);
+  });
+}
+
+async function loadJobs() {
+  const payload = await api("/api/jobs");
+  renderEntityList("job-list", payload.jobs || [], "Nenhuma tarefa criada nesta sessao.");
+}
+
+async function loadRecipes() {
+  const payload = await api("/api/recipes");
+  renderEntityList("recipe-list", payload.recipes || [], "Nenhuma receita salva ainda.");
+}
+
+async function loadProfiles() {
+  const payload = await api("/api/language-profiles");
+  renderEntityList("profile-list", payload.profiles || [], "Nenhum perfil encontrado.");
+}
+
+function renderEntityList(id, items, emptyText) {
+  const list = node(id);
+  if (!list) return;
+  list.innerHTML = "";
+  if (!items.length) {
+    list.innerHTML = `<div class="friendly-output">${escapeHtml(emptyText)}</div>`;
+    return;
+  }
+  items.forEach((item) => {
+    const row = document.createElement("article");
+    row.className = "entity-row";
+    row.innerHTML = `
+      <strong>${escapeHtml(item.label || item.id || item.workflow_id || "item")}</strong>
+      <small>${escapeHtml(item.status || item.preferred_audio_language || item.validation_status || "")}</small>
+    `;
+    list.appendChild(row);
+  });
+}
+
 function streamLabel(stream) {
   const parts = [stream.type, stream.codec, stream.language, stream.title].filter(Boolean);
   return parts.join(" / ") || `stream ${stream.index}`;
@@ -337,6 +388,8 @@ async function runPlan() {
       body: JSON.stringify({ plan_id: currentPlan.plan_id }),
     });
     renderRunResult(result);
+    await loadJobs();
+    await loadRecipes();
     setText("result-state", result.status || "finalizado");
   } catch (error) {
     node("friendly-result").textContent = "Não consegui gerar o MKV final. Veja os detalhes técnicos.";
@@ -437,6 +490,7 @@ node("inspect-files").addEventListener("click", inspectFiles);
 node("build-plan").addEventListener("click", buildPlan);
 node("run-plan").addEventListener("click", runPlan);
 node("check-dependencies").addEventListener("click", checkDependencies);
+node("settings-check-dependencies").addEventListener("click", checkDependencies);
 node("install-dependencies").addEventListener("click", installDependencies);
 node("save-manual-tools").addEventListener("click", saveManualTools);
 
@@ -449,3 +503,7 @@ applyTheme(localStorage.getItem("ptbrmerger-theme") || "system");
 loadStatus();
 loadSettings();
 loadFiles();
+loadWorkflows();
+loadJobs();
+loadRecipes();
+loadProfiles();
