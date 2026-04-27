@@ -118,6 +118,8 @@ def build_response(method: str, raw_path: str, body: bytes, root: Path) -> tuple
     if method == "POST" and path == "/api/open-folder":
         payload = _read_json(body)
         return _json_response(ops.open_workspace_location(str(payload.get("location") or ""), workspace))
+    if method == "POST" and path == "/api/support-package":
+        return _json_response(ops.build_support_package(workspace))
     if method == "GET" and not path.startswith("/api/"):
         return _static_response(path)
     return _json_response({"error": "Rota não encontrada."}, status=404)

@@ -471,6 +471,11 @@ async function saveManualTools() {
   await loadStatus();
 }
 
+async function buildSupportPackage() {
+  const result = await api("/api/support-package", { method: "POST", body: "{}" });
+  renderRunResult(result);
+}
+
 document.querySelectorAll("[data-screen]").forEach((button) => {
   button.addEventListener("click", () => switchScreen(button.dataset.screen));
 });
@@ -493,6 +498,7 @@ node("check-dependencies").addEventListener("click", checkDependencies);
 node("settings-check-dependencies").addEventListener("click", checkDependencies);
 node("install-dependencies").addEventListener("click", installDependencies);
 node("save-manual-tools").addEventListener("click", saveManualTools);
+node("build-support-package").addEventListener("click", buildSupportPackage);
 
 ["target-select", "source-select", "target-path", "source-path"].forEach((id) => {
   node(id).addEventListener("change", invalidateCurrentPlan);

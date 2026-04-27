@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 from src.web.ops import (
     LocalWorkspace,
+    build_support_package,
     build_local_status,
     build_manual_plan,
     dependency_status,
@@ -458,3 +459,17 @@ def test_use_local_tools_validates_and_saves_paths(tmp_path: Path):
 
     assert result["status"] == "SAVED"
     save.assert_called_once_with(workspace.root, ffmpeg.resolve(), ffprobe.resolve())
+
+
+def test_build_support_package_writes_safe_json_without_secrets(tmp_path: Path):
+    workspace = ensure_workspace(tmp_path)
+    (workspace.logs_dir / "app.log").write_text("line 1\nline 2\n", encoding="utf-8")
+
+    payload = build_support_package(workspace)
+
+    assert payload["status"] == "CREATED"
+    assert payload["path"].endswith(".support.json")
+    content = Path(payload["path"]).read_text(encoding="utf-8")
+    assert "line 1" in content
+    assert "api_key" not in content.lower()
+    assert "password" not in content.lower()

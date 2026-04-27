@@ -144,3 +144,13 @@ def test_manual_run_returns_json_error_when_execution_raises(tmp_path: Path):
         "status": "ERROR",
         "error": "Falha interna ao executar o plano local.",
     }
+
+
+def test_build_response_support_package_route(tmp_path: Path):
+    status, headers, body = build_response("POST", "/api/support-package", b"{}", tmp_path)
+
+    payload = json.loads(body.decode("utf-8"))
+
+    assert status == 200
+    assert headers["Content-Type"] == "application/json; charset=utf-8"
+    assert payload["status"] == "CREATED"

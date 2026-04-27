@@ -749,3 +749,35 @@ def run_manual_plan(plan: dict, workspace: LocalWorkspace) -> dict:
         "recipe_path": str(recipe_path),
         "validation": validation,
     }
+
+
+def build_support_package(workspace: LocalWorkspace) -> dict:
+    created_at = datetime.now(timezone.utc).isoformat()
+    logs = []
+    for path in sorted(workspace.logs_dir.glob("*.log"))[:5]:
+        try:
+            logs.append({"name": path.name, "tail": path.read_text(encoding="utf-8", errors="replace").splitlines()[-80:]})
+        except OSError:
+            logs.append({"name": path.name, "tail": ["Nao foi possivel ler este log."]})
+    package = {
+        "created_at": created_at,
+        "workspace": {
+            "input_dir": "input/",
+            "output_dir": "output/",
+            "reports_dir": "reports/",
+            "recipes_dir": "recipes/",
+        },
+        "jobs": list_workflow_jobs(workspace.root),
+        "recipes": list_workflow_recipes(workspace.root),
+        "language_profiles": list_language_profiles(workspace.root),
+        "logs": logs,
+        "privacy": {
+            "contains_media": False,
+            "contains_credentials": False,
+            "contains_tracker_urls": False,
+            "contains_secret_tokens": False,
+        },
+    }
+    output_path = workspace.reports_dir / f"support-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.support.json"
+    _write_json(output_path, package)
+    return {"status": "CREATED", "path": str(output_path)}
