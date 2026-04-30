@@ -12,21 +12,24 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <aside class="sidebar" aria-label="Navegação principal">
+    <aside class="sidebar" aria-label="Navegacao principal">
       <div class="brand">
         <img class="brand-mark" src="/assets/ptbrmerger-icon-96.png" alt="" aria-hidden="true" />
         <span>
           <strong>PTBRMerger</strong>
-          <small>modo local seguro</small>
+          <small>hub local seguro</small>
         </span>
       </div>
 
       <nav class="main-nav">
-        <button class="nav-item active" type="button" data-screen="merge">Mesclar MKV</button>
-        <button class="nav-item" type="button" data-screen="files">Arquivos</button>
-        <button class="nav-item" type="button" data-screen="reports">Relatórios</button>
-        <button class="nav-item" type="button" data-screen="settings">Configurações</button>
-        <button class="nav-item" type="button" data-screen="advanced">Avançado</button>
+        <button class="nav-item active" type="button" data-screen="home">Inicio</button>
+        <button class="nav-item" type="button" data-screen="workflows">Workflows</button>
+        <button class="nav-item" type="button" data-screen="queue">Fila</button>
+        <button class="nav-item" type="button" data-screen="files">Arquivos locais</button>
+        <button class="nav-item" type="button" data-screen="recipes">Receitas</button>
+        <button class="nav-item" type="button" data-screen="profiles">Perfis</button>
+        <button class="nav-item" type="button" data-screen="tools">Ferramentas</button>
+        <button class="nav-item" type="button" data-screen="settings">Configuracoes</button>
       </nav>
 
       <div class="sidebar-status">
@@ -36,12 +39,12 @@
     </aside>
 
     <main class="app-main">
-      <section id="screen-merge" class="screen active" aria-labelledby="merge-title">
+      <section id="screen-home" class="screen active" aria-labelledby="home-title">
         <header class="screen-header">
           <div>
-            <p class="kicker">Mesclar MKV</p>
-            <h1 id="merge-title">Áudio PT-BR no arquivo 4K</h1>
-            <p>Escolha dois arquivos locais. O original não será alterado.</p>
+            <p class="kicker">Hub local de midia</p>
+            <h1 id="home-title">Oficina local para workflows de midia</h1>
+            <p>Esta versao inaugura o hub com um workflow real: adicionar, sincronizar e muxar audio em uma midia local sem substituir originais.</p>
           </div>
           <button id="refresh-status" type="button" class="secondary" data-testid="refresh-status">Verificar</button>
         </header>
@@ -53,18 +56,18 @@
             <div class="step-row">
               <span class="step-number">1</span>
               <div>
-                <h2>Escolha os arquivos</h2>
+                <h2>Workflow: adicionar audio a uma midia</h2>
                 <p class="muted">Use arquivos em input/ ou cole caminhos completos.</p>
               </div>
             </div>
 
             <div class="file-grid">
               <label class="file-field">
-                <span>Alvo 4K</span>
+                <span>Alvo MKV</span>
                 <select id="target-select" data-testid="target-select"></select>
               </label>
               <label class="file-field">
-                <span>Fonte com áudio PT-BR</span>
+                <span>Fonte com audio preferido</span>
                 <select id="source-select" data-testid="source-select"></select>
               </label>
             </div>
@@ -98,7 +101,7 @@
             </div>
             <div id="friendly-plan" class="friendly-output">Selecione os arquivos e crie um plano seguro.</div>
             <details class="inline-details">
-              <summary>Ver detalhes técnicos</summary>
+              <summary>Ver detalhes tecnicos</summary>
               <pre id="plan-output" data-testid="plan-output">Nenhum plano criado.</pre>
             </details>
           </aside>
@@ -109,18 +112,38 @@
             <h2>Resultado</h2>
             <span id="result-state">parado</span>
           </div>
-          <div id="friendly-result" class="friendly-output">Aguardando geração.</div>
+          <div id="friendly-result" class="friendly-output">Aguardando geracao.</div>
           <details class="inline-details">
-            <summary>Ver detalhes técnicos</summary>
-            <pre id="result-output" data-testid="result-output">Aguardando execução.</pre>
+            <summary>Ver detalhes tecnicos</summary>
+            <pre id="result-output" data-testid="result-output">Aguardando execucao.</pre>
           </details>
         </section>
+      </section>
+
+      <section id="screen-workflows" class="screen" aria-labelledby="workflows-title">
+        <header class="screen-header">
+          <div>
+            <p class="kicker">Workflows</p>
+            <h1 id="workflows-title">Fluxos de trabalho</h1>
+            <p>Escolha o que o hub deve fazer com seus arquivos locais.</p>
+          </div>
+        </header>
+        <div id="workflow-list" class="workflow-list"></div>
+        <section class="panel vision-panel">
+          <h2>Visao do hub</h2>
+          <p>Busca automatica, qBittorrent e indexers fazem parte da visao futura do hub, mas nao sao configuraveis nesta versao.</p>
+        </section>
+      </section>
+
+      <section id="screen-queue" class="screen" aria-labelledby="queue-title">
+        <header class="screen-header"><div><p class="kicker">Fila</p><h1 id="queue-title">Tarefas</h1><p>Historico simples das execucoes criadas pela interface web.</p></div></header>
+        <div id="job-list" class="entity-list"></div>
       </section>
 
       <section id="screen-files" class="screen" aria-labelledby="files-title">
         <header class="screen-header">
           <div>
-            <p class="kicker">Arquivos</p>
+            <p class="kicker">Arquivos locais</p>
             <h1 id="files-title">Pastas de trabalho</h1>
             <p id="workspace-path">Carregando caminhos locais.</p>
           </div>
@@ -132,28 +155,33 @@
         </div>
       </section>
 
-      <section id="screen-reports" class="screen" aria-labelledby="reports-title">
-        <header class="screen-header">
-          <div>
-            <p class="kicker">Relatórios</p>
-            <h1 id="reports-title">Última operação</h1>
-            <p>Quando um MKV é gerado, o relatório e a receita técnica ficam em reports/ e recipes/.</p>
-          </div>
-        </header>
-        <div class="panel">
-          <div id="reports-summary" class="friendly-output">Nenhuma operação finalizada nesta sessão.</div>
-          <div class="action-strip">
-            <button type="button" data-open-location="output">Abrir output</button>
-            <button type="button" data-open-location="reports">Abrir reports</button>
-          </div>
+      <section id="screen-recipes" class="screen" aria-labelledby="recipes-title">
+        <header class="screen-header"><div><p class="kicker">Receitas</p><h1 id="recipes-title">Receitas e relatorios</h1><p>Entenda o que o app fez sem abrir JSON.</p></div></header>
+        <div id="recipe-list" class="entity-list"></div>
+        <div id="reports-summary" class="friendly-output">Nenhuma operacao finalizada nesta sessao.</div>
+      </section>
+
+      <section id="screen-profiles" class="screen" aria-labelledby="profiles-title">
+        <header class="screen-header"><div><p class="kicker">Perfis</p><h1 id="profiles-title">Perfil de idioma</h1><p>Preferencias usadas pelos workflows de idioma.</p></div></header>
+        <div id="profile-list" class="entity-list"></div>
+      </section>
+
+      <section id="screen-tools" class="screen" aria-labelledby="tools-title">
+        <header class="screen-header"><div><p class="kicker">Ferramentas</p><h1 id="tools-title">Suporte local</h1><p>Diagnostico, dependencias, pastas e logs recentes.</p></div></header>
+        <div class="settings-grid">
+          <button id="check-dependencies" type="button" class="secondary">Verificar dependencias</button>
+          <button type="button" data-open-location="input">Abrir input</button>
+          <button type="button" data-open-location="output">Abrir output</button>
+          <button type="button" data-open-location="reports">Abrir reports</button>
+          <button id="build-support-package" type="button" class="secondary">Gerar pacote de suporte</button>
         </div>
       </section>
 
       <section id="screen-settings" class="screen" aria-labelledby="settings-title">
         <header class="screen-header">
           <div>
-            <p class="kicker">Configurações</p>
-            <h1 id="settings-title">Preferências e dependências</h1>
+            <p class="kicker">Configuracoes</p>
+            <h1 id="settings-title">Preferencias e dependencias</h1>
             <p>Configure o essencial para usar o modo local sem mexer no sistema inteiro.</p>
           </div>
         </header>
@@ -161,7 +189,7 @@
         <div class="settings-grid">
           <div class="settings-column">
             <section class="panel">
-              <h2>Aparência</h2>
+              <h2>Aparencia</h2>
               <div class="segmented" role="group" aria-label="Tema">
                 <button type="button" data-theme-choice="system">Sistema</button>
                 <button type="button" data-theme-choice="light">Claro</button>
@@ -170,28 +198,28 @@
             </section>
 
             <section class="panel">
-              <h2>Segurança</h2>
+              <h2>Seguranca</h2>
               <ul class="plain-list">
-                <li>Originais nunca são substituídos no modo web local.</li>
-                <li>A instalação local não exige admin e não altera o PATH global.</li>
-                <li>Detalhes técnicos ficam disponíveis em Avançado.</li>
+                <li>Originais nunca sao substituidos no modo web local.</li>
+                <li>A instalacao local nao exige admin e nao altera o PATH global.</li>
+                <li>Detalhes tecnicos ficam nos paineis expansivos.</li>
               </ul>
             </section>
           </div>
 
           <section class="panel">
-            <h2>Dependências</h2>
+            <h2>Dependencias</h2>
             <div id="dependency-status" class="dependency-status">Verificando FFmpeg e FFprobe.</div>
             <div id="install-progress" class="install-progress hidden" aria-live="polite">
               <span id="install-progress-bar"></span>
-              <strong id="install-progress-text">Preparando instalação.</strong>
+              <strong id="install-progress-text">Preparando instalacao.</strong>
             </div>
             <div class="action-strip">
-              <button id="check-dependencies" type="button" class="secondary">Verificar dependências</button>
+              <button id="settings-check-dependencies" type="button" class="secondary">Verificar dependencias</button>
               <button id="install-dependencies" type="button">Instalar FFmpeg local para este app</button>
             </div>
             <details class="inline-details">
-              <summary>Usar FFmpeg já instalado</summary>
+              <summary>Usar FFmpeg ja instalado</summary>
               <label class="file-field">
                 <span>Caminho do ffmpeg.exe</span>
                 <input id="manual-ffmpeg-path" type="text" autocomplete="off" />
@@ -204,17 +232,8 @@
             </details>
           </section>
         </div>
-      </section>
 
-      <section id="screen-advanced" class="screen" aria-labelledby="advanced-title">
-        <header class="screen-header">
-          <div>
-            <p class="kicker">Avançado</p>
-            <h1 id="advanced-title">Diagnóstico técnico</h1>
-            <p>Informações para depuração, sem atrapalhar o fluxo principal.</p>
-          </div>
-        </header>
-        <section class="panel">
+        <section class="panel result-panel">
           <h2>Ambiente</h2>
           <div id="status-checks" class="checks" data-testid="status-checks"></div>
         </section>

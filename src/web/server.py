@@ -69,6 +69,14 @@ def build_response(method: str, raw_path: str, body: bytes, root: Path) -> tuple
         return _json_response(ops.dependency_status(root))
     if method == "GET" and path == "/api/dependencies/install-status":
         return _json_response(ops.ffmpeg_install_status())
+    if method == "GET" and path == "/api/workflows":
+        return _json_response({"workflows": ops.list_available_workflows()})
+    if method == "GET" and path == "/api/jobs":
+        return _json_response({"jobs": ops.list_workflow_jobs(root)})
+    if method == "GET" and path == "/api/recipes":
+        return _json_response({"recipes": ops.list_workflow_recipes(root)})
+    if method == "GET" and path == "/api/language-profiles":
+        return _json_response({"profiles": ops.list_language_profiles(root)})
     if method == "GET" and path == "/api/input-files":
         return _json_response({"files": ops.list_input_files(workspace)})
     if method == "POST" and path == "/api/settings/theme":
@@ -90,9 +98,10 @@ def build_response(method: str, raw_path: str, body: bytes, root: Path) -> tuple
         return _json_response(ops.inspect_media_file(str(payload.get("path") or ""), workspace))
     if method == "POST" and path == "/api/manual-plan":
         payload = _read_json(body)
-        plan = ops.build_manual_plan(
+        plan = ops.build_preferred_audio_plan(
             str(payload.get("target_path") or ""),
             str(payload.get("source_path") or ""),
+            str(payload.get("language_profile_id") or "pt-BR-default"),
             workspace,
         )
         return _json_response(_store_plan(plan))
@@ -103,12 +112,14 @@ def build_response(method: str, raw_path: str, body: bytes, root: Path) -> tuple
         if plan is None:
             return _json_response({"status": "BLOCKED", "problems": ["Plano inválido ou expirado. Recrie o plano."]}, status=400)
         try:
-            return _json_response(ops.run_manual_plan(plan, workspace))
+            return _json_response(ops.run_preferred_audio_plan(plan, workspace))
         except Exception:
             return _json_response({"status": "ERROR", "error": "Falha interna ao executar o plano local."}, status=500)
     if method == "POST" and path == "/api/open-folder":
         payload = _read_json(body)
         return _json_response(ops.open_workspace_location(str(payload.get("location") or ""), workspace))
+    if method == "POST" and path == "/api/support-package":
+        return _json_response(ops.build_support_package(workspace))
     if method == "GET" and not path.startswith("/api/"):
         return _static_response(path)
     return _json_response({"error": "Rota não encontrada."}, status=404)

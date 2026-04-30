@@ -545,6 +545,35 @@ p {
   color: var(--bad);
 }
 
+.workflow-list,
+.entity-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.workflow-card span,
+.entity-row small {
+  color: var(--muted);
+}
+
+.disabled-card {
+  opacity: 0.72;
+}
+
+.entity-row {
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 13px;
+}
+
+.vision-panel {
+  margin-top: 14px;
+}
+
 pre {
   min-height: 180px;
   max-height: 440px;

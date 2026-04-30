@@ -16,6 +16,7 @@ import src.analyzer as analyzer
 import src.config as config_module
 import src.merger as merger
 from src.tools.preflight import run_preflight
+from src.storage.workflow_state import WorkflowState
 import yaml
 
 
@@ -492,6 +493,51 @@ def list_input_files(workspace: LocalWorkspace) -> list[dict]:
     return files
 
 
+def list_available_workflows() -> list[dict]:
+    return [
+        {
+            "id": "preferred-audio-merge",
+            "label": "Adicionar audio a uma midia",
+            "description": "Use uma midia alvo e uma fonte com o idioma desejado para gerar um novo MKV sincronizado e validado.",
+            "available": True,
+        },
+        {
+            "id": "auto-language-download",
+            "label": "Busca automatica por idioma",
+            "description": "Visao futura: procurar, baixar e preparar midia pelo idioma preferido.",
+            "available": False,
+            "status": "planned",
+        },
+    ]
+
+
+def list_language_profiles(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_language_profiles()
+
+
+def list_workflow_jobs(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_jobs()
+
+
+def list_workflow_recipes(root: Path | None = None) -> list[dict]:
+    workspace = ensure_workspace(root)
+    return WorkflowState(workspace.root).list_recipes()
+
+
+def build_preferred_audio_plan(target_path: str, source_path: str, language_profile_id: str, workspace: LocalWorkspace) -> dict:
+    from src.workflows.preferred_audio_merge import build_preferred_audio_plan as _build_preferred_audio_plan
+
+    return _build_preferred_audio_plan(target_path, source_path, language_profile_id, workspace)
+
+
+def run_preferred_audio_plan(plan: dict, workspace: LocalWorkspace) -> dict:
+    from src.workflows.preferred_audio_merge import run_preferred_audio_plan as _run_preferred_audio_plan
+
+    return _run_preferred_audio_plan(plan, workspace)
+
+
 def _stream_summary(stream: dict) -> dict:
     tags = stream.get("tags", {}) or {}
     return {
@@ -703,3 +749,35 @@ def run_manual_plan(plan: dict, workspace: LocalWorkspace) -> dict:
         "recipe_path": str(recipe_path),
         "validation": validation,
     }
+
+
+def build_support_package(workspace: LocalWorkspace) -> dict:
+    created_at = datetime.now(timezone.utc).isoformat()
+    logs = []
+    for path in sorted(workspace.logs_dir.glob("*.log"))[:5]:
+        try:
+            logs.append({"name": path.name, "tail": path.read_text(encoding="utf-8", errors="replace").splitlines()[-80:]})
+        except OSError:
+            logs.append({"name": path.name, "tail": ["Nao foi possivel ler este log."]})
+    package = {
+        "created_at": created_at,
+        "workspace": {
+            "input_dir": "input/",
+            "output_dir": "output/",
+            "reports_dir": "reports/",
+            "recipes_dir": "recipes/",
+        },
+        "jobs": list_workflow_jobs(workspace.root),
+        "recipes": list_workflow_recipes(workspace.root),
+        "language_profiles": list_language_profiles(workspace.root),
+        "logs": logs,
+        "privacy": {
+            "contains_media": False,
+            "contains_credentials": False,
+            "contains_tracker_urls": False,
+            "contains_secret_tokens": False,
+        },
+    }
+    output_path = workspace.reports_dir / f"support-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.support.json"
+    _write_json(output_path, package)
+    return {"status": "CREATED", "path": str(output_path)}

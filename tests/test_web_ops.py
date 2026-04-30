@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 from src.web.ops import (
     LocalWorkspace,
+    build_support_package,
     build_local_status,
     build_manual_plan,
     dependency_status,
@@ -11,6 +12,9 @@ from src.web.ops import (
     install_local_ffmpeg,
     inspect_media_file,
     list_input_files,
+    list_language_profiles,
+    list_workflow_jobs,
+    list_workflow_recipes,
     resolve_user_path,
     run_manual_plan,
     open_workspace_location,
@@ -88,6 +92,18 @@ def test_list_input_files_only_returns_mkv_files(tmp_path: Path):
     files = list_input_files(workspace)
 
     assert [item["name"] for item in files] == ["source.MKV", "target.mkv"]
+
+
+def test_web_ops_exposes_default_language_profile(tmp_path: Path):
+    profiles = list_language_profiles(tmp_path)
+
+    assert profiles[0]["id"] == "pt-BR-default"
+    assert profiles[0]["label"] == "Portugues Brasil"
+
+
+def test_web_ops_exposes_empty_jobs_and_recipes(tmp_path: Path):
+    assert list_workflow_jobs(tmp_path) == []
+    assert list_workflow_recipes(tmp_path) == []
 
 
 def test_inspect_media_file_returns_stream_summary(tmp_path: Path):
@@ -443,3 +459,17 @@ def test_use_local_tools_validates_and_saves_paths(tmp_path: Path):
 
     assert result["status"] == "SAVED"
     save.assert_called_once_with(workspace.root, ffmpeg.resolve(), ffprobe.resolve())
+
+
+def test_build_support_package_writes_safe_json_without_secrets(tmp_path: Path):
+    workspace = ensure_workspace(tmp_path)
+    (workspace.logs_dir / "app.log").write_text("line 1\nline 2\n", encoding="utf-8")
+
+    payload = build_support_package(workspace)
+
+    assert payload["status"] == "CREATED"
+    assert payload["path"].endswith(".support.json")
+    content = Path(payload["path"]).read_text(encoding="utf-8")
+    assert "line 1" in content
+    assert "api_key" not in content.lower()
+    assert "password" not in content.lower()

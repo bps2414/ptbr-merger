@@ -2,7 +2,7 @@
 
 ## What This Is
 
-PTBRMerger is a brownfield Python automation pipeline that augments imported 4K movies with PT-BR audio by orchestrating Radarr, qBittorrent, FFmpeg/FFprobe and optional Bazarr lookups. It is built for a local Windows-based media stack where reliability, observability and safe file replacement matter more than raw feature count.
+PTBRMerger is becoming a Windows-first local media workflow hub. Its current proven workflows focus on preferred-language audio for MKV files and a legacy Radarr/qBittorrent automation pipeline, but the product direction is broader: safe local workflows for inspecting, synchronizing, muxing, remuxing, subtitling, organizing and eventually sourcing media by user preference.
 
 ## Core Value
 
@@ -72,6 +72,8 @@ The most recent shipped milestone is `v0.4.0 Sync Recovery`, which added recover
 | Delay product-scope expansion until orchestration and ranking logic are easier to maintain | More features on top of the current hot spots would compound risk faster than value | Pending |
 | Prioritize sync recovery over internal refactors for the next milestone | Rare PT-BR candidates are being discarded too early on large runtime mismatches, which hits the core product outcome more directly than the deferred refactors | ✓ Good |
 | Make web local the primary v0.4.5 recovery UX | The user is blocked by CLI friction after formatting the PC; a localhost screen opened by `.bat` gives value faster without jumping to desktop/cloud | âœ“ Good |
+
+| Treat PT-BR merge as the first workflow, not the final product identity | The user wants a larger local media automation hub; the app should use workflows, profiles, jobs and recipes as product primitives while keeping v0.5 scoped | Pending |
 
 ## Shipped Milestone Status
 
