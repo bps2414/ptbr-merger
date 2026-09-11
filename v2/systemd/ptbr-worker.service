@@ -1,0 +1,15 @@
+[Unit]
+Description=Radarr Brazilian audio coordinator
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/servidorcasa/server/ptbr
+ExecStart=/usr/bin/python3 /home/servidorcasa/server/ptbr/worker.py --limit 1
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+UMask=0077
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+TimeoutStartSec=6h
+NoNewPrivileges=true

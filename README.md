@@ -4,6 +4,9 @@
 
 PTBRMerger e uma ferramenta local, Windows-first, para inspecionar arquivos MKV e adicionar audio preferido em PT-BR com apoio de FFmpeg/FFprobe. O projeto tambem preserva um fluxo de automacao com Radarr e qBittorrent para ambientes de midia local.
 
+> 🚀 **Procurando a V2 Autônoma para Servidores Linux / Homelab?**  
+> Conheça a pasta [`v2/`](./v2/README.md), uma arquitetura de alta performance com suporte a multi-instância Radarr (4K + Doador), sincronização espectral milimétrica via RedSync, SSD staging buffer, proteção de hardware de disco (Seed Guard) e notificações granulares no Discord.
+
 ## Status do projeto
 
 Projeto funcional em evolucao. A base atual possui:

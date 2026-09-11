@@ -1,0 +1,14 @@
+[Unit]
+Description=Seed Guard - Conscious Seeding and Storage I/O Protection
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/servidorcasa/server/ops/seed_guard.py --interval 5
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
